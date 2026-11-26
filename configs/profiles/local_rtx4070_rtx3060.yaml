@@ -1,0 +1,5 @@
+accumulation: 16
+backend: transformers
+batch_size: 1
+context: 1024
+strategy: ddp

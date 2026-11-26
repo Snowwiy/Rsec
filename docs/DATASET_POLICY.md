@@ -1,0 +1,15 @@
+# Dataset policy
+
+Public access does not grant training or redistribution rights. Before acquisition, review the exact source license, terms, intended use and redistribution boundary. The empty `configs/datasets.yaml` list is deliberate. Candidate publishers include NVD, CWE, ATT&CK, CISA KEV, OWASP and vendor advisories; none are automatically approved.
+
+Downloads accept reviewed metadata, an independently established SHA-256 and allowlisted credential-free HTTPS. Redirects are rechecked. Retries are bounded (3), each request has a 30-second timeout, and downloads/files are capped at 64 MiB. Range downloads retain a partial file and verify final integrity. Do not accept a publisher hash from an untrusted mirror. HF datasets require a full revision SHA and are exported as untrusted records; no dataset script execution is enabled.
+
+JSON/JSONL and CSV hold explicit records; CSV messages are JSON and review/synthetic markers are booleans. Optional Parquet checks decoded metadata size before reading. Markdown/text use `data ingest` and remain knowledge/RAG material. Keyword language/domain classification is heuristic and recorded as such. SFT requires reviewed bilingual conversation records with provenance, explicit synthetic status, domain and language labels.
+
+Acquisition sidecars record date, version, URL, license and input hash. Prepared releases record transform, input hashes, seed, source metadata per record, file hashes and quality counts. Exact and approximate lexical deduplication precede union of provenance/similarity families. A shuffled group-level split reserves at least one independent family for eval/test. Training never consumes test.jsonl. Benchmark content and provenance groups are excluded; the CLI defaults to the bundled independent suite. Explicitly supply every additional external benchmark to prevent leakage.
+
+The curation implementation is a bounded quadratic baseline, capped at 10,000 records per input release, not an internet-scale deduplication service. Split each upstream source into reviewed shards and profile runtime before scaling. Similarity cannot identify every semantic variant; groups must capture repository/document/CVE families manually. A changed seed or family membership may move groups, so freeze released test sets and keep external benchmarks permanently reserved.
+
+Secrets and obvious PII/poison phrases are screened before acceptance. Rejected records store hashes and reason codes only, avoiding a second secret repository in quarantine. `--anonymize` replaces detected email/IP/phone patterns in conversation content. Metadata containing detected sensitive information is rejected, not rewritten. Heuristics miss some identifiers and multilingual attacks; human privacy and provenance review is mandatory. No content is executed.
+
+Replay datasets are supplied via `--replay`, then screened/deduplicated alongside new records. A category cap is deterministic downsampling, not evidence of an optimally balanced corpus. No automatic learning from user chats is included. Preserve old approved releases, compare regression benchmarks, and register new weights only after review.

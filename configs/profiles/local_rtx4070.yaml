@@ -1,0 +1,4 @@
+accumulation: 16
+batch_size: 1
+context: 2048
+precision: auto

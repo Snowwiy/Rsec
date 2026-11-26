@@ -1,0 +1,8 @@
+allowed_hosts:
+- services.nvd.nist.gov
+- cwe.mitre.org
+- raw.githubusercontent.com
+- www.cisa.gov
+sources: []
+note: Sources stay empty until source-specific license/redistribution review and independent
+  SHA-256 acquisition.

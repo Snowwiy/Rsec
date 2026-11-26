@@ -1,0 +1,8 @@
+backend: transformers
+context: 2048
+local_files_only: true
+max_tokens: 256
+system: prompts/system_prompt.txt
+temperature: 0.2
+top_k: 40
+top_p: 0.9

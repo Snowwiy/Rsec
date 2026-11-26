@@ -1,0 +1,4 @@
+backend: transformers
+context: 1024
+precision: fp16
+strategy: fsdp

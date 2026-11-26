@@ -1,5 +1,17 @@
 # Changelog
 
+## 0.2.0-alpha · 2026-11-26 — Phase 02 data engineering
+
+- Added versioned8-domain taxonomy and22-source registry with separate access/acquisition/training/redistribution rights; 20 external locations verified, 0 external SFT-approved.
+- Acquired3 pinned official CVE reference documents through the authorized connector; verified hashes/cache and normalized metadata without SFT or raw payload redistribution.
+- Added strict Candidate v2, quality/privacy/reference checks, bounded lexical/code/translation family guards, immutable manifests, explicit human review ledgers and reviewed-only bridge to the existing SFT format.
+- Added64 bilingual SFT drafts, 32 public CyberBench development/regression candidates, domain rubrics and local tokenizer statistics; no fabricated human reviews or hidden gold.
+- Preserved all 97 prior tests; 200totalpassed/94.02% coverage; no-Torch core 189 passed/11 MLdeselected. Training stack/pins unchanged.
+- Fixed4secret-scanner false positives with exact public tokenizer-hash/path exceptions; retained default rules and verified a negative control.
+- Added dataset reports, source/license/review/contamination guides and Phase 03gates; dependent draft PR #2, no automatic merge.
+- Corpus verdict DATASET READINESS: FAIL; TRAINING READINESS: NOT READY. Zero expert-approved examples/gold; pilot goal unmet, physical CUDA/NF4/multi-GPU pending.
+
+
 ## 2026-11-26 — Phase 01-B independent audit
 
 - Fixed SFT token-length checks for the installed Transformers return type; verified real TRL target masks, padding and causal loss.

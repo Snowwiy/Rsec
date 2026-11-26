@@ -1,6 +1,6 @@
-# Dataset policy
+# Dataset policy — legacy compatibility and Phase 02 gates
 
-Public access does not grant training or redistribution rights. Before acquisition, review the exact source license, terms, intended use and redistribution boundary. The empty `configs/datasets.yaml` list is deliberate. Candidate publishers include NVD, CWE, ATT&CK, CISA KEV, OWASP and vendor advisories; none are automatically approved.
+Public access does not grant training or redistribution rights. Before acquisition, review the exact source license, terms, intended use and redistribution boundary. The legacy `sources: []` remains empty, while explicit `--registered` acquisition enables three pinned CVE reference snapshots only. The Phase 02 registry inventories20 external sources and2 internal fixtures with separate scoped permissions; no external SFT source is approved.
 
 Downloads accept reviewed metadata, an independently established SHA-256 and allowlisted credential-free HTTPS. Redirects are rechecked. Retries are bounded (3), each request has a 30-second timeout, and downloads/files are capped at 64 MiB. Range downloads retain a partial file and verify final integrity. Do not accept a publisher hash from an untrusted mirror. HF datasets require a full revision SHA and are exported as untrusted records; no dataset script execution is enabled.
 
@@ -15,3 +15,5 @@ Secrets and obvious PII/poison phrases are screened before acceptance. Rejected 
 Replay datasets are supplied via `--replay`, then screened/deduplicated alongside new records. A category cap is deterministic downsampling, not evidence of an optimally balanced corpus. No automatic learning from user chats is included. Preserve old approved releases, compare regression benchmarks, and register new weights only after review.
 
 Phase 01-B additionally reserves user questions independently of benchmark answers/provenance, groups related questions across internal splits, rechecks sensitive metadata on validation and bounds cumulative similarity work. A release can exceed its comparison budget even below the byte/row ceilings; use smaller reviewed shards. Review markers are strict booleans and CSV preserves quoted newlines. See [DATASET_READINESS.md](../DATASET_READINESS.md).
+
+For new Phase 02 corpus releases use Candidate v2, `data curate` and separate hash-bound human decisions; legacy `reviewed=true` fixtures do not constitute expert approval. The paragraphs above describe the preserved legacy path. New curation uses an inverted-index lexical candidate search with a200,000-pair budget, code/translation links and frozen policy snapshots; its limits are in [architecture](DATASET_ARCHITECTURE.md). Actual corpus verdict: FAIL; training NOT READY. See [quality standard](DATASET_QUALITY_STANDARD.md) and [review guide](DATASET_REVIEW_GUIDE.md).

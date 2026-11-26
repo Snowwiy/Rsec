@@ -53,8 +53,8 @@ class Record(Strict):
     group: str = Field(min_length=1, max_length=500)
     language: Literal["es", "en"]
     category: str = Field(min_length=1, max_length=100)
-    synthetic: bool
-    reviewed: bool
+    synthetic: bool = Field(strict=True)
+    reviewed: bool = Field(strict=True)
     purpose: Literal["sft", "benchmark", "knowledge", "rag"] = "sft"
     redistribution: str = Field(min_length=1, max_length=1000)
 
@@ -78,6 +78,37 @@ def text_of(record):
 
 def canonical(record):
     return unicodedata.normalize("NFKC", text_of(record)).strip().casefold()
+
+
+def prompts(record):
+    return [
+        unicodedata.normalize("NFKC", m["content"]).strip().casefold()
+        for m in record["messages"]
+        if m["role"] == "user"
+    ]
+
+
+def sensitive(text):
+    return bool(SECRET.search(text) or any(p.search(text) for p in (EMAIL, IP, PHONE)))
+
+
+class ProcessingLimit(RsecError):
+    """A release must be reshaped before processing can safely continue."""
+
+
+class SimilarityBudget:
+    """Conservative work bound for the quadratic lexical baseline."""
+
+    def __init__(self, limit=100_000_000):
+        self.remaining = limit
+
+    def __call__(self, a, b, threshold=0.92):
+        if a == b:
+            return True
+        self.remaining -= len(a) * len(b)
+        if self.remaining < 0:
+            raise ProcessingLimit("Similarity budget exceeded; use smaller reviewed shards")
+        return similar(a, b, threshold)
 
 
 def similar(a, b, threshold=0.92):
@@ -116,13 +147,15 @@ def load_rows(path):
             raise RsecError("JSON must be an array")
         yield from rows
     elif path.suffix == ".csv":
-        for row in csv.DictReader(text.splitlines()):
+        import io
+
+        for row in csv.DictReader(io.StringIO(text)):
             try:
                 row["messages"] = json.loads(row["messages"])
                 for key in ("synthetic", "reviewed"):
                     row[key] = json.loads(row[key].lower())
                 yield row
-            except (ValueError, KeyError):
+            except (ValueError, KeyError, TypeError, AttributeError):
                 yield {"_invalid_csv": True}
     elif path.suffix in {".txt", ".md"}:
         yield {"purpose": "knowledge", "text": text, "file_hash": sha256(path)}
@@ -131,6 +164,8 @@ def load_rows(path):
 
 
 def prepare(inputs, output, seed=42, benchmarks=(), anonymize=False, category_cap=None):
+    if category_cap is not None and (isinstance(category_cap, bool) or category_cap < 1):
+        raise RsecError("Category cap must be positive")
     output = Path(output)
     if output.exists():
         raise FileExistsError("Choose a new dataset release directory")
@@ -140,7 +175,9 @@ def prepare(inputs, output, seed=42, benchmarks=(), anonymize=False, category_ca
         for r in load_rows(p)
     ]
     reserved = [canonical(r) for r in heldout]
+    reserved_prompts = [p for r in heldout for p in prompts(r)]
     reserved_groups = {r["group"] for r in heldout}
+    compare = SimilarityBudget()
     accepted, rejected, seen, ids = [], [], [], set()
     counts = Counter()
     for path in inputs:
@@ -174,9 +211,13 @@ def prepare(inputs, output, seed=42, benchmarks=(), anonymize=False, category_ca
                 normalized = canonical(row)
                 if len(normalized) < 40 or len(normalized) > 100000:
                     reason = reason or "quality_length"
-                if row["group"] in reserved_groups or any(similar(normalized, v) for v in reserved):
+                if (
+                    row["group"] in reserved_groups
+                    or any(compare(normalized, v) for v in reserved)
+                    or any(compare(p, v) for p in prompts(row) for v in reserved_prompts)
+                ):
                     reason = reason or "benchmark_contamination"
-                if row["id"] in ids or any(similar(normalized, v) for v in seen):
+                if row["id"] in ids or any(compare(normalized, v) for v in seen):
                     reason = reason or "duplicate"
                 if category_cap and counts[row["category"]] >= category_cap:
                     reason = reason or "category_cap"
@@ -190,6 +231,8 @@ def prepare(inputs, output, seed=42, benchmarks=(), anonymize=False, category_ca
                     seen.append(normalized)
                     ids.add(row["id"])
                     counts[row["category"]] += 1
+            except ProcessingLimit:
+                raise
             except (ValidationError, TypeError, ValueError, KeyError):
                 reason = "invalid_schema_or_unreviewed"
             if reason:
@@ -197,6 +240,7 @@ def prepare(inputs, output, seed=42, benchmarks=(), anonymize=False, category_ca
                 rejected.append({"record_hash": digest(raw), "reason": reason})
     # Similarity and provenance union prevent related examples crossing a split boundary.
     parent = list(range(len(accepted)))
+    questions = [prompts(r) for r in accepted]
 
     def root(i):
         while parent[i] != i:
@@ -206,7 +250,11 @@ def prepare(inputs, output, seed=42, benchmarks=(), anonymize=False, category_ca
 
     for i, row in enumerate(accepted):
         for j in range(i):
-            if row["group"] == accepted[j]["group"] or similar(seen[i], seen[j], 0.75):
+            if (
+                row["group"] == accepted[j]["group"]
+                or compare(seen[i], seen[j], 0.75)
+                or any(compare(a, b, 0.75) for a in questions[i] for b in questions[j])
+            ):
                 parent[root(i)] = root(j)
     groups = {}
     for i, row in enumerate(accepted):
@@ -264,8 +312,9 @@ def validate_release(directory):
         raise RsecError("Incomplete manifest")
     for name, expected in manifest["files"].items():
         if sha256(confined(directory, name)) != expected:
-            raise RsecError(f"Integrity mismatch: {name}")
-    groups, contents, ids = set(), [], set()
+            raise RsecError("Dataset file integrity mismatch")
+    groups, contents, ids, questions = set(), [], set(), []
+    compare = SimilarityBudget()
     for split in ("train", "eval", "test"):
         rows = [
             Record.model_validate(r).model_dump() for r in load_rows(directory / f"{split}.jsonl")
@@ -276,7 +325,10 @@ def validate_release(directory):
         if groups & current:
             raise RsecError("Group leakage across splits")
         current_contents = [canonical(r) for r in rows]
-        if any(similar(a, b, 0.75) for a in current_contents for b in contents):
+        current_questions = [p for r in rows for p in prompts(r)]
+        if any(compare(a, b, 0.75) for a in current_contents for b in contents) or any(
+            compare(a, b, 0.75) for a in current_questions for b in questions
+        ):
             raise RsecError("Near-duplicate leakage across splits")
         for r in rows:
             if (
@@ -285,11 +337,13 @@ def validate_release(directory):
                 or SECRET.search(text_of(r))
                 or POISON.search(text_of(r))
                 or any(pattern.search(text_of(r)) for pattern in (EMAIL, IP, PHONE))
+                or sensitive(json.dumps({k: v for k, v in r.items() if k != "messages"}))
             ):
                 raise RsecError("Unsafe or duplicate training record")
             ids.add(r["id"])
         groups.update(current)
         contents.extend(current_contents)
+        questions.extend(current_questions)
     return {
         "status": "TESTED",
         "records": len(ids),

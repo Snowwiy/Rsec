@@ -40,7 +40,12 @@ class SafeRedirect(urllib.request.HTTPRedirectHandler):
 
 
 def download_source(source, destination, hosts):
-    if not source.get("reviewed") or not source.get("license") or not source.get("redistribution"):
+    if (
+        source.get("reviewed") is not True
+        or not source.get("license")
+        or source["license"].strip().lower() in {"unknown", "unverified", "none", ""}
+        or not source.get("redistribution")
+    ):
         raise RsecError("Review source license and redistribution before acquisition")
     expected = source["sha256"]
     if not re.fullmatch("[0-9a-f]{64}", expected):
@@ -56,7 +61,7 @@ def download_source(source, destination, hosts):
     partial = destination.with_suffix(destination.suffix + ".part")
     if partial.is_symlink():
         raise RsecError("Symlink partial download rejected")
-    opener = urllib.request.build_opener(SafeRedirect(hosts))
+    opener = urllib.request.build_opener(urllib.request.ProxyHandler({}), SafeRedirect(hosts))
     for attempt in range(3):
         offset = partial.stat().st_size if partial.exists() else 0
         if offset > MAX_BYTES:
@@ -114,7 +119,12 @@ def acquire(config="configs/datasets.yaml", output="data/raw"):
 
 def acquire_hf(dataset_id, revision, output, license_name, reviewed=False, split="train"):
     """Pinned HF acquisition after explicit license review; exported as untrusted JSONL."""
-    if not reviewed or not license_name or not re.fullmatch("[0-9a-f]{40}", revision):
+    if (
+        reviewed is not True
+        or not license_name
+        or license_name.strip().lower() in {"unknown", "unverified", "none", ""}
+        or not re.fullmatch("[0-9a-f]{40}", revision)
+    ):
         raise RsecError("Reviewed license and pinned dataset SHA required")
     from datasets import load_dataset
 

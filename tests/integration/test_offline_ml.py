@@ -21,10 +21,19 @@ def test_real_sft_resume_merge_and_inference(tmp_path):
     checkpoint = Path(run["path"]) / "checkpoints/checkpoint-2"
     manifest = read_json(checkpoint / "rsec_checkpoint.json")
     assert "optimizer.pt" in manifest["files"]
+    assert any(name.startswith("rng_state") for name in manifest["files"])
+    optimizer = torch.load(checkpoint / "optimizer.pt", map_location="cpu", weights_only=True)
+    assert all(int(state["step"]) == 2 for state in optimizer["state"].values())
     verify_checkpoint(checkpoint, manifest["signature"])
     resumed = train(config.model_copy(update={"max_steps": 3}), smoke=True, resume=checkpoint)
     assert resumed["status"] == "completed"
     assert (Path(resumed["path"]) / "checkpoints/checkpoint-3").exists()
+    optimizer = torch.load(
+        Path(resumed["path"]) / "checkpoints/checkpoint-3/optimizer.pt",
+        map_location="cpu",
+        weights_only=True,
+    )
+    assert all(int(state["step"]) == 3 for state in optimizer["state"].values())
     adapter = Path(resumed["path"]) / "adapter"
     assert export(adapter, tmp_path / "export-adapter")["format"] == "adapter"
     torch.manual_seed(config.seed)
@@ -34,6 +43,16 @@ def test_real_sft_resume_merge_and_inference(tmp_path):
     tokenizer.save_pretrained(base)
     merged = tmp_path / "merged"
     export(adapter, merged, format="merged", base=base)
+    from peft import PeftModel
+    from transformers import AutoModelForCausalLM
+
+    attached = PeftModel.from_pretrained(AutoModelForCausalLM.from_pretrained(base), adapter).eval()
+    merged_model = AutoModelForCausalLM.from_pretrained(merged).eval()
+    inputs = tokenizer("Review defensive code.", return_tensors="pt", return_token_type_ids=False)
+    with torch.no_grad():
+        torch.testing.assert_close(
+            attached(**inputs).logits, merged_model(**inputs).logits, atol=1e-5, rtol=1e-4
+        )
     result = infer(merged, "Review defensive code.", context=128, max_tokens=4, temperature=0)
     assert 0 < result["generated_tokens"] <= 4
     assert result["latency_seconds"] > 0

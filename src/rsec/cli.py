@@ -60,6 +60,15 @@ def parser():
     tr.add_argument("--max-steps", type=int)
     tr.add_argument("--allow-network", action="store_true")
     tr.add_argument("--allow-experimental", action="store_true")
+    prediction = commands.add_parser("predict", help="Generate local benchmark predictions")
+    prediction.add_argument("--benchmark", default="benchmarks/suite.jsonl")
+    prediction.add_argument("--model", required=True)
+    prediction.add_argument("--output", required=True)
+    prediction.add_argument(
+        "--backend", choices=["transformers", "llama-cpp", "ollama"], default="transformers"
+    )
+    prediction.add_argument("--adapter")
+    prediction.add_argument("--max-tokens", type=int, default=256)
     ev = commands.add_parser(
         "evaluate", help="Score independent prediction JSONL deterministically"
     )
@@ -201,6 +210,8 @@ def dispatch(args):
         options = vars(args).copy()
         options.pop("command")
         settings = yaml.safe_load(bounded_read(options.pop("config")))
+        if not isinstance(settings, dict):
+            raise RsecError("Inference configuration must be a mapping")
         if settings.pop("local_files_only", True) is not True:
             raise RsecError("Inference requires local_files_only=true")
         allowed = {

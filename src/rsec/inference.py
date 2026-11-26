@@ -1,12 +1,19 @@
 """Offline local inference with a uniform, future API-compatible response envelope."""
 
 import json
+import math
 import time
 import urllib.request
 from pathlib import Path
 
+from rsec.artifacts import local_artifacts, verify_export
 from rsec.errors import RsecError
-from rsec.utils import bounded_read
+from rsec.utils import bounded_read, digest
+
+
+class LocalOnly(urllib.request.HTTPRedirectHandler):
+    def redirect_request(self, *args, **kwargs):
+        raise RsecError("Local inference redirects are not permitted")
 
 
 def infer(
@@ -32,6 +39,21 @@ def infer(
         raise RsecError("Invalid generation limits or sampling parameters")
     if len(prompt) > 100000:
         raise RsecError("Prompt exceeds input budget")
+    if not isinstance(gpu_layers, int) or gpu_layers < -1:
+        raise RsecError("Invalid GPU layer count")
+    if tensor_split is not None and (
+        not tensor_split
+        or len(tensor_split) > 16
+        or any(
+            not isinstance(v, (int, float)) or not math.isfinite(v) or v < 0 for v in tensor_split
+        )
+        or not any(tensor_split)
+    ):
+        raise RsecError("Tensor split requires finite nonnegative device weights")
+    if backend != "llama-cpp" and (gpu_layers != 0 or tensor_split is not None):
+        raise RsecError("Layer/tensor distribution options require llama-cpp")
+    if backend != "transformers" and adapter:
+        raise RsecError("Attach adapters with Transformers or export merged weights first")
     system_text = (
         bounded_read(system, 32768)
         if system
@@ -39,14 +61,19 @@ def infer(
     )
     messages = [{"role": "system", "content": system_text}, {"role": "user", "content": prompt}]
     start = time.perf_counter()
+    template_hash = None
     if backend == "transformers":
         import torch
         from transformers import AutoModelForCausalLM, AutoTokenizer
 
         path = str(Path(model).resolve(strict=True))
+        local_artifacts(path)
         tokenizer = AutoTokenizer.from_pretrained(
             path, local_files_only=True, trust_remote_code=False
         )
+        if not tokenizer.chat_template:
+            raise RsecError("Local inference requires the model chat template")
+        template_hash = digest(tokenizer.chat_template)
         loaded = AutoModelForCausalLM.from_pretrained(
             path,
             local_files_only=True,
@@ -57,6 +84,7 @@ def infer(
         if adapter:
             from peft import PeftModel
 
+            local_artifacts(adapter, adapter=True)
             loaded = PeftModel.from_pretrained(
                 loaded, str(Path(adapter).resolve(strict=True)), local_files_only=True
             )
@@ -94,12 +122,18 @@ def infer(
     elif backend == "llama-cpp":
         from llama_cpp import Llama
 
+        verify_export(Path(model).parent)
         loaded = Llama(
             model_path=str(Path(model).resolve(strict=True)),
             n_ctx=context,
             n_gpu_layers=gpu_layers,
             tensor_split=tensor_split,
             verbose=False,
+        )
+        template_hash = (
+            digest(loaded.metadata["tokenizer.chat_template"])
+            if loaded.metadata.get("tokenizer.chat_template")
+            else None
         )
         generation_start = time.perf_counter()
         result = loaded.create_chat_completion(
@@ -134,7 +168,7 @@ def infer(
             data=json.dumps(body).encode(),
             headers={"Content-Type": "application/json"},
         )
-        with urllib.request.build_opener(urllib.request.ProxyHandler({})).open(
+        with urllib.request.build_opener(urllib.request.ProxyHandler({}), LocalOnly()).open(
             request, timeout=600
         ) as response:
             raw = response.read(4 * 1024 * 1024 + 1)
@@ -158,4 +192,6 @@ def infer(
         if count is not None and generation_time
         else None,
         "vram_bytes": vram,
+        "chat_template_hash": template_hash,
+        "system_hash": digest(system_text),
     }

@@ -4,7 +4,7 @@ import json
 import unicodedata
 from pathlib import Path
 
-from rsec.data import EMAIL, IP, PHONE, POISON, SECRET, load_rows
+from rsec.data import EMAIL, IP, PHONE, POISON, SECRET, load_rows, sensitive
 from rsec.errors import RsecError
 from rsec.utils import digest, jsonl, now, sha256, write_json
 
@@ -42,8 +42,15 @@ def ingest(
     purpose="knowledge",
     anonymize=False,
 ):
-    if not reviewed or license.lower() in {"unknown", "unverified", "none"}:
+    metadata = [source, source_url, license, version, redistribution]
+    if (
+        reviewed is not True
+        or any(not isinstance(v, str) or not v.strip() or len(v) > 2000 for v in metadata)
+        or license.strip().lower() in {"unknown", "unverified", "none"}
+    ):
         raise RsecError("Knowledge acquisition requires source-specific license review")
+    if sensitive(json.dumps(metadata)):
+        raise RsecError("Sensitive knowledge provenance metadata rejected")
     if purpose not in {"knowledge", "rag"}:
         raise RsecError("Documents cannot be automatically converted to SFT")
     if Path(output).exists():
@@ -51,7 +58,12 @@ def ingest(
     accepted, rejected, seen = [], [], set()
     for path in inputs:
         for raw in load_rows(path):
+            if len(accepted) + len(rejected) >= 10000:
+                raise RsecError("Knowledge release limit exceeded; shard the input")
             text = raw.get("text") if isinstance(raw, dict) else None
+            if text is not None and not isinstance(text, str):
+                rejected.append({"record_hash": digest(raw), "reason": "invalid_text"})
+                continue
             if text is None:
                 text = json.dumps(raw, ensure_ascii=False)
             text = unicodedata.normalize("NFKC", text).strip()

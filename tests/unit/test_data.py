@@ -75,7 +75,7 @@ def test_split_reproducibility_provenance_and_integrity(tmp_path):
     assert validate_release(tmp_path / "a")["records"] == 12
     with (tmp_path / "a/train.jsonl").open("a") as stream:
         stream.write("{}\n")
-    with pytest.raises(ValueError, match="Integrity"):
+    with pytest.raises(ValueError, match="integrity"):
         validate_release(tmp_path / "a")
 
 

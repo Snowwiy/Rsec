@@ -11,7 +11,7 @@ from rsec.utils import bounded_read, identifier
 
 
 class Strict(BaseModel):
-    model_config = ConfigDict(extra="forbid")
+    model_config = ConfigDict(extra="forbid", str_strip_whitespace=True)
 
 
 class Training(Strict):
@@ -53,6 +53,12 @@ class Training(Strict):
 
     @model_validator(mode="after")
     def check(self):
+        if not self.target_modules or len(set(self.target_modules)) != len(self.target_modules):
+            raise RsecError("Provide unique nonempty LoRA target modules")
+        if any(not m.strip() for m in self.target_modules):
+            raise RsecError("LoRA target modules cannot be empty")
+        if self.max_steps == 0:
+            raise RsecError("max_steps must be -1 or positive")
         if len(self.revision) != 40 or any(c not in "0123456789abcdef" for c in self.revision):
             raise RsecError("Pin model revision to a full 40-character commit SHA")
         if self.backend == "unsloth" and self.strategy != "single":
@@ -66,9 +72,12 @@ class Training(Strict):
 
 def load_training(config="configs/qlora_cybersec.yaml", profile=None):
     raw = yaml.safe_load(bounded_read(config))
+    if not isinstance(raw, dict):
+        raise RsecError("Training configuration must be a mapping")
     if profile:
         identifier(profile)
-        raw.update(
-            yaml.safe_load(bounded_read(Path(config).parent / "profiles" / f"{profile}.yaml"))
-        )
+        overlay = yaml.safe_load(bounded_read(Path(config).parent / "profiles" / f"{profile}.yaml"))
+        if not isinstance(overlay, dict):
+            raise RsecError("Training profile must be a mapping")
+        raw.update(overlay)
     return Training.model_validate(raw)

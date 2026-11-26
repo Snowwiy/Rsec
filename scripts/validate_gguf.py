@@ -20,13 +20,16 @@ def main():
     parser.add_argument("--llama-cpp", required=True)
     parser.add_argument("--output", required=True)
     parser.add_argument("--allow-network", action="store_true")
+    parser.add_argument(
+        "--tokenizer", help="Existing reviewed local tokenizer directory for offline reproduction"
+    )
     args = parser.parse_args()
     root = Path(args.output).resolve()
     root.mkdir(parents=True, exist_ok=False)
     config = load_training()
     tokenizer = AutoTokenizer.from_pretrained(
-        config.model,
-        revision=config.revision,
+        str(Path(args.tokenizer).resolve(strict=True)) if args.tokenizer else config.model,
+        revision=None if args.tokenizer else config.revision,
         trust_remote_code=False,
         local_files_only=not args.allow_network,
     )

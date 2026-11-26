@@ -71,14 +71,14 @@ def test_reference_fixture_scoring_and_regression_gate(tmp_path):
     )
     assert report["overall"]["accuracy"] == 1
     assert report["latency_seconds_mean"] is None
-    second = evaluate(
-        "benchmarks/suite.jsonl",
-        "tests/fixtures/reference_predictions.jsonl",
-        tmp_path / "b.json",
-        "reference-fixture-copy",
-        first,
-    )
-    assert second["regression_passed"] is True
+    with pytest.raises(ValueError, match="conditions"):
+        evaluate(
+            "benchmarks/suite.jsonl",
+            "tests/fixtures/reference_predictions.jsonl",
+            tmp_path / "b.json",
+            "reference-fixture-copy",
+            first,
+        )
 
 
 def test_experiment_record_and_collision(tmp_path):

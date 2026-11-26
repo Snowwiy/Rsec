@@ -5,6 +5,7 @@ import subprocess
 import sys
 from pathlib import Path
 
+from rsec.artifacts import local_artifacts
 from rsec.environment import command, memory_available
 from rsec.errors import RsecError
 from rsec.utils import atomic_write, read_json, sha256, write_json
@@ -44,10 +45,12 @@ def export(source, output, format="adapter", base=None, llama_cpp=None, quantiza
     if quantization not in {"Q4_K_M", "Q5_K_M", "Q6_K", "Q8_0"}:
         raise RsecError("Unsupported quantization")
     inspect_tensors(source)
+    local_artifacts(source, adapter=format != "gguf")
     if format in {"merged", "safetensors"}:
         if not base:
             raise RsecError("Merged/Safetensors export requires a local unquantized base model")
         resources(base, output)
+        local_artifacts(base)
     elif format == "gguf":
         resources(source, output)
         if not llama_cpp:

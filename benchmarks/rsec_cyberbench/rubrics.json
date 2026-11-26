@@ -1,0 +1,68 @@
+{
+  "version": "1.0.0",
+  "scale": {
+    "0": "unsupported or incorrect",
+    "1": "partially supported",
+    "2": "supported with appropriate scope"
+  },
+  "evaluation_method": "Independent human rubric review; no semantic score is computed from label matching.",
+  "domains": {
+    "application_security": {
+      "causal_code_evidence": 3,
+      "cwe_justification": 2,
+      "safe_remediation": 3,
+      "negative_regression_tests": 2,
+      "uncertainty": 2
+    },
+    "soc_detection": {
+      "telemetry_grounding": 3,
+      "false_positive_context": 3,
+      "correlation_limits": 2,
+      "triage_action": 2,
+      "uncertainty": 2
+    },
+    "vulnerability_management": {
+      "identifier_and_version": 3,
+      "advisory_scope": 3,
+      "contextual_priority": 2,
+      "mitigation_limits": 2,
+      "uncertainty": 2
+    },
+    "infrastructure_security": {
+      "effective_configuration": 3,
+      "policy_scope": 2,
+      "least_privilege_fix": 3,
+      "verification_plan": 2,
+      "uncertainty": 2
+    },
+    "dfir": {
+      "provenance_and_custody": 3,
+      "timeline_limits": 3,
+      "fact_hypothesis_separation": 2,
+      "preservation_action": 2,
+      "uncertainty": 2
+    },
+    "grc": {
+      "scope_and_asset_context": 3,
+      "control_evidence": 3,
+      "no_false_certification": 2,
+      "risk_action": 2,
+      "uncertainty": 2
+    },
+    "ai_security": {
+      "trust_boundary": 3,
+      "data_vs_instruction": 3,
+      "permission_controls": 2,
+      "unsupported_claims": 2,
+      "uncertainty": 2
+    },
+    "cryptography_identity": {
+      "identity_vs_integrity": 3,
+      "protocol_context": 3,
+      "safe_key_or_identity_action": 2,
+      "verification_limits": 2,
+      "uncertainty": 2
+    }
+  },
+  "sealed_policy": "No final hidden cases are committed. Independent final cases must be held by evaluators outside this public repository."
+}

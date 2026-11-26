@@ -63,6 +63,7 @@ def parser():
     ev = commands.add_parser(
         "evaluate", help="Score independent prediction JSONL deterministically"
     )
+    ev.add_argument("--config", default="configs/evaluation.yaml")
     ev.add_argument("--benchmark", required=True)
     ev.add_argument("--predictions", required=True)
     ev.add_argument("--model-id", required=True)
@@ -80,19 +81,18 @@ def parser():
         "--quantization", choices=["Q4_K_M", "Q5_K_M", "Q6_K", "Q8_0"], default="Q4_K_M"
     )
     inf = commands.add_parser("infer", help="Generate using a local backend")
+    inf.add_argument("--config", default="configs/inference.yaml")
     inf.add_argument("--model", required=True)
     inf.add_argument("--prompt", required=True)
-    inf.add_argument(
-        "--backend", choices=["transformers", "llama-cpp", "ollama"], default="transformers"
-    )
+    inf.add_argument("--backend", choices=["transformers", "llama-cpp", "ollama"], default=None)
     inf.add_argument("--adapter")
     inf.add_argument("--system")
-    inf.add_argument("--temperature", type=float, default=0.2)
-    inf.add_argument("--top-p", type=float, default=0.9)
-    inf.add_argument("--top-k", type=int, default=40)
-    inf.add_argument("--context", type=int, default=2048)
-    inf.add_argument("--max-tokens", type=int, default=256)
-    inf.add_argument("--gpu-layers", type=int, default=0)
+    inf.add_argument("--temperature", type=float, default=None)
+    inf.add_argument("--top-p", type=float, default=None)
+    inf.add_argument("--top-k", type=int, default=None)
+    inf.add_argument("--context", type=int, default=None)
+    inf.add_argument("--max-tokens", type=int, default=None)
+    inf.add_argument("--gpu-layers", type=int, default=None)
     inf.add_argument("--tensor-split", type=float, nargs="+")
     models = commands.add_parser("models", help="Immutable local registry and rollback")
     models.add_argument("--root", default="models/registry")
@@ -183,7 +183,9 @@ def dispatch(args):
     if args.command == "evaluate":
         from rsec.evaluate import evaluate
 
-        return evaluate(args.benchmark, args.predictions, args.output, args.model_id, args.baseline)
+        return evaluate(
+            args.benchmark, args.predictions, args.output, args.model_id, args.baseline, args.config
+        )
     if args.command == "export":
         from rsec.export import export
 
@@ -191,11 +193,31 @@ def dispatch(args):
             args.source, args.output, args.format, args.base, args.llama_cpp, args.quantization
         )
     if args.command == "infer":
+        import yaml
+
         from rsec.inference import infer
+        from rsec.utils import bounded_read
 
         options = vars(args).copy()
         options.pop("command")
-        return infer(**options)
+        settings = yaml.safe_load(bounded_read(options.pop("config")))
+        if settings.pop("local_files_only", True) is not True:
+            raise RsecError("Inference requires local_files_only=true")
+        allowed = {
+            "backend",
+            "temperature",
+            "top_p",
+            "top_k",
+            "context",
+            "max_tokens",
+            "system",
+            "gpu_layers",
+            "tensor_split",
+        }
+        if set(settings) - allowed:
+            raise RsecError("Unknown inference configuration field")
+        settings.update({key: value for key, value in options.items() if value is not None})
+        return infer(**settings)
     if args.command == "models":
         from rsec.tracking import Registry
         from rsec.utils import read_json

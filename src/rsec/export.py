@@ -148,7 +148,9 @@ def export(source, output, format="adapter", base=None, llama_cpp=None, quantiza
         "format": format,
         "source": str(source),
         "llama_cpp_revision": tool_revision,
-        "runtime_validation": "NOT IMPLEMENTED" if format == "gguf" else "IMPLEMENTED",
+        "integrity_validation": "TESTED",
+        "runtime_validation": None,
+        "runtime_validation_note": "Run inference/evaluation separately on the actual exported artifact",
         "files": {
             p.name: {"sha256": sha256(p), "bytes": p.stat().st_size}
             for p in output.iterdir()

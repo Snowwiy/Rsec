@@ -38,6 +38,18 @@ def test_real_sft_resume_merge_and_inference(tmp_path):
     assert 0 < result["generated_tokens"] <= 4
     assert result["latency_seconds"] > 0
     assert result["tokens_per_second"] > 0
+    from rsec.evaluate import evaluate
+    from rsec.predict import predict
+
+    predictions = tmp_path / "random-predictions.jsonl"
+    predict("benchmarks/suite.jsonl", str(merged), str(predictions), max_tokens=4)
+    report = evaluate(
+        "benchmarks/suite.jsonl", predictions, tmp_path / "evaluation.json", "tiny-random-fixture"
+    )
+    assert report["overall"]["cases"] == 10
+    assert report["overall"]["missing_predictions"] == 0
+    assert report["overall"]["schema_compliance"] == 0
+    assert report["latency_seconds_mean"] > 0
     with (checkpoint / "optimizer.pt").open("ab") as stream:
         stream.write(b"corruption")
     with pytest.raises(ValueError, match="integrity"):

@@ -314,44 +314,44 @@ def train(config: Training, smoke=False, resume=None, allow_experimental=False):
         config.precision == "bf16"
         or (config.precision == "auto" and all(g["bf16"] for g in environment["gpus"]))
     )
-    args = SFTConfig(
-        output_dir=str(run_path / "checkpoints"),
-        max_length=config.context,
-        per_device_train_batch_size=config.batch_size,
-        per_device_eval_batch_size=1,
-        gradient_accumulation_steps=1 if smoke else config.accumulation,
-        num_train_epochs=config.epochs,
-        max_steps=(3 if config.max_steps == -1 else config.max_steps)
-        if smoke
-        else config.max_steps,
-        learning_rate=config.learning_rate,
-        warmup_steps=config.warmup_ratio,
-        save_strategy="steps",
-        save_steps=1 if smoke else config.save_steps,
-        save_total_limit=None,
-        eval_strategy="steps",
-        eval_steps=1 if smoke else config.eval_steps,
-        logging_steps=1,
-        seed=config.seed,
-        data_seed=config.seed,
-        bf16=bf16,
-        fp16=not smoke and not bf16 and config.precision != "fp32",
-        use_cpu=smoke,
-        activation_checkpointing=not smoke,
-        activation_checkpointing_kwargs={"use_reentrant": False},
-        optim="adamw_torch" if smoke or not config.quantize else "paged_adamw_8bit",
-        report_to=["tensorboard"] if config.tensorboard else [],
-        push_to_hub=False,
-        packing=False,
-        assistant_only_loss=config.assistant_only,
-        completion_only_loss=not config.assistant_only,
-        include_num_input_tokens_seen=True,
-        ddp_find_unused_parameters=False if config.strategy == "ddp" else None,
-        load_best_model_at_end=bool(config.early_stopping_patience),
-        metric_for_best_model="eval_loss",
-        greater_is_better=False,
-    )
     try:
+        args = SFTConfig(
+            output_dir=str(run_path / "checkpoints"),
+            max_length=config.context,
+            per_device_train_batch_size=config.batch_size,
+            per_device_eval_batch_size=1,
+            gradient_accumulation_steps=1 if smoke else config.accumulation,
+            num_train_epochs=config.epochs,
+            max_steps=(3 if config.max_steps == -1 else config.max_steps)
+            if smoke
+            else config.max_steps,
+            learning_rate=config.learning_rate,
+            warmup_steps=config.warmup_ratio,
+            save_strategy="steps",
+            save_steps=1 if smoke else config.save_steps,
+            save_total_limit=None,
+            eval_strategy="steps",
+            eval_steps=1 if smoke else config.eval_steps,
+            logging_steps=1,
+            seed=config.seed,
+            data_seed=config.seed,
+            bf16=bf16,
+            fp16=not smoke and not bf16 and config.precision != "fp32",
+            use_cpu=smoke,
+            activation_checkpointing=not smoke,
+            activation_checkpointing_kwargs={"use_reentrant": False},
+            optim="adamw_torch" if smoke or not config.quantize else "paged_adamw_8bit",
+            report_to=["tensorboard"] if config.tensorboard else [],
+            push_to_hub=False,
+            packing=False,
+            assistant_only_loss=config.assistant_only,
+            completion_only_loss=not config.assistant_only,
+            include_num_input_tokens_seen=True,
+            ddp_find_unused_parameters=False if config.strategy == "ddp" else None,
+            load_best_model_at_end=bool(config.early_stopping_patience),
+            metric_for_best_model="eval_loss",
+            greater_is_better=False,
+        )
         trainer = SFTTrainer(
             model=model,
             args=args,
@@ -400,4 +400,4 @@ def train(config: Training, smoke=False, resume=None, allow_experimental=False):
 if __name__ == "__main__":
     from rsec.cli import main
 
-    main(["train", *os.sys.argv[1:]])
+    raise SystemExit(main(["train", *os.sys.argv[1:]]))

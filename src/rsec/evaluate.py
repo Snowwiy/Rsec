@@ -77,8 +77,19 @@ def score(cases, predictions):
     }
 
 
-def evaluate(benchmark, predictions, output, model_id, baseline=None):
+def evaluate(
+    benchmark, predictions, output, model_id, baseline=None, config="configs/evaluation.yaml"
+):
+    import yaml
+
+    from rsec.utils import bounded_read
+
+    settings = yaml.safe_load(bounded_read(config))
+    if settings.get("dynamic_execution") is not False:
+        raise RsecError("Dynamic model-generated code execution is not supported")
     cases, rows = list(load_rows(benchmark)), list(load_rows(predictions))
+    if any(case["expected"]["label"] not in settings["labels"] for case in cases):
+        raise RsecError("Benchmark label is outside the configured evaluation schema")
     report = {
         "created_at": now(),
         "model_id": model_id,
@@ -114,8 +125,9 @@ def evaluate(benchmark, predictions, output, model_id, baseline=None):
         report["baseline_model"] = previous["model_id"]
         report["accuracy_delta"] = report["overall"]["accuracy"] - previous["overall"]["accuracy"]
         report["regression_passed"] = (
-            report["accuracy_delta"] >= 0
-            and report["overall"]["macro_f1"] >= previous["overall"]["macro_f1"]
+            report["accuracy_delta"] >= settings["release_gate"]["accuracy_delta_min"]
+            and report["overall"]["macro_f1"] - previous["overall"]["macro_f1"]
+            >= settings["release_gate"]["macro_f1_delta_min"]
         )
     write_json(output, report)
     return report

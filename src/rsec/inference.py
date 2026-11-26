@@ -148,7 +148,7 @@ def infer(
     else:
         raise RsecError("Unknown local inference backend")
     return {
-        "model": model,
+        "model": str(model),
         "backend": backend,
         "answer": answer,
         "latency_seconds": time.perf_counter() - start,

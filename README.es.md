@@ -16,7 +16,7 @@ Esta versión entrega infraestructura para especializar pesos abiertos mediante 
 | DDP/FSDP con GPU heterogéneas | GPU VALIDATION PENDING | Modo experimental explícito |
 | Backend Unsloth | IMPLEMENTED | Dependencias opcionales aisladas, sin validación física |
 | Evaluación determinista y registro local | TESTED | Las referencias de prueba no son salidas de un modelo |
-| GGUF y motores externos | IMPLEMENTED | Consulta TEST_RESULTS.md para validación efectivamente realizada |
+| GGUF Q4_K_M y generación nativa llama.cpp | TESTED | Modelo diminuto aleatorio en CPU; Ollama y bindings pendientes |
 | RAG completo, API local y SENTRA | NOT IMPLEMENTED | Contratos y arquitectura futura únicamente |
 
 ## Inicio rápido sin CUDA

@@ -98,6 +98,42 @@ def test_registry_refuses_nonexistent_models(tmp_path):
         registry.register({"id": "fake"})
 
 
+def test_registry_register_activate_and_integrity(tmp_path):
+    import struct
+
+    weights = tmp_path / "fixture.safetensors"
+    header = json.dumps({"weight": {"dtype": "F32", "shape": [1], "data_offsets": [0, 4]}}).encode()
+    header += b" " * (-len(header) % 8)
+    weights.write_bytes(struct.pack("<Q", len(header)) + header + struct.pack("<f", 1.0))
+    metadata = {
+        "id": "fixture-only",
+        "rsec_version": "0.1.0a0",
+        "base_model": "local-test-fixture",
+        "revision": "0" * 40,
+        "architecture": "test-fixture",
+        "adapters": [],
+        "config": {},
+        "dataset_hash": "0" * 64,
+        "trained_at": None,
+        "hardware": {},
+        "commit": "0" * 40,
+        "metrics": {},
+        "license": "MIT",
+        "artifacts": [str(weights)],
+        "validation": "TESTED",
+        "compatibility": [],
+        "limitations": ["Fixture, not trained cybersecurity weights"],
+    }
+    registry = Registry(tmp_path / "registry")
+    registry.register(metadata)
+    assert registry.activate("fixture-only")["active"] == "fixture-only"
+    with pytest.raises(FileExistsError):
+        registry.register(metadata)
+    weights.write_bytes(b"corrupted")
+    with pytest.raises(ValueError, match="integrity"):
+        registry.activate("fixture-only")
+
+
 @pytest.mark.parametrize(
     "argv",
     [

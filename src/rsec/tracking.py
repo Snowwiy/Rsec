@@ -94,6 +94,18 @@ class Registry:
             raise RsecError(f"Missing model metadata: {sorted(required - metadata.keys())}")
         if not metadata["artifacts"]:
             raise RsecError("Cannot register nonexistent weights")
+        if not any(
+            Path(name).suffix in {".safetensors", ".gguf"} for name in metadata["artifacts"]
+        ):
+            raise RsecError("Model registration requires Safetensors or GGUF weights")
+        if metadata["validation"] not in {
+            "IMPLEMENTED",
+            "TESTED",
+            "GPU VALIDATION PENDING",
+            "BLOCKED",
+            "NOT IMPLEMENTED",
+        }:
+            raise RsecError("Unknown model validation state")
         artifacts = []
         for name in metadata["artifacts"]:
             path = Path(name).resolve(strict=True)

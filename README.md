@@ -15,7 +15,7 @@ Rsec specializes open-weight models through adapter training. This repository pr
 | DDP / FSDP and heterogeneous 4070 + 3060 | GPU VALIDATION PENDING | Experimental profiles and launch guards |
 | Unsloth backend | IMPLEMENTED | Isolated optional candidate; not runtime validated |
 | Independent benchmark runner and deterministic scoring | TESTED | Reference fixtures test scoring, not model quality |
-| GGUF conversion and Q4_K_M | IMPLEMENTED | External tool checkout required; see test report for actual validation |
+| GGUF conversion, Q4_K_M and native llama.cpp completion | TESTED | Random tiny Qwen2 CPU artifact only; no 7B quality/compatibility claim |
 | Ollama / llama-cpp-python inference | IMPLEMENTED | External runtimes require separate validation |
 | RAG / SENTRA | NOT IMPLEMENTED | Contracts and architecture only, intentionally future scope |
 

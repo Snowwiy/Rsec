@@ -1,4 +1,4 @@
-# Rsec AI · v0.1.0-alpha
+# Rsec AI · v0.2.0-alpha
 
 Auditoría independiente Fase 01-B: **PASS WITH CONDITIONS**, **97 pruebas / 91.34 % de cobertura**. [Informe](INDEPENDENT_AUDIT.md) · [Plan GPU](GPU_VALIDATION_PLAN.md) · [Preparación de datos](DATASET_READINESS.md). Unsloth queda **BLOCKED** por conflictos comprobados. El gate de regresión exige metadatos de generación/evaluación comparables; las validaciones físicas y el corpus experto siguen pendientes.
 
@@ -8,11 +8,32 @@ Plataforma independiente de investigación y entrenamiento de modelos especializ
 
 Esta versión entrega infraestructura para especializar pesos abiertos mediante adaptadores. No distribuye un modelo Rsec entrenado ni demuestra superioridad frente al modelo base.
 
+## Fase 02: estado real de los datos
+
+**DATASET READINESS: FAIL** para liberar un corpus SFT aprobado. **TRAINING READINESS: NOT READY.** Infraestructura revisable en el [PR #2 dependiente](https://github.com/Snowwiy/Rsec/pull/2). No se inició entrenamiento especializado. Validación actual: **200 pruebas / 94.02 % de cobertura**; entorno core sin Torch: **189 aprobadas**.
+
+Se verificó la existencia de **20 fuentes externas**, además de 2 fuentes internas. El registro distingue acceso público, descarga, entrenamiento y redistribución. Solo se adquirieron tres documentos CVE fijados para índices de referencia; ninguna fuente externa está aprobada para SFT. Hay **64 borradores SFT sintéticos**, **32 casos públicos de desarrollo/regresión**, **cero ejemplos o gold aprobados por expertos** y cero rechazos/cuarentenas reales. Quedan pendientes 96 conversaciones y tres interpretaciones de referencias. La meta condicionada de 500–1,000 ejemplos no se alcanzó; no se añadió volumen artificial.
+
+```bash
+rsec data sources
+rsec data download --registered
+rsec data curate --input data/pilot/candidates.jsonl --output data/processed/piloto-revision --version pilot-0.2.0
+rsec data validate data/processed/piloto-revision
+rsec data quality data/processed/piloto-revision
+rsec data review data/processed/piloto-revision --output reports/revision-piloto.json
+rsec benchmark validate
+rsec benchmark contamination-check --input data/pilot/candidates.jsonl
+```
+
+El paquete de revisión no aprueba registros. `data split` bloquea el piloto sin expertos y no existe release train/eval/test. `data stats DIRECTORIO --tokenizer /tokenizer/local/revisado` mide tokens con la plantilla real; sin tokenizer solo informa unidades de espacios. Medición Qwen local: 16,114 tokens conversacionales, máximo414 y tokens elegibles/época0; no demuestra viabilidad en12 GB.
+
+[Arquitectura de datos](docs/DATASET_ARCHITECTURE.md) · [Fuentes](docs/DATASET_SOURCES.md) · [Licencias](docs/LICENSE_MATRIX.md) · [Taxonomía](docs/DATASET_TAXONOMY.md) · [Revisión humana](docs/DATASET_REVIEW_GUIDE.md) · [Informe](DATASET_ENGINEERING_REPORT.md) · [Ficha](DATASET_CARD.md) · [Benchmark](BENCHMARK_REPORT.md) · [Gates de entrenamiento](TRAINING_READINESS.md).
+
 ## Estado
 
 | Componente | Estado | Límite |
 |---|---|---|
-| CLI, configuraciones y preparación reproducible de datos | TESTED | Pruebas CPU y ejemplos sintéticos revisados |
+| CLI, configuraciones y preparación reproducible de datos | TESTED | Pruebas CPU y fixtures; sin aprobación experta del corpus |
 | SFT/LoRA diminuto, checkpoints, reanudación, fusión e inferencia | TESTED | Ejecución real en CPU; no prueba la calidad en ciberseguridad |
 | QLoRA con RTX 4070/T4 y demás perfiles | GPU VALIDATION PENDING | Sin GPU en el entorno de desarrollo |
 | DDP/FSDP con GPU heterogéneas | GPU VALIDATION PENDING | Modo experimental explícito |
@@ -33,9 +54,9 @@ rsec data validate data/processed/demo
 pytest -m 'not ml'
 ```
 
-Los archivos se crean con rechazo de sobrescritura por defecto. Cada publicación de datos genera train/eval/test, manifiesto SHA-256, informe de calidad y rechazos sin contenido sensible. La separación usa familias y similitud; los benchmarks se reservan. Las heurísticas de secretos, información personal, anonimización y envenenamiento requieren revisión humana.
+Los archivos se crean con rechazo de sobrescritura por defecto. El camino legacy de fixtures genera train/eval/test, manifiesto SHA-256, informe de calidad y rechazos sin contenido sensible. La separación usa familias y similitud; los benchmarks se reservan. Las heurísticas de secretos, información personal, anonimización y envenenamiento requieren revisión humana.
 
-La adquisición externa exige licencia revisada y hashes. La lista de fuentes está vacía intencionalmente. Los documentos Markdown/texto se procesan como conocimiento o futuro RAG mediante `rsec data ingest --help`; no se convierten automáticamente en conversaciones supervisadas. Los datos históricos se pueden combinar con `--replay` antes de validar y volver a separar.
+La adquisición externa exige licencia revisada y hashes. La lista legacy sigue vacía; `--registered` solo habilita las tres referencias CVE fijadas. El catálogo tiene22 fuentes con permisos separados, sin aprobación SFT externa. Los documentos Markdown/texto se procesan como conocimiento o futuro RAG mediante `rsec data ingest --help`; no se convierten automáticamente en conversaciones supervisadas. Los datos históricos se pueden combinar con `--replay` antes de validar y volver a separar.
 
 ## Verificación real del entrenamiento en CPU
 
@@ -48,9 +69,9 @@ rsec train --smoke
 
 El modo smoke crea un modelo diminuto aleatorio y un tokenizer de prueba local, ejecuta optimización real y conserva checkpoints. Sus pérdidas no representan capacidad de ciberseguridad. Las versiones transitivas del entorno Linux/Python 3.12 comprobado están fijadas en el lock CPU.
 
-## Entrenamiento con GPU
+## Entrenamiento con GPU: procedimiento futuro sujeto a gates
 
-El modelo preliminar es `Qwen/Qwen2.5-Coder-7B-Instruct`, con revisión SHA fijada y licencia Apache-2.0. La licencia MIT existente del código se conserva. Instala primero una rueda CUDA de PyTorch 2.8.0 compatible con tu controlador; después instala `requirements-train.txt`.
+Estos comandos corresponden a una fase posterior tras cumplir TRAINING_READINESS.md. El modelo preliminar es `Qwen/Qwen2.5-Coder-7B-Instruct`, con revisión SHA fijada y licencia Apache-2.0. La licencia MIT existente del código se conserva. Instala primero una rueda CUDA de PyTorch 2.8.0 compatible con tu controlador; después instala `requirements-train.txt`.
 
 ```bash
 rsec train --profile local_rtx4070 --allow-network

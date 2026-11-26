@@ -114,10 +114,17 @@ def parser():
     experiments = commands.add_parser("experiments", help="Inspect local experiment records")
     experiments.add_argument("action", choices=["list"])
     experiments.add_argument("--root", default="experiments")
+    from rsec.datasets.cli import add_commands
+
+    add_commands(commands, ds, download)
     return p
 
 
 def dispatch(args):
+    if args.command == "benchmark":
+        from rsec.datasets.cli import dispatch_benchmark
+
+        return dispatch_benchmark(args)
     if args.command == "doctor":
         from rsec.environment import doctor
         from rsec.utils import write_json
@@ -144,6 +151,31 @@ def dispatch(args):
 
         return train(config, args.smoke, args.resume, args.allow_experimental)
     if args.command == "data":
+        from pathlib import Path
+
+        if (
+            args.action
+            in {
+                "sources",
+                "pilot",
+                "curate",
+                "quality",
+                "quarantine",
+                "stats",
+                "split",
+                "version",
+                "review",
+                "normalize-cve",
+            }
+            or (args.action == "download" and args.registered)
+            or (
+                args.action == "validate"
+                and (Path(args.directory) / "curation_manifest.json").exists()
+            )
+        ):
+            from rsec.datasets.cli import dispatch_data
+
+            return dispatch_data(args)
         if args.action == "ingest":
             from rsec.knowledge import ingest
 

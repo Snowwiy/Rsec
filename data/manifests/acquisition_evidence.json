@@ -1,0 +1,33 @@
+{
+  "source_id": "cve-program",
+  "revision": "1bb6bf3e2a5dac32d643b091c6f4d9ed6026653e",
+  "transport": "Authorized GitHub connector; subsequent local cache verified by pipeline without DNS",
+  "downloaded_records": 3,
+  "downloaded_bytes": 66108,
+  "records": [
+    {
+      "filename": "CVE-2021-44228.json",
+      "sha256": "3339a1f92543f173c820b6037b6cbc4e008723d5ef545be9f073029e871e8d28",
+      "bytes": 36667,
+      "git_blob": "d824fb3c8a2f0db266040b0b0fbd9f6a979347d1",
+      "published_at": "2021-12-10T00:00:00.000Z"
+    },
+    {
+      "filename": "CVE-2022-22965.json",
+      "sha256": "d66ba26f927f30d47e6aac6af4d69a35897ed03b8b1e0b7d6ad3c2cd4ded2ec4",
+      "bytes": 15787,
+      "git_blob": "22e7d1987ea46f5346aba79d565b6126165466eb",
+      "published_at": "2022-04-01T22:17:30.000Z"
+    },
+    {
+      "filename": "CVE-2023-34362.json",
+      "sha256": "4754c2f88fe058490c50e971dce855f4823cc6d733cf41f9aa81b88b8997051b",
+      "bytes": 13654,
+      "git_blob": "c6ff3a2f2f8dc83c7836f5f93d5fecdd53241555",
+      "published_at": "2023-06-02T00:00:00.000Z"
+    }
+  ],
+  "hash_method": "Expected SHA-256 computed after matching bytes to official pinned Git blob SHA-1. This is not a publisher-signed checksum.",
+  "redistributed_payloads": 0,
+  "sft_eligible": 0
+}

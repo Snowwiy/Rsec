@@ -28,3 +28,7 @@ data/quarantine/
 *.parquet
 *.log
 .ipynb_checkpoints/
+
+# Never commit real reviewer identities or final hidden evaluation cases.
+data/reviews/
+benchmarks/private/

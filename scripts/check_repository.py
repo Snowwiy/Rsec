@@ -34,9 +34,38 @@ def main():
             assert re.fullmatch(r"[^@]+@[0-9a-f]{40}", action), action
     tracked = subprocess.check_output(["git", "ls-files", "-z"]).decode().split("\0")
     for name in filter(None, tracked):
+        assert not name.startswith(
+            (
+                "benchmarks/private/",
+                "data/reviews/",
+                "data/raw/",
+                "data/interim/",
+                "data/processed/",
+                "data/quarantine/",
+                "models/",
+                "checkpoints/",
+                "exports/",
+                "experiments/",
+                "reports/",
+            )
+        ), "Private evaluation/review material is forbidden"
         path = Path(name)
         assert path.stat().st_size < 1024 * 1024, f"Heavy artifact in Git: {name}"
         assert path.suffix not in {".gguf", ".safetensors", ".pt", ".bin"}, name
+    from rsec.datasets.benchmark import validate
+    from rsec.datasets.registry import Registry
+
+    Registry()
+    catalog = Registry()
+    for name in filter(None, tracked):
+        if name.startswith(("data/", "benchmarks/")) and Path(name).suffix == ".jsonl":
+            for row in load_rows(name):
+                if isinstance(row, dict) and row.get("schema_version") == 2:
+                    source = catalog.get(row["source_id"])
+                    assert source.status == "APPROVED" and source.redistribution_allowed, (
+                        "Restricted source data cannot be versioned publicly"
+                    )
+    validate()
     print(
         "Repository configurations, samples, notebook code, workflow pins and artifact limits passed."
     )

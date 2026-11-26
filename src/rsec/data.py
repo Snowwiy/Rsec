@@ -301,6 +301,10 @@ def prepare(inputs, output, seed=42, benchmarks=(), anonymize=False, category_ca
 def validate_release(directory):
     directory = Path(directory)
     manifest = read_json(directory / "dataset_manifest.json")
+    if manifest.get("version") == 2:
+        from rsec.datasets.release import validate_sft
+
+        return validate_sft(directory)
     required = {
         "train.jsonl",
         "eval.jsonl",

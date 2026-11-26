@@ -1,0 +1,279 @@
+{
+  "phase": "02",
+  "date": "2026-11-26",
+  "version": "0.2.0-alpha",
+  "pull_request": "https://github.com/Snowwiy/Rsec/pull/2",
+  "audited_parent": "758896318f106a3c48f3f73860bf329881d264ec",
+  "feature_code_commit": "849f0053bf3443b8d270945da9bdcaac6665667a",
+  "feature_tree": "5470aefa8422c971c842c702ee7629c44b1d0f5b",
+  "scanner_correction_commit": "cb3d2d639ed99a0c8f16291353553fe734f224cb",
+  "scanner_tree": "81a032f9ae7052ffe1a6d3e56f5e973f9fc3e94c",
+  "baseline": {
+    "tests_passed": 97,
+    "coverage_percent": 91.34
+  },
+  "local_validation": {
+    "tests_passed": 200,
+    "failed": 0,
+    "core_passed_without_torch": 189,
+    "ml_deselected": 11,
+    "warnings": "2 SWIG deprecation warnings",
+    "coverage_totals": {
+      "covered_lines": 2168,
+      "num_statements": 2306,
+      "percent_covered": 94.01561144839549,
+      "percent_covered_display": "94",
+      "missing_lines": 138,
+      "excluded_lines": 5,
+      "percent_statements_covered": 94.01561144839549,
+      "percent_statements_covered_display": "94"
+    },
+    "module_coverage_percent": {
+      "src/rsec/__init__.py": 100.0,
+      "src/rsec/artifacts.py": 96.875,
+      "src/rsec/cli.py": 97.54901960784314,
+      "src/rsec/config.py": 98.4375,
+      "src/rsec/data.py": 95.17543859649123,
+      "src/rsec/datasets/__init__.py": 100.0,
+      "src/rsec/datasets/benchmark.py": 98.55072463768116,
+      "src/rsec/datasets/cli.py": 96.58119658119658,
+      "src/rsec/datasets/knowledge.py": 100.0,
+      "src/rsec/datasets/linkage.py": 98.93617021276596,
+      "src/rsec/datasets/pilot.py": 100.0,
+      "src/rsec/datasets/quality.py": 99.07407407407408,
+      "src/rsec/datasets/registry.py": 99.06542056074767,
+      "src/rsec/datasets/release.py": 93.42723004694835,
+      "src/rsec/datasets/review.py": 100.0,
+      "src/rsec/datasets/schema.py": 100.0,
+      "src/rsec/datasets/stats.py": 93.93939393939394,
+      "src/rsec/download.py": 91.0,
+      "src/rsec/environment.py": 72.54901960784314,
+      "src/rsec/errors.py": 100.0,
+      "src/rsec/evaluate.py": 98.82352941176471,
+      "src/rsec/export.py": 93.47826086956522,
+      "src/rsec/inference.py": 91.95402298850574,
+      "src/rsec/interfaces.py": 0.0,
+      "src/rsec/knowledge.py": 92.1875,
+      "src/rsec/predict.py": 100.0,
+      "src/rsec/tracking.py": 94.28571428571429,
+      "src/rsec/train.py": 80.76923076923077,
+      "src/rsec/utils.py": 98.14814814814815
+    },
+    "ruff": "passed",
+    "build": "wheel and sdist 0.2.0a0 passed",
+    "pip_check": "passed",
+    "repository_check": "passed",
+    "cpu_dependency_audit": "No known vulnerabilities in auditable entries; torch2.8.0+cpu skipped (non-PyPI); no GPU graph certification",
+    "gitleaks": "initial4false positives on public tokenizer file SHA-256; exact hash AND path exceptions; corrected history clean",
+    "scanner_controls": [
+      {
+        "control": "known public checksum",
+        "exit_code": 0,
+        "expected": 0
+      },
+      {
+        "control": "unallowlisted synthetic high-entropy value in same file",
+        "exit_code": 1,
+        "expected": 1
+      }
+    ]
+  },
+  "corrected_code_ci": {
+    "sha": "cb3d2d639ed99a0c8f16291353553fe734f224cb",
+    "CPU quality": 45908654504,
+    "Offline ML integration": 45908654526,
+    "Security checks": 45908654641,
+    "conclusion": "all success; inspect PR for later reporting-head checks"
+  },
+  "data": {
+    "version": "0.2.0-alpha",
+    "dataset_readiness": "FAIL",
+    "training_readiness": "NOT READY",
+    "scope": "Corpus release verdict; implemented infrastructure is available for code review.",
+    "registered_sources": 22,
+    "verified_external_source_existence": 20,
+    "internal_fixture_sources": 2,
+    "source_policy_states": {
+      "APPROVED": 3,
+      "REVIEW REQUIRED": 18,
+      "RESTRICTED": 1,
+      "REJECTED": 0
+    },
+    "external_sources_approved_for_sft": 0,
+    "unique_phase2_records_processed": 99,
+    "downloaded_external_records": 3,
+    "pilot_candidates": 64,
+    "development_benchmark_cases": 32,
+    "expert_approved_sft": 0,
+    "expert_reviewed_benchmark_cases": 0,
+    "pending_sft_review": 64,
+    "pending_benchmark_review": 32,
+    "knowledge_pending_interpretation": 3,
+    "rejected_records": 0,
+    "quarantined_records": 0,
+    "private_final_gold_cases": 0,
+    "actual_sft_splits": {
+      "train": 0,
+      "eval": 0,
+      "test": 0
+    },
+    "pilot": {
+      "processed": 64,
+      "structurally_accepted": 64,
+      "approved_sft": 0,
+      "pending_review": 64,
+      "rejected": 0,
+      "quarantined": 0,
+      "reasons": {},
+      "domains": {
+        "application_security": 8,
+        "soc_detection": 8,
+        "vulnerability_management": 8,
+        "infrastructure_security": 8,
+        "dfir": 8,
+        "grc": 8,
+        "ai_security": 8,
+        "cryptography_identity": 8
+      },
+      "languages": {
+        "en": 32,
+        "es": 32
+      },
+      "difficulties": {
+        "fundamental": 32,
+        "intermediate": 32
+      },
+      "purposes": {
+        "sft": 64
+      },
+      "version": "pilot-0.2.0",
+      "contamination": {
+        "contaminated_ids": [],
+        "candidate_records": 64,
+        "reserved_records": 42,
+        "link_count": 51,
+        "limits": "Provenance/translation IDs, lexical overlap and whitespace-normalized code; no universal semantic or cross-language detector"
+      },
+      "sft_release": "BLOCKED: no expert-approved examples"
+    },
+    "benchmark": {
+      "name": "Rsec-CyberBench",
+      "version": "0.1.0",
+      "scope": "public development; not final hidden gold",
+      "cases": 32,
+      "families": 15,
+      "link_count": 17,
+      "expert_reviewed": 0,
+      "human_gold_certified": false,
+      "labels": {
+        "vulnerable": 10,
+        "benign": 10,
+        "insufficient": 12
+      },
+      "domains": {
+        "application_security": 4,
+        "soc_detection": 4,
+        "vulnerability_management": 4,
+        "infrastructure_security": 4,
+        "dfir": 4,
+        "grc": 4,
+        "ai_security": 4,
+        "cryptography_identity": 4
+      },
+      "languages": {
+        "en": 16,
+        "es": 16
+      },
+      "benchmark_hash": "80c63ac74b7ca54fee0a4f7e4252e4b6ceed9733277ae2a785b7c6c083590a95"
+    },
+    "pilot_manifest_sha256": "764a04ba9506a660ef8b254941ad93280c5f737bff6272dd050a1c04951973af",
+    "pilot_reproduced_identically": true,
+    "generator_code_sha256": "426a3ac51d4e7b10c9a959510dfe1581b190b29329adcab7d88b93b7f2288036",
+    "blockers": [
+      "No expert-approved SFT corpus",
+      "No independently expert-reviewed or hidden final gold cases",
+      "Pilot 500-1000 goal not met; no padding to meet volume",
+      "External SFT source rights not approved",
+      "Physical QLoRA/CUDA and multi-GPU validation pending"
+    ]
+  },
+  "acquisition": {
+    "source_id": "cve-program",
+    "revision": "1bb6bf3e2a5dac32d643b091c6f4d9ed6026653e",
+    "transport": "Authorized GitHub connector; subsequent local cache verified by pipeline without DNS",
+    "downloaded_records": 3,
+    "downloaded_bytes": 66108,
+    "records": [
+      {
+        "filename": "CVE-2021-44228.json",
+        "sha256": "3339a1f92543f173c820b6037b6cbc4e008723d5ef545be9f073029e871e8d28",
+        "bytes": 36667,
+        "git_blob": "d824fb3c8a2f0db266040b0b0fbd9f6a979347d1",
+        "published_at": "2021-12-10T00:00:00.000Z"
+      },
+      {
+        "filename": "CVE-2022-22965.json",
+        "sha256": "d66ba26f927f30d47e6aac6af4d69a35897ed03b8b1e0b7d6ad3c2cd4ded2ec4",
+        "bytes": 15787,
+        "git_blob": "22e7d1987ea46f5346aba79d565b6126165466eb",
+        "published_at": "2022-04-01T22:17:30.000Z"
+      },
+      {
+        "filename": "CVE-2023-34362.json",
+        "sha256": "4754c2f88fe058490c50e971dce855f4823cc6d733cf41f9aa81b88b8997051b",
+        "bytes": 13654,
+        "git_blob": "c6ff3a2f2f8dc83c7836f5f93d5fecdd53241555",
+        "published_at": "2023-06-02T00:00:00.000Z"
+      }
+    ],
+    "hash_method": "Expected SHA-256 computed after matching bytes to official pinned Git blob SHA-1. This is not a publisher-signed checksum.",
+    "redistributed_payloads": 0,
+    "sft_eligible": 0
+  },
+  "token_measurements": {
+    "records": 64,
+    "serialized_utf8_bytes": 155760,
+    "tokenizer_tokens": {
+      "count": 64,
+      "mean": 251.78125,
+      "median": 261.5,
+      "p90": 279.0,
+      "p95": 291.19999999999993,
+      "p99": 381.8699999999999,
+      "max": 414,
+      "sum": 16114
+    },
+    "tokens_per_epoch_eligible_sft": 0,
+    "contexts": {
+      "1024": {
+        "over_context": 0,
+        "within_context": 64
+      },
+      "2048": {
+        "over_context": 0,
+        "within_context": 64
+      },
+      "4096": {
+        "over_context": 0,
+        "within_context": 64
+      },
+      "8192": {
+        "over_context": 0,
+        "within_context": 64
+      }
+    }
+  },
+  "training_stack_changed": false,
+  "specialized_training_performed": false,
+  "paid_services_used": false,
+  "gpu_available": false,
+  "merge_performed": false,
+  "limitations": [
+    "No real expert attestations or gold",
+    "Case rubric ratings not bound to immutable model predictions",
+    "Lexical/declared lineage controls are not universal semantic or translation checks",
+    "Unsigned trust roots and operator-attested identity",
+    "No native live download success in restricted network",
+    "No CUDA/QLoRA/distributed physical validation"
+  ]
+}

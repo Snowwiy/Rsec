@@ -1,3 +1,13 @@
+# Datos vigentes · Fase 02-B
+
+64 candidatos SFT y 32 de CyberBench aceptados para revisión. Las 96 preauditorías señalan cambios de evidencia o redacción sin modificar originales. Doce casos nuevos de CodeBench aportan seis familias bilingües de desarrollo. La curación SFT comparó 64 candidatos contra 54 reservas sin coincidencias señaladas por los mecanismos deterministas. No se ejecutó un modelo semántico sobre el corpus.
+
+Elegibles SFT 0, aprobados humanos 0, cuarentenas/rechazos reales 0. Pilot B y C dependen de la revisión y de fuentes disponibles. El archivo de referencia de SQLite verificado no se convirtió en un ejemplo. Para el detalle por fila consulta [preauditoría](EXPERT_CURATION_REPORT.md) y [derechos](DATASET_LICENSE_REPORT.md).
+
+Datos de Fase 02-A a continuación.
+
+---
+
 # Dataset quality report · Phase 02
 
 **Corpus release verdict: FAIL.** Mechanical validity is implemented; expert technical review remains absent. [Machine-readable current accounting](data/manifests/dataset_readiness.json).

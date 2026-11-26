@@ -1,0 +1,54 @@
+{
+  "phase": "02-B",
+  "version": "v0.2.1-alpha",
+  "tested_code_commit": "b34bf571f5896af83dfd3a674a32084f32793c35",
+  "local_tests": {
+    "pass": 219,
+    "fail": 0,
+    "core_no_torch": 208,
+    "deselected_ml": 11,
+    "statement_coverage": {
+      "covered_lines": 2831,
+      "num_statements": 3304,
+      "percent_covered": 85.68401937046005,
+      "percent_covered_display": "86",
+      "missing_lines": 473,
+      "excluded_lines": 5,
+      "percent_statements_covered": 85.68401937046005,
+      "percent_statements_covered_display": "86"
+    }
+  },
+  "phase02a_baseline": {
+    "tests": 200,
+    "statement_coverage_percent": 94.02
+  },
+  "datasets": {
+    "original_sft_candidates": 64,
+    "original_cyberbench": 32,
+    "preaudited": 96,
+    "codebench_drafts": 12,
+    "reserved": 54,
+    "reserved_links_to_pilot": 0,
+    "external_software_local_sft_sources": 1,
+    "expert_approved": 0,
+    "eligible": 0,
+    "private_final_gold": 0
+  },
+  "gpu": {
+    "cuda_present": false,
+    "status": "VALIDATION PENDING"
+  },
+  "hotfix": {
+    "sha": "06d6fbb3178d472f76c3894feb3e748e6f33d3fe",
+    "findings": 4,
+    "confirmed_public_hashes": 4,
+    "complete_scan_pass": true
+  },
+  "limitations": [
+    "No real model predictions or expert decisions",
+    "No physical GPU run",
+    "No functional harness execution",
+    "Semantic match logic tested with synthetic vectors",
+    "Detailed branch protection GET returned 403"
+  ]
+}

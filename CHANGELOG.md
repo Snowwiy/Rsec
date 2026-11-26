@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.2.1-alpha · 2026-11-26
+
+- Reused the audited Gitleaks checksum exceptions in a minimal dev hotfix and confirmed full history plus negative controls.
+- Added hash-bound preaudit for 96 original candidates, a local review UI, reviewer authorities and signed Ed25519 event export.
+- Added one pinned SQLite source, a software taxonomy and validated mixed replay with preserved test families.
+- Added twelve CodeBench development cases, response-bound evaluation, private adjudicated benchmark import and semantic match review from local vector exports.
+- Added local NVIDIA diagnostics, single-GPU NF4/LoRA and dense two-rank DDP smoke commands and physical runbooks.
+- Dataset approval, private gold, physical GPU validation and specialized training remain pending.
+
+
 ## 0.2.0-alpha · 2026-11-26 — Phase 02 data engineering
 
 - Added versioned8-domain taxonomy and22-source registry with separate access/acquisition/training/redistribution rights; 20 external locations verified, 0 external SFT-approved.

@@ -50,3 +50,7 @@ rsec data validate data/processed/reviewed-sft
 These last commands are a future operator procedure; no real decisions file exists now. With zero eligible rows `data split` exits 2. With fewer than three approved independent families promotion stays blocked. The SFT bridge preserves the complete review ledger and policies locally, so inspect disclosure before sharing any generated artifact. Do not publish reviewer personal data or private benchmark content.
 
 Only `messages` are tokenized. Current 64 candidates are not training-approved, despite source template rights. Keep final gold review independent of training curation and use BENCHMARK_DESIGN.md for the additional rubric/identity limitations.
+
+## Fase 02-B
+
+El flujo actual de interfaz local, decisiones firmadas y exportación se documenta en [la guía vigente](../DATASET_REVIEW_GUIDE.md).

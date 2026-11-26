@@ -1,3 +1,15 @@
+# Revisión de integración · Fase 02-B
+
+Revisa [PR #4](https://github.com/Snowwiy/Rsec/pull/4) primero para corregir dev. Verifica que Gitleaks siga escaneando todo el historial con el mismo detector, salida y redacción. La excepción exacta se probó contra otro valor en la misma ruta y con las coincidencias conocidas en otra ruta.
+
+Revisa [PR #5](https://github.com/Snowwiy/Rsec/pull/5) después. Comprueba que contiene la historia auditada de Fase 02-A, el código nuevo y el mismo hotfix como ancestro. Mantén 64 candidatos SFT y 32 de CyberBench sin ninguna promoción automática. Revisa los controles de autoridad local y las limitaciones de rúbricas y GPU. Verifica los tres checks del commit que se vaya a integrar.
+
+La programación y la ciberseguridad conservan suites y permisos propios. Los datos de entrenamiento requieren autorización y revisión experta en ambos tracks. Evalúa CodeBench y CyberBench contra el mismo modelo base antes de cualquier promoción. Los planes de GPU, modelo y corpus siguen sujetos a sus gates. No se ha iniciado entrenamiento especializado.
+
+Revisión histórica de Fase 02-A a continuación.
+
+---
+
 # Review before merge — Phase 02 dependent PR
 
 [PR #2](https://github.com/Snowwiy/Rsec/pull/2) is a **draft infrastructure review** based on audited PR #1. **DATASET READINESS: FAIL; TRAINING READINESS: NOT READY.** Do not interpret code integration as corpus/model/hardware approval. No merge or specialized training was performed.

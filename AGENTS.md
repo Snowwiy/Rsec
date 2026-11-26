@@ -1,6 +1,6 @@
 # Rsec development instructions
 
-Build an independent bilingual defensive cybersecurity model platform, phase 02 v0.2.0-alpha. Never describe synthetic fixtures or tiny random model tests as trained cybersecurity capability.
+Build an independent local bilingual assistant for defensive cybersecurity, programming and software engineering, phase 02-B v0.2.1-alpha. Never describe synthetic fixtures or tiny random model tests as trained cybersecurity capability.
 
 Use src/rsec as the installed package, strict config in configs/, and meaningful tests in tests/unit and tests/integration. Keep CPU acquisition/config tools independent of PyTorch/CUDA. Preserve the existing MIT license and separately review third-party model/data rights.
 
@@ -22,4 +22,8 @@ Use Candidate v2 and data curate for new corpus releases; legacy prepare/fixture
 
 Do not commit raw third-party payloads, private ledgers, private final benchmarks or processed bundles. Review public redistribution separately from local use. Core dataset modules must run without Torch. Add meaningful tests in tests/datasets; current suite 200 passed/94.02%, core 189 passed/11 ML deselected. Retain all default secret-scanner rules; .gitleaks.toml exceptions cover only two inspected public tokenizer checksums in two paths, not generic tokens/hashes.
 
-Phase 02 PR #2 depends on PR #1 at758896318f106a3c48f3f73860bf329881d264ec. Target foundation branch while #1 is open; after human integration of #1 into dev, verify history then retarget/recheck #2. No force push or automatic merge. Follow TRAINING_READINESS.md for future Phase 03; no specialization or paid services in Phase 02.
+PR #1 reached dev and PR #2 reached the foundation branch. Use GITHUB_INTEGRATION_REPORT.md to follow their integration into dev through #4 and #5. No force push or automatic merge. Follow TRAINING_READINESS.md for future Phase 03; no specialization or paid services in Phase 02.
+
+## Phase 02-B software track
+
+Preserve general programming as a core model capability. Use the complementary software taxonomy and scoped source catalog. Keep CodeBench and CyberBench independent of training and replay. Require the same rights and expert-review gates for both tracks. Bind model evaluations to immutable predictions, artifacts, suite and settings. Use only validated isolated evidence to score functional behavior. Never execute generated code on the host. Build and compare mixed and single-track adapters only after the training gate.

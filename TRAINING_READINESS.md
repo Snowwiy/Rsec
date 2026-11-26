@@ -1,3 +1,16 @@
+# Gates vigentes · Fase 02-B
+
+**TRAINING READINESS NOT READY.** La verificación de CUDA y NF4/QLoRA, la recuperación física y los recursos del perfil siguen pendientes. La primera especialización requiere releases SFT autorizados y firmados por personas competentes y benchmarks adjudicados independientes.
+
+1. Ejecuta el diagnóstico y las pruebas individuales por UUID, después la sincronización de dos ranks y el protocolo experimental de FSDP.
+2. Congela evaluaciones base para CyberBench y CodeBench, adjudica gold sin usarlo para seleccionar hiperparámetros, y acuerda tolerancias de regresión.
+3. Promueve los dos releases y valida un plan de replay con presupuesto de tokens reproducible. Ejecuta el piloto mixto y su control bajo condiciones equivalentes.
+4. Compara ambas capacidades con el modelo base y documenta regresiones. Repite la evaluación sobre artefactos fusionados y GGUF antes de promocionarlos.
+
+Consulta [GPU local](LOCAL_GPU_SETUP.md), [multi-GPU](MULTI_GPU_VALIDATION.md), [replay y retención](docs/SOFTWARE_ENGINEERING.md) y [validación de benchmarks](BENCHMARK_VALIDATION_REPORT.md). El protocolo anterior se conserva abajo como referencia histórica.
+
+---
+
 # Training readiness · v0.2.0-alpha
 
 **DATASET READINESS: FAIL. TRAINING READINESS: NOT READY.** The verdict concerns release of a technically approved corpus, not whether the data-engineering code can be reviewed. Infrastructure is implemented and CPU-tested; actual expert-approved SFT 0, expert gold 0, final hidden cases 0. No Rsec specialization was started and no trained Rsec weights exist.

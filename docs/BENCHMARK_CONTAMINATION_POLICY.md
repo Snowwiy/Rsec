@@ -20,3 +20,9 @@ Record source URLs/revisions, upstream split, repository/document identifiers, o
 The API caller of `curate` must pass reservations explicitly; CLI defaults include both tracked suites. Missing reservation input is not proof that no external benchmark exists. Keep final evaluator-held data and review identities outside Git. Do not redistribute hidden suites in a curation bundle intended for publication: processed bundles are ignored by default and require separate disclosure review.
 
 For future releases maintain a frozen external test lineage. Mixing new data and replay then re-splitting can move groups; it is not a valid replacement for unchanged longitudinal tests. Review all cross-shard matches before global promotion. The 10,000-row and 200,000-comparison budgets fail closed; budget exhaustion cannot be accepted as a clean contamination report.
+
+## Reservas y similitud en Fase 02-B
+
+Las reservas CLI vigentes suman 54 casos e incluyen CodeBench, CyberBench y el conjunto legacy. Los futuros casos gold se mantienen fuera de Git y se pasan explícitamente a las operaciones autorizadas. `rsec data semantic-check` agrega señales de similitud coseno desde un JSON de vectores locales con claves `digest(prompt_text(row))`, identificador, revisión, dimensión y matriz. No altera la curación automáticamente. Conserva el método/modelo, reporta coincidencias ambiguas y revisa cada enlace.
+
+La ficha de [multilingual-e5-small](https://huggingface.co/intfloat/multilingual-e5-small) documenta MIT, 384 dimensiones, soporte multilingüe y la preparación de entradas. Es un candidato para producir vectores fuera de core en un entorno aislado con revisión fijada. Consulta tamaño de los pesos Safetensors en su repositorio y mide RAM/VRAM localmente antes de usarlo. En esta fase se probaron vectores sintéticos; no se descargó ni ejecutó E5 ni se ha calibrado umbral EN/ES.

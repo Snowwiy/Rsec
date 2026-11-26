@@ -1,3 +1,11 @@
+# Estado y comandos físicos · Fase 02-B
+
+GPU READINESS **VALIDATION PENDING**. Se implementaron diagnóstico NVIDIA JSON/Markdown, selección por UUID y pruebas CUDA que rechazan fallback CPU. El smoke single usa una capa NF4 con LoRA y el DDP usa una capa densa sincronizada por NCCL. FSDP + QLoRA y GGUF repartido tienen procedimiento experimental. Ninguno se ejecutó en el equipo físico durante esta fase.
+
+Los procedimientos actualizados están en [instalación local](LOCAL_GPU_SETUP.md) y [validación de dos GPU](MULTI_GPU_VALIDATION.md). La RTX 4070 y la RTX 3060 tienen 12 GB independientes. Confirma memoria, driver y topología reales antes de aumentar el tamaño del modelo. El plan de Fase 01-B queda a continuación.
+
+---
+
 # Rsec — plan reproducible de validación física GPU
 
 Estado: **GPU VALIDATION PENDING**. Fecha: 2026-11-26. Este documento es un protocolo; sus comandos GPU no se ejecutaron durante la auditoría. No autoriza entrenamiento real de Rsec ni aprovisionamiento de servicios.

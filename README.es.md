@@ -1,16 +1,22 @@
-# Rsec AI · v0.2.0-alpha
+# Rsec AI · v0.2.1-alpha
 
 Auditoría independiente Fase 01-B: **PASS WITH CONDITIONS**, **97 pruebas / 91.34 % de cobertura**. [Informe](INDEPENDENT_AUDIT.md) · [Plan GPU](GPU_VALIDATION_PLAN.md) · [Preparación de datos](DATASET_READINESS.md). Unsloth queda **BLOCKED** por conflictos comprobados. El gate de regresión exige metadatos de generación/evaluación comparables; las validaciones físicas y el corpus experto siguen pendientes.
 
-Plataforma independiente de investigación y entrenamiento de modelos especializados en **ciberseguridad defensiva**, propiedad de Snowwiy.
+Plataforma independiente de investigación y entrenamiento de modelos especializados en **ciberseguridad defensiva, programación e ingeniería de software**, propiedad de Snowwiy.
 
 [English / referencia técnica completa](README.md) · [Resultados reales](TEST_RESULTS.md) · [Continuidad](HANDOFF.md)
 
 Esta versión entrega infraestructura para especializar pesos abiertos mediante adaptadores. No distribuye un modelo Rsec entrenado ni demuestra superioridad frente al modelo base.
 
-## Fase 02: estado real de los datos
+## Fase 02-B · estado actual
 
-**DATASET READINESS: FAIL** para liberar un corpus SFT aprobado. **TRAINING READINESS: NOT READY.** Infraestructura revisable en el [PR #2 dependiente](https://github.com/Snowwiy/Rsec/pull/2). No se inició entrenamiento especializado. Validación actual: **200 pruebas / 94.02 % de cobertura**; entorno core sin Torch: **189 aprobadas**.
+La programación es una capacidad central de Rsec. Esta versión incorpora taxonomía de software, catálogo de fuentes con derechos definidos, mezclas reproducibles de datos aprobados y Rsec-CodeBench. Las dos suites se compararán contra el modelo base. Los datos revisados y CUDA siguen en el camino crítico. Consulta [programación e ingeniería de software](docs/SOFTWARE_ENGINEERING.md) y [validación de benchmarks](BENCHMARK_VALIDATION_REPORT.md).
+
+Hay 96 preauditorías por registro, una interfaz local con decisiones Ed25519 y scripts de comprobación física de GPU. **Corpus FAIL, GPU pendiente, entrenamiento NOT READY.** Guías de [revisión humana](DATASET_REVIEW_GUIDE.md), [instalación local](LOCAL_GPU_SETUP.md) e [integración](GITHUB_INTEGRATION_REPORT.md).
+
+## Fase 02-A · evidencia histórica de datos
+
+**DATASET READINESS: FAIL** para liberar un corpus SFT aprobado. **TRAINING READINESS: NOT READY.** La infraestructura de Fase 02-A se integró en la rama de fundamentos mediante el [PR #2](https://github.com/Snowwiy/Rsec/pull/2). No se inició entrenamiento especializado. Validación actual: **200 pruebas / 94.02 % de cobertura**; entorno core sin Torch: **189 aprobadas**.
 
 Se verificó la existencia de **20 fuentes externas**, además de 2 fuentes internas. El registro distingue acceso público, descarga, entrenamiento y redistribución. Solo se adquirieron tres documentos CVE fijados para índices de referencia; ninguna fuente externa está aprobada para SFT. Hay **64 borradores SFT sintéticos**, **32 casos públicos de desarrollo/regresión**, **cero ejemplos o gold aprobados por expertos** y cero rechazos/cuarentenas reales. Quedan pendientes 96 conversaciones y tres interpretaciones de referencias. La meta condicionada de 500–1,000 ejemplos no se alcanzó; no se añadió volumen artificial.
 

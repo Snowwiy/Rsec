@@ -1,3 +1,28 @@
+# Validación · Fase 02-B · 2026-11-26
+
+Implementación publicada en `b34bf571f5896af83dfd3a674a32084f32793c35`. Linux, Python 3.12.14 y PyTorch 2.8.0+cpu. Pasaron **219 pruebas**, con 2 advertencias deprecadas de SWIG. Core sin Torch: **208 aprobadas y 11 ML excluidas**. Cobertura local de sentencias **85.68 % (2,831/3,304)**, frente a **94.02 %** de la Fase 02-A. La base se amplió y los caminos CUDA, NCCL y algunos errores de UI y evaluación no se ejecutaron. Se conservaron las 200 pruebas previas, sin añadir exclusiones para subir el porcentaje.
+
+| Comando o verificación | Resultado |
+|---|---|
+| `HF_HUB_OFFLINE=1 .venv/bin/pytest -q --cov=rsec --cov-report=json:reports/phase02b-coverage-final.json --junitxml=reports/phase02b-tests-final.xml` | 219 aprobadas |
+| `../core-check/bin/python -m pytest -q -m 'not ml and not gpu and not multigpu'` | 208 aprobadas, 11 excluidas |
+| `ruff check .`, `ruff format --check .`, `python scripts/check_repository.py` | Pasaron |
+| `python -m pip check`, `python -m build --no-isolation` | Sin dependencias rotas y wheel/sdist 0.2.1a0 construidos |
+| `python scripts/check_gitleaks_scope.py ../gitleaks-bin`, `gitleaks git --redact --exit-code 1` | Controles positivos y negativos aprobaron y el historial quedó limpio |
+| `rsec data preaudit --input data/pilot/candidates.jsonl benchmarks/rsec_cyberbench/development.jsonl --output reports/phase02b-preaudit.jsonl` | 96 preauditorías, 0 decisiones |
+| `rsec data download --registered --config configs/software_sources.yaml` | Caché verificada tras adquisición real por conector, 12,269 bytes y 0 solicitudes HTTP adicionales |
+| `rsec benchmark code-validate`, `rsec benchmark contamination-check --input data/pilot/candidates.jsonl` | 12 CodeBench, 54 reservas, ninguna coincidencia del piloto |
+| `rsec gpu diagnose --output reports/phase02b-hardware.json --markdown reports/phase02b-hardware.md` | CUDA y NVIDIA ausentes en el entorno |
+| `rsec gpu validate --device 0 --output reports/nongpu-should-not-exist` | Exit 2 esperado, sin fallback ni carpeta de pruebas |
+
+Las 19 pruebas nuevas ejercitan referencias congeladas, evaluaciones incompatibles, pass@k con recuentos conocidos, firmas Ed25519 reales temporales, HTTP localhost, rechazo de origen externo, separación autor/adjudicador, rechazo de decisiones inválidas, replay y manipulación de un manifiesto íntegramente recalculado. Se usaron evidencias de prueba y telemetría simulada explícita donde aplica. Hardware físico, arnés de código generado, revisiones expertas reales y resultados de modelos quedan pendientes.
+
+Los tres checks del código del PR #5 pasaron en [CPU](https://github.com/Snowwiy/Rsec/actions/runs/45912973547), [ML offline](https://github.com/Snowwiy/Rsec/actions/runs/45912973545) y [seguridad](https://github.com/Snowwiy/Rsec/actions/runs/45912973570). Consulta [PR #5](https://github.com/Snowwiy/Rsec/pull/5) para su commit de informes. [PR #4](https://github.com/Snowwiy/Rsec/pull/4) aprobó ambos eventos, tal como se registra en [GITHUB_INTEGRATION_REPORT.md](GITHUB_INTEGRATION_REPORT.md).
+
+Se preserva abajo la evidencia histórica de las fases previas.
+
+---
+
 # Test results — Phase 02 dataset engineering, 2026-11-26
 
 Published feature implementation `849f0053bf3443b8d270945da9bdcaac6665667a`, tree `5470aefa8422c971c842c702ee7629c44b1d0f5b`; scanner-only correction `cb3d2d639ed99a0c8f16291353553fe734f224cb`, tree `81a032f9ae7052ffe1a6d3e56f5e973f9fc3e94c`. Linux/Python 3.12 CPU; no NVIDIA device. Audited Phase 01-B baseline was independently reproduced: **97 passed / 91.34% statement coverage**.

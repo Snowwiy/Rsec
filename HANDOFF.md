@@ -1,3 +1,17 @@
+# Handoff · v0.2.1-alpha · Phase 02-B
+
+Review [hotfix #4](https://github.com/Snowwiy/Rsec/pull/4) first, then [Phase 02-B #5](https://github.com/Snowwiy/Rsec/pull/5) into dev. PR #1 reached dev and PR #2 reached the foundation branch. The main PR preserves that ancestry and includes the hotfix. PR #3 is the later dev-to-main review. See [integration evidence](GITHUB_INTEGRATION_REPORT.md).
+
+**Repository security PASS WITH CONDITIONS** while the hotfix awaits dev integration. **Dataset readiness FAIL**, **GPU readiness VALIDATION PENDING**, **training readiness NOT READY**. Preaudited 64 SFT and 32 CyberBench candidates, zero human approvals. There are 12 CodeBench development cases, 54 default reserved cases and no private final gold. In the software catalog, one pinned SQLite file has scoped local SFT source permission and contributes zero approved rows. Candidate outputs remain separate from acquired references.
+
+Start with [human review](DATASET_REVIEW_GUIDE.md) and [reviewer authority](REVIEWER_SECURITY.md). Prioritize the conditional SQL finding and the generic CyberBench rationales. Physical procedure begins with [local GPU setup](LOCAL_GPU_SETUP.md), then [multi-GPU validation](MULTI_GPU_VALIDATION.md). Phase 02 uses the existing PyTorch/Transformers/PEFT/TRL/BitsAndBytes/Accelerate path and keeps Unsloth blocked.
+
+The companion [software track](docs/SOFTWARE_ENGINEERING.md) is now fundamental to Rsec. Retain CodeBench and CyberBench as distinct reservations, validate rights before adding data, and compare against the same local base before choosing replay quotas. The materialized replay release has validation in the existing trainer entry point. Progress to advanced programming in Phase 04 after the mixed pilot and retention gate in Phase 03.
+
+The previous Phase 02-A handoff below records its historical state.
+
+---
+
 # Handoff — Rsec v0.2.0-alpha, Phase 02
 
 **DATASET READINESS: FAIL** for an approved SFT release. **TRAINING READINESS: NOT READY.** Infrastructure implemented/tested and available for review; zero expert-approved SFT and zero independent expert gold. No specialized model, paid services or merge.

@@ -1,15 +1,21 @@
-# Rsec AI · v0.2.0-alpha
+# Rsec AI · v0.2.1-alpha
 
-Independent, local model research for **defensive cybersecurity**, owned by Snowwiy.
+Independent local model research for **defensive cybersecurity, programming and software engineering**, owned by Snowwiy.
 [Independent audit](INDEPENDENT_AUDIT.md) · [Español](README.es.md) · [Architecture](docs/ARCHITECTURE.md) · [Test evidence](TEST_RESULTS.md) · [Handoff](HANDOFF.md)
 
 Rsec specializes open-weight models through adapter training. This repository provides the foundation for acquisition, curation, SFT/QLoRA, independent evaluation, artifact export and local inference. It does **not** distribute a trained cybersecurity model or demonstrate superiority over a base model.
 
 Phase 01-B independent audit: **PASS WITH CONDITIONS** for foundation review, **97 tests / 91.34% statement coverage**. GPU training and source-reviewed gold data remain gates; Unsloth is blocked by confirmed dependency conflicts. See [GPU validation](GPU_VALIDATION_PLAN.md) and [dataset readiness](DATASET_READINESS.md).
 
-## Phase 02 dataset engineering
+## Phase 02-B · current status
 
-**DATASET READINESS: FAIL** for an expert-approved SFT corpus. **TRAINING READINESS: NOT READY.** Code is available for review in [dependent draft PR #2](https://github.com/Snowwiy/Rsec/pull/2); no specialized model was trained. Actual validation: **200 tests / 94.02% statement coverage**, core without Torch **189 passed**.
+Programming is a core capability. Rsec now has a complementary software taxonomy, a scoped source catalog, a reproducible train-only replay planner and trainer-compatible mixed release validation. The two tracks retain independent development suites, Rsec-CyberBench and Rsec-CodeBench. Compare both against the pinned base before selecting adapters or quantized artifacts. Advanced software specialization follows expert data review and the hardware gate. See [software engineering](docs/SOFTWARE_ENGINEERING.md) and [benchmark contracts](BENCHMARK_VALIDATION_REPORT.md).
+
+The Phase 02-B branch includes a localhost review UI with Ed25519 decisions, preaudit observations for all 96 original candidates, isolated evidence imports and scripts for CUDA checks. **Dataset readiness FAIL, GPU validation pending, training not ready.** No approved SFT row or private expert gold exists. See [review setup](DATASET_REVIEW_GUIDE.md), [GPU setup](LOCAL_GPU_SETUP.md) and [integration](GITHUB_INTEGRATION_REPORT.md).
+
+## Phase 02-A dataset engineering · historical evidence
+
+**DATASET READINESS: FAIL** for an expert-approved SFT corpus. **TRAINING READINESS: NOT READY.** Phase 02-A was merged into the foundation branch in [PR #2](https://github.com/Snowwiy/Rsec/pull/2); no specialized model was trained. Actual validation: **200 tests / 94.02% statement coverage**, core without Torch **189 passed**.
 
 The registry inventories **20 external sources plus 2 internal fixture sources** with separate access/download/training/redistribution permissions. Only three pinned CVE documents were acquired for reference-only normalization; no external source is SFT-approved. There are **64 synthetic SFT drafts**, **32 public development/regression cases**, **0 expert-approved examples**, **0 expert gold** and **0 rejected/quarantined actual records**. All 96 conversations await human review, plus three reference interpretations. The quality-conditional 500–1,000 pilot goal is unmet.
 

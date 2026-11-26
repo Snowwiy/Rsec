@@ -1,3 +1,11 @@
+# Estado de datos · Fase 02-B
+
+**DATASET READINESS FAIL.** Preauditoría asistida completa en los 96 casos previos, 0 decisiones humanas, 0 ejemplos elegibles, 0 gold privado. El track de software suma 12 casos de evaluación pública y un archivo SQLite con autorización acotada a uso local. No suma ejemplos SFT aprobados. La reserva por defecto tiene 54 casos. Consulta [preauditoría](EXPERT_CURATION_REPORT.md), [derechos](DATASET_LICENSE_REPORT.md) y [gates](TRAINING_READINESS.md).
+
+Datos históricos de Fase 02-A a continuación.
+
+---
+
 # Rsec — dataset readiness, Phase 02 current state
 
 2026-11-26 · **DATASET READINESS: FAIL** for an approved corpus release. **TRAINING READINESS: NOT READY.** This supersedes the Phase 01-B snapshot of an empty external catalog; the historical independent audit is preserved separately.

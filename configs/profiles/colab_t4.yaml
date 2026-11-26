@@ -1,0 +1,3 @@
+accumulation: 16
+context: 1024
+precision: fp16

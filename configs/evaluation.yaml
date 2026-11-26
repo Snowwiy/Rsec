@@ -1,0 +1,15 @@
+benchmark: benchmarks/suite.jsonl
+dynamic_execution: false
+labels:
+- vulnerable
+- benign
+- insufficient
+predictions_schema:
+- id
+- label
+- cwe
+- references
+- answer
+release_gate:
+  accuracy_delta_min: 0
+  macro_f1_delta_min: 0

@@ -1,0 +1,5 @@
+-r requirements.txt
+datasets==5.0.1
+pyarrow==23.0.1
+numpy==2.5.5
+scikit-learn==1.7.2

@@ -1,5 +1,7 @@
 # Implementation report · Rsec v0.1.0-alpha
 
+Phase 01-B update: [INDEPENDENT_AUDIT.md](INDEPENDENT_AUDIT.md) supersedes initial capability assertions where findings A01–A15 apply. Corrected code: `44084096dc231b7726ca1490c5e65f69a01956f9`. Final audit: 97 tests, 91.34% statement coverage; CUDA remains pending and Unsloth is BLOCKED.
+
 Date: 2026-11-26. Phase: 01 — Foundation & MLOps. Repository: Snowwiy/Rsec. Base inspected: f42f893948cc2388d4025920d545e4dcc74cf5a9 (initial commit). Existing MIT license preserved. No pretrained Rsec cybersecurity weights, paid infrastructure or SENTRA changes are included.
 
 ## Delivered architecture
@@ -19,7 +21,7 @@ The installed src/rsec package implements a CPU-safe CLI, typed configurations, 
 | Local benchmark generation and scoring | TESTED | Real random-model generation plus deterministic reference fixture tests |
 | QLoRA NF4 and conservative single-GPU profiles | GPU VALIDATION PENDING | No CUDA device; no complete 7B training attempted |
 | DDP/FSDP with heterogeneous GPUs | GPU VALIDATION PENDING | Strict launch guards, parsed Accelerate configs; no physical validation |
-| Unsloth backend | IMPLEMENTED | Isolated optional candidate, not installed/executed |
+| Unsloth backend | BLOCKED | Phase 01-B confirmed incompatible Transformers/TRL/datasets requirements |
 | Local model registry, activation/rollback and experiment reports | TESTED | Immutable registration/hash checks, local JSON/CSV/Markdown/SVG |
 | GGUF conversion, Q4_K_M and native llama.cpp completion | TESTED | Random tiny Qwen2 weights with official tokenizer; no quality claim |
 | Ollama / llama-cpp-python runtime adapters | IMPLEMENTED | Engines/bindings not executed here |

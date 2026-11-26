@@ -11,7 +11,7 @@ Rsec separates the reusable `src/rsec` Python package from repository configurat
 | environment | Optional-stack and physical device diagnostics |
 | tracking | Local experiment log and immutable model registry |
 | predict / evaluate | Offline prediction generation and deterministic scoring |
-| export / inference | Local artifact lifecycle and runtime adapters |
+| artifacts / export / inference | Local model trust checks, artifact lifecycle and runtime adapters |
 | interfaces | Future evidence retrieval and local analyzer protocols |
 | utils / errors | Bounded reads, hashing, confined paths and safe diagnostics |
 

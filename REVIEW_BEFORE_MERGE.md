@@ -1,25 +1,25 @@
-# Review before merge
+# Review before merge — Phase 01-B
 
-## Recommendation
+## Verdict and recommendation
 
-Review as a **foundation alpha** in a draft PR targeting dev. Do not interpret CPU/native tiny-model checks as permission to release specialized weights or advertise validated GPU compatibility. Do not auto-merge main. Actual GitHub-hosted check results must be reviewed in the PR.
+**PASS WITH CONDITIONS** for review as foundation alpha into `dev`. Keep PR #1 in draft pending the owner's human review. Do not merge automatically into `dev` or `main`, release specialized weights, or infer GPU/model-quality approval from passing CI.
 
-## Architecture and configuration
+Initial head independently reviewed: `48709e49c2650793f8af792344988552151de158`. Corrected implementation: `44084096dc231b7726ca1490c5e65f69a01956f9`, with all three hosted workflows successful. Review the checks of the latest reporting head as well.
 
-The data, training, evaluation and artifact boundaries are separate. Core tools remain CPU-safe. Strict model revision/config checks, no-clobber output and preserved source metadata are implemented. Review the bounded quadratic similarity algorithm against intended corpus sizes and verify provenance families before importing larger datasets. Model-size candidates and hardware profiles are experiments, not capacity guarantees.
+## Review gates
 
-## Security and dependencies
+- Read findings A01–A15 in INDEPENDENT_AUDIT.md and inspect target masks/token counting, benchmark prompt isolation, metric label sets, comparable-condition gates and local artifact guards.
+- Confirm TEST_RESULTS.md and structured evidence: 97 tests / 91.34% statement coverage, independent baseline 39 / 75.15%, core without torch 88 passed / 9 deselected, native GGUF repeated.
+- Confirm no real specialized model, external corpus approval, paid service, repository policy change or merge occurred. Existing MIT and prior work remain preserved.
+- Treat Unsloth as BLOCKED. FSDP fixes address documented incompatibilities but do not certify distributed execution, memory feasibility or checkpoint layout.
+- Verify the final PR head's CPU quality, offline ML and security jobs before integrating. Coverage is statement coverage; tests with fake transports/engines are contract evidence only.
 
-Safetensors, remote-code rejection, content-free quarantine, path/hash checks, bounded acquisition and read-only pinned CI reduce risk. Unsigned manifests, DNS rebinding, semantic poisoning, trusted optimizer checkpoint state and operator-controlled local runtimes remain documented trust boundaries. CPU dependency audit and scoped secret scans passed locally. Resolve and audit GPU/Unsloth/native runtime dependencies separately. Existing MIT licensing is retained; third-party rights are independent.
+## Accepted alpha limitations
 
-## Data and evaluation
+No NVIDIA device was available. Physical QLoRA, mixed precision, DDP/FSDP, heterogeneous topology/NCCL/OOM and distributed recovery remain required before training. Ollama/bindings/providers/Windows/WSL2 need separate execution. GPU dependency graph is not transitively locked/audited. Training CUDA branches remain below the aspirational 90% line-coverage goal; mocking them would not establish physical support.
 
-Bundled material is small authored synthetic data only. Benchmarks are independent and excluded from training preparation. Gold-data breadth, licenses, human labels and semantic quality gates require phase 02 work. Do not infer cybersecurity capability from reference fixture scoring or random tiny native generation. Release reviewers must inspect independent domain/language/regression evidence, not just the registry TESTED assertion.
+Data/source rights, expert labels, privacy, semantic poisoning, authenticating artifacts and benchmark breadth require review; regex/hash checks cannot certify them. Registry TESTED remains a human assertion. Dataset releases and external test families must stay frozen. Exported weights must be evaluated under comparable conditions; native tiny GGUF plumbing is not proof of quantized model quality.
 
-## Tests and documentation
+## Fase 02 decision
 
-See TEST_RESULTS.md for actual commands, coverage and omitted hardware/provider validation. English/Spanish READMEs share scope and commands. Notebook cells are syntactically checked and pin an immutable implementation commit; provider GPU execution is unverified. Package builds and fresh core installation passed. No heavy or sensitive artifact is committed.
-
-## Remaining gates
-
-Physical single-/multi-GPU runs, optional runtime validation and source/corpus review remain required for later model release. Complete the PR's hosted CI checks and human code review before integrating into dev. There is no demonstrated model-quality improvement to approve in this PR.
+Conditional readiness to begin rights review, curation and external benchmark construction. DATASET_READINESS.md lists release gates; GPU_VALIDATION_PLAN.md lists physical acceptance. **Not ready for real specialized training or public model release.** These conditions are compatible with merging foundation code into dev after human review; they are not waived by that merge.

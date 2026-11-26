@@ -1,5 +1,7 @@
 # Rsec AI · v0.1.0-alpha
 
+Auditoría independiente Fase 01-B: **PASS WITH CONDITIONS**, **97 pruebas / 91.34 % de cobertura**. [Informe](INDEPENDENT_AUDIT.md) · [Plan GPU](GPU_VALIDATION_PLAN.md) · [Preparación de datos](DATASET_READINESS.md). Unsloth queda **BLOCKED** por conflictos comprobados. El gate de regresión exige metadatos de generación/evaluación comparables; las validaciones físicas y el corpus experto siguen pendientes.
+
 Plataforma independiente de investigación y entrenamiento de modelos especializados en **ciberseguridad defensiva**, propiedad de Snowwiy.
 
 [English / referencia técnica completa](README.md) · [Resultados reales](TEST_RESULTS.md) · [Continuidad](HANDOFF.md)
@@ -14,7 +16,7 @@ Esta versión entrega infraestructura para especializar pesos abiertos mediante 
 | SFT/LoRA diminuto, checkpoints, reanudación, fusión e inferencia | TESTED | Ejecución real en CPU; no prueba la calidad en ciberseguridad |
 | QLoRA con RTX 4070/T4 y demás perfiles | GPU VALIDATION PENDING | Sin GPU en el entorno de desarrollo |
 | DDP/FSDP con GPU heterogéneas | GPU VALIDATION PENDING | Modo experimental explícito |
-| Backend Unsloth | IMPLEMENTED | Dependencias opcionales aisladas, sin validación física |
+| Backend Unsloth | BLOCKED | Conflictos comprobados con Transformers, TRL y datasets |
 | Evaluación determinista y registro local | TESTED | Las referencias de prueba no son salidas de un modelo |
 | GGUF Q4_K_M y generación nativa llama.cpp | TESTED | Modelo diminuto aleatorio en CPU; Ollama y bindings pendientes |
 | RAG completo, API local y SENTRA | NOT IMPLEMENTED | Contratos y arquitectura futura únicamente |

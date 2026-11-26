@@ -1,9 +1,11 @@
 # Rsec AI · v0.1.0-alpha
 
 Independent, local model research for **defensive cybersecurity**, owned by Snowwiy.
-[Español](README.es.md) · [Architecture](docs/ARCHITECTURE.md) · [Test evidence](TEST_RESULTS.md) · [Handoff](HANDOFF.md)
+[Independent audit](INDEPENDENT_AUDIT.md) · [Español](README.es.md) · [Architecture](docs/ARCHITECTURE.md) · [Test evidence](TEST_RESULTS.md) · [Handoff](HANDOFF.md)
 
 Rsec specializes open-weight models through adapter training. This repository provides the foundation for acquisition, curation, SFT/QLoRA, independent evaluation, artifact export and local inference. It does **not** distribute a trained cybersecurity model or demonstrate superiority over a base model.
+
+Phase 01-B independent audit: **PASS WITH CONDITIONS** for foundation review, **97 tests / 91.34% statement coverage**. GPU training and source-reviewed gold data remain gates; Unsloth is blocked by confirmed dependency conflicts. See [GPU validation](GPU_VALIDATION_PLAN.md) and [dataset readiness](DATASET_READINESS.md).
 
 ## Current scope
 
@@ -13,7 +15,7 @@ Rsec specializes open-weight models through adapter training. This repository pr
 | Real tiny CPU SFT, LoRA, optimizer resume, merge and offline inference | TESTED | Integration test, no model download |
 | QLoRA on RTX 4070 / T4 / other NVIDIA GPUs | GPU VALIDATION PENDING | Implemented backend; no CUDA device in development environment |
 | DDP / FSDP and heterogeneous 4070 + 3060 | GPU VALIDATION PENDING | Experimental profiles and launch guards |
-| Unsloth backend | IMPLEMENTED | Isolated optional candidate; not runtime validated |
+| Unsloth backend | BLOCKED | Version 2026.11.12 conflicts with the audited Transformers/TRL/datasets pins |
 | Independent benchmark runner and deterministic scoring | TESTED | Reference fixtures test scoring, not model quality |
 | GGUF conversion, Q4_K_M and native llama.cpp completion | TESTED | Random tiny Qwen2 CPU artifact only; no 7B quality/compatibility claim |
 | Ollama / llama-cpp-python inference | IMPLEMENTED | External runtimes require separate validation |
@@ -124,7 +126,7 @@ rsec evaluate --benchmark benchmarks/suite.jsonl --predictions reports/adapter-p
   --model-id adapter --baseline reports/base.json --output reports/adapter.json
 ```
 
-Base, adapters, merged, quantized and older versions use the same prediction schema and benchmark hash. Reports include accuracy, macro/micro F1, per-class precision/recall, false positive/negative rates, CWE exact match, schema compliance, domain/language breakdowns and measured runtime metadata when present. Unsupported-reference rate is a narrow deterministic proxy, not a full hallucination metric. Independent human assessment and controlled remediation testing are required before model release. Generated code is never executed on the host.
+Base, adapters, merged, quantized and older versions use the same prediction schema. Regression approval additionally requires matching recorded generation/evaluation conditions, tokenizer template and system hashes; `predict` writes a metadata sidecar. Manually supplied predictions without comparable metadata can be scored but cannot pass the regression gate. Reports include accuracy, macro/micro F1, per-class precision/recall, false positive/negative rates, CWE exact match, schema compliance, domain/language breakdowns and measured runtime metadata when present. Unsupported-reference rate is a narrow deterministic proxy, not a full hallucination metric. Independent human assessment and controlled remediation testing are required before model release. Generated code is never executed on the host.
 
 ## Export and local inference
 

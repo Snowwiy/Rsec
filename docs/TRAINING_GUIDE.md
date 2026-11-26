@@ -26,4 +26,4 @@ Provisioning/billing is a separate owner action. This repository never creates p
 
 ## Unsloth
 
-The optional backend imports Unsloth before Transformers/TRL. Install it in an isolated environment and resolve its release-specific constraints; requirements-optional.txt is an experimental candidate list, not a validated lock. Current official docs discuss distributed support, but Rsec deliberately uses its Transformers backend for DDP/FSDP until separately validated. Do not mix the optional Unsloth dependency solver with the frozen CPU environment without testing.
+BLOCKED in the audited stack. Wheel 2026.11.12 requires Transformers <=5.17.0, TRL <=1.15.0 and datasets <5.0.0, conflicting with Rsec pins 5.24.1 / 1.19.0 / 5.0.1. The backend now fails before import and the conflicting requirement is commented out. Do not force --no-deps or downgrade the audited stack. Separate integration is future work. See GPU_VALIDATION_PLAN.md and SECURITY_AUDIT.md at repository root.

@@ -53,6 +53,7 @@ def gpu_info():
             {
                 "index": i,
                 "name": p.name,
+                "uuid": str(p.uuid) if getattr(p, "uuid", None) is not None else None,
                 "total_bytes": total,
                 "free_bytes": free,
                 "capability": [p.major, p.minor],

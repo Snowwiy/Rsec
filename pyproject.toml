@@ -4,8 +4,8 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "rsec-ai"
-version = "0.2.0a0"
-description = "Local defensive cybersecurity model research and MLOps"
+version = "0.2.1a0"
+description = "Local cybersecurity and software engineering model research and MLOps"
 readme = "README.md"
 requires-python = ">=3.11,<3.14"
 license = "MIT"

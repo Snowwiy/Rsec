@@ -107,7 +107,7 @@ class Registry:
 def acquire_registry(
     config="configs/datasets.yaml",
     output="data/raw",
-    registry="data/manifests/source_registry.json",
+    registry=None,
 ):
     import yaml
 
@@ -116,7 +116,7 @@ def acquire_registry(
     settings = yaml.safe_load(bounded_read(config))
     if not isinstance(settings, dict):
         raise RsecError("Dataset config must be a mapping")
-    catalog = Registry(registry)
+    catalog = Registry(registry or settings.get("registry", "data/manifests/source_registry.json"))
     results = []
     # The legacy source contract remains valid; new entries bind to registry permissions.
     for entry in settings.get("registered_sources", []):

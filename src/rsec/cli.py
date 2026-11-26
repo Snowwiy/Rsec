@@ -10,11 +10,14 @@ from rsec.errors import RsecError
 
 
 def parser():
-    p = argparse.ArgumentParser(prog="rsec", description="Rsec defensive AI research foundation")
+    p = argparse.ArgumentParser(
+        prog="rsec", description="Rsec local cybersecurity and software engineering research"
+    )
     p.add_argument("--version", action="version", version=__version__)
     commands = p.add_subparsers(dest="command", required=True)
     doc = commands.add_parser("doctor", help="Inspect CPU/GPU/tool availability")
     doc.add_argument("--output")
+    doc.add_argument("--markdown")
     cfg = commands.add_parser("config", help="Validate training configuration")
     cfg.add_argument("--config", default="configs/qlora_cybersec.yaml")
     cfg.add_argument("--profile")
@@ -121,18 +124,22 @@ def parser():
 
 
 def dispatch(args):
+    from rsec import phase02b
+
+    if args.command == "gpu":
+        return phase02b.dispatch_gpu(args)
+    if args.command == "data" and args.action in phase02b.DATA_ACTIONS:
+        return phase02b.dispatch_data(args)
+    if args.command == "benchmark" and args.action in phase02b.BENCH_ACTIONS:
+        return phase02b.dispatch_benchmark(args)
     if args.command == "benchmark":
         from rsec.datasets.cli import dispatch_benchmark
 
         return dispatch_benchmark(args)
     if args.command == "doctor":
-        from rsec.environment import doctor
-        from rsec.utils import write_json
+        from rsec.gpu import write_diagnostic
 
-        result = doctor()
-        if args.output:
-            write_json(args.output, result)
-        return result
+        return write_diagnostic(args.output, args.markdown)
     if args.command in {"config", "train"}:
         from rsec.config import Training, load_training
 

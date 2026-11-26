@@ -51,12 +51,14 @@ def main():
         ), "Private evaluation/review material is forbidden"
         path = Path(name)
         assert path.stat().st_size < 1024 * 1024, f"Heavy artifact in Git: {name}"
-        assert path.suffix not in {".gguf", ".safetensors", ".pt", ".bin"}, name
+        assert path.suffix not in {".gguf", ".safetensors", ".pt", ".bin", ".pem", ".key"}, name
     from rsec.datasets.benchmark import validate
     from rsec.datasets.registry import Registry
+    from rsec.datasets.software import CODEBENCH, codebench_summary
 
-    Registry()
     catalog = Registry()
+    Registry("data/manifests/software_source_registry.json")
+    codebench_summary(CODEBENCH)
     for name in filter(None, tracked):
         if name.startswith(("data/", "benchmarks/")) and Path(name).suffix == ".jsonl":
             for row in load_rows(name):

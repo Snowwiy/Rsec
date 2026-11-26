@@ -31,6 +31,10 @@ def read_reserved(paths):
                 raise RsecError("Reserved benchmark row limit exceeded")
             if isinstance(raw, dict) and raw.get("schema_version") == 2:
                 rows.append(Candidate.model_validate(raw))
+            elif isinstance(raw, dict) and raw.get("schema_version") == "codebench-1":
+                from rsec.datasets.software import CodeCase
+
+                rows.append(CodeCase.model_validate(raw).reservation())
             elif isinstance(raw, dict) and "provenance" in raw:
                 old = Record.model_validate(raw["provenance"])
                 code = __import__("re").findall(
@@ -147,6 +151,8 @@ def export_sft(rows, output, registry, decisions, taxonomy, seed, reserved):
     output = Path(output)
     splits, links = split_rows(rows, seed)
     output.mkdir(parents=True, exist_ok=False)
+    eligible_ids = {row.id for row in rows}
+    decisions = [d for d in decisions if d["record_id"] in eligible_ids]
     for s, selected in splits.items():
         jsonl(output / (s + ".jsonl"), [legacy(r, g, registry) for r, g in selected])
     jsonl(output / "curation_records.jsonl", [r.model_dump() for r in rows])
@@ -263,7 +269,8 @@ def curate(
         ],
     )
     jsonl(output / "quality_observations.jsonl", reports)
-    jsonl(output / "reviews.jsonl", decisions)
+    clean_ids = {row.id for row in clean}
+    jsonl(output / "reviews.jsonl", [d for d in decisions if d["record_id"] in clean_ids])
     jsonl(output / "reserved.jsonl", [r.model_dump() for r in reserved])
     write_json(output / "quality_report.json", quality)
     write_json(output / "statistics.json", statistics(clean))

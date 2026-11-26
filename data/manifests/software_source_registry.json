@@ -1,0 +1,98 @@
+{
+  "schema_version": 1,
+  "sources": [
+    {
+      "id": "owner-programming",
+      "name": "Original programming contributions",
+      "url": "https://github.com/Snowwiy/Rsec",
+      "organization": "Rsec and identified contributors",
+      "version": "owner-code-1",
+      "checked_at": "2026-11-26",
+      "license": "Unverified per contribution",
+      "license_url": "https://github.com/Snowwiy/Rsec/blob/main/LICENSE",
+      "public_access": false,
+      "download_allowed": false,
+      "training_allowed": false,
+      "redistribution_allowed": false,
+      "training_conditions": "Require explicit recorded authorization for local training on identified original material.",
+      "redistribution_conditions": "Require a distinct grant for dataset and derived model distribution.",
+      "restrictions": "Do not ingest AI service outputs or third-party material under this entry.",
+      "format": "Candidate v2 JSONL",
+      "quality_estimate": "Pending rights and independent code review",
+      "domains": [
+        "software_engineering"
+      ],
+      "status": "REVIEW REQUIRED",
+      "review_method": "Per-item written grant not supplied",
+      "intended_uses": [
+        "sft"
+      ]
+    },
+    {
+      "id": "python-doc-code",
+      "name": "Python documentation code examples",
+      "url": "https://docs.python.org/3/license.html",
+      "organization": "Python Software Foundation",
+      "version": "3.13 documentation; exact source revision pending",
+      "checked_at": "2026-11-26",
+      "license": "Documentation examples: PSF-2.0 OR 0BSD (since 3.8.6)",
+      "license_url": "https://docs.python.org/3/license.html",
+      "public_access": true,
+      "download_allowed": false,
+      "training_allowed": false,
+      "redistribution_allowed": false,
+      "training_conditions": "Publisher permits use of qualifying examples under 0BSD. Identify and pin each exact example, exclude surrounding prose and embedded third-party excerpts, reserve upstream tasks, and record scoped permission before promotion.",
+      "redistribution_conditions": "Verify license scope for the selected item and separately authorize release of dataset or derived models.",
+      "restrictions": "Do not ingest AI service outputs or third-party material under this entry.",
+      "format": "Candidate v2 JSONL",
+      "quality_estimate": "Pending rights and independent code review",
+      "domains": [
+        "software_engineering"
+      ],
+      "status": "REVIEW REQUIRED",
+      "review_method": "Official license verified for qualifying code examples; no item snapshot authorized",
+      "intended_uses": [
+        "sft"
+      ]
+    },
+    {
+      "id": "sqlite-completeness",
+      "name": "SQLite statement completeness implementation",
+      "url": "https://github.com/sqlite/sqlite/blob/95170adc372e2a3d7ca664c3f3673a5258b0dd78/src/complete.c",
+      "organization": "SQLite project",
+      "version": "95170adc372e2a3d7ca664c3f3673a5258b0dd78",
+      "checked_at": "2026-11-26",
+      "license": "Public domain (SQLite deliverable code)",
+      "license_url": "https://sqlite.org/copyright.html",
+      "public_access": true,
+      "download_allowed": true,
+      "training_allowed": true,
+      "redistribution_allowed": false,
+      "training_conditions": "Local SFT eligible only after per-candidate technical and rights review; scope limited to pinned original deliverable source file under the publisher's any-purpose grant.",
+      "redistribution_conditions": "Rsec defers dataset and derived weights release pending project and jurisdiction review. Preserve origin notice and metadata.",
+      "restrictions": "Do not infer permission for build scripts, other repository files, model outputs or third-party extensions.",
+      "format": "C source text",
+      "quality_estimate": "Primary implementation; candidate quality unreviewed",
+      "domains": [
+        "software_engineering"
+      ],
+      "status": "APPROVED",
+      "review_method": "Official SQLite copyright notice, file header, pinned mirror blob, and local checksum verified.",
+      "intended_uses": [
+        "sft"
+      ],
+      "acquired_at": "2026-11-26",
+      "snapshots": {
+        "sqlite-complete.c": "83584978e86b201455660c6663772fc1882c43bca155e9653d68cdacb140b375"
+      },
+      "references": [
+        {
+          "id": "sqlite-completeness-source",
+          "source_id": "sqlite-completeness",
+          "url": "https://github.com/sqlite/sqlite/blob/95170adc372e2a3d7ca664c3f3673a5258b0dd78/src/complete.c",
+          "revision": "95170adc372e2a3d7ca664c3f3673a5258b0dd78"
+        }
+      ]
+    }
+  ]
+}

@@ -3,6 +3,7 @@
 from pathlib import Path
 
 from rsec.datasets.benchmark import DEFAULT_BENCH
+from rsec.datasets.software import RESERVED
 from rsec.errors import RsecError
 from rsec.utils import read_json, write_json
 
@@ -24,7 +25,7 @@ def add_commands(commands, ds, download):
     curate.add_argument("--version", required=True)
     curate.add_argument("--registry", default="data/manifests/source_registry.json")
     curate.add_argument("--taxonomy", default="configs/taxonomy.json")
-    curate.add_argument("--reserved", nargs="+", default=["benchmarks/suite.jsonl", DEFAULT_BENCH])
+    curate.add_argument("--reserved", nargs="+", default=RESERVED)
     curate.add_argument("--decisions")
     curate.add_argument("--seed", type=int, default=42)
     curate.add_argument("--anonymize", action="store_true")
@@ -69,11 +70,14 @@ def add_commands(commands, ds, download):
     rating.add_argument("--output", required=True)
     check = bs.add_parser("contamination-check")
     check.add_argument("--input", nargs="+", required=True)
-    check.add_argument("--reserved", nargs="+", default=["benchmarks/suite.jsonl", DEFAULT_BENCH])
+    check.add_argument("--reserved", nargs="+", default=RESERVED)
     ev = bs.add_parser("evaluate")
     ev.add_argument("--benchmark", default=DEFAULT_BENCH)
     ev.add_argument("--predictions", required=True)
     ev.add_argument("--output", required=True)
+    from rsec.phase02b import add_commands as add_phase02b_commands
+
+    add_phase02b_commands(commands, ds, bs)
 
 
 def dispatch_data(args):

@@ -536,3 +536,23 @@ def test_private_gold_rejects_same_author_and_accepts_independent_fixture(
         import_gold(*args)
     write_json(author_path, {row.id: "different-test-author"}, overwrite=True)
     assert import_gold(*args)["cases"] == 1
+
+
+def test_reviewer_registry_compares_canonical_keys(local_reviewer):
+    path, _ = local_reviewer
+    value = read_json(path)
+    entry = value["reviewers"][0]
+    duplicate = path.parent / "alternate-public.pem"
+    duplicate.write_bytes((path.parent / entry["public_key"]).read_bytes().replace(b"\n", b"\r\n"))
+    value["reviewers"].append(
+        {
+            **entry,
+            "id": "another-test-authority",
+            "public_key": duplicate.name,
+            "key_sha256": sha256(duplicate),
+        }
+    )
+    assert value["reviewers"][0]["key_sha256"] != value["reviewers"][1]["key_sha256"]
+    write_json(path, value, overwrite=True)
+    with pytest.raises(RsecError, match="distinct Ed25519"):
+        Reviewers(path)

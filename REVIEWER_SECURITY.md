@@ -30,7 +30,7 @@ Crea `data/reviews/reviewers.json` con esta estructura y valores elegidos por el
 }
 ```
 
-Elige dominios según competencias reales. Concede `adjudicate` solo a quien evalúe gold de manera independiente. Distintos revisores necesitan claves distintas. Los eventos vinculan hash de contenido, revisión, catálogo, política, identidad, decisión, checks, comentarios, propuesta y fecha. La exportación valida nuevamente los eventos y bloquea registros con objeciones abiertas. El modo actual usa PEM Ed25519 local sin contraseña interactiva. Restringe permisos del archivo y cierra la UI cuando termine la sesión.
+Elige dominios según competencias reales. Concede `adjudicate` solo a quien evalúe gold de manera independiente. Distintos revisores necesitan claves públicas Ed25519 distintas. El registro compara sus bytes canónicos DER y verifica también el hash del archivo PEM. Los eventos vinculan hash de contenido, revisión, catálogo, política, identidad, decisión, checks, comentarios, propuesta y fecha. La exportación valida nuevamente los eventos y bloquea registros con objeciones abiertas. El modo actual usa PEM Ed25519 local sin contraseña interactiva. Restringe permisos del archivo y cierra la UI cuando termine la sesión.
 
 Guarda las autoridades y eventos fuera del Git público. Desactiva el registro de una clave comprometida, conserva el ledger y revalida decisiones a través de la nueva autoridad antes de usar un release. Los registros marcados `fixture` se rechazan. Las pruebas efectivas de firma usan una autoridad desechable en un workspace temporal y marcan las identidades como de prueba en los nombres. No hay identidades, claves o firmas reales de aprobación distribuidas con el proyecto.
 

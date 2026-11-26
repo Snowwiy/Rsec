@@ -1,11 +1,11 @@
 # Validación · Fase 02-B · 2026-11-26
 
-Implementación publicada en `b34bf571f5896af83dfd3a674a32084f32793c35`. Linux, Python 3.12.14 y PyTorch 2.8.0+cpu. Pasaron **219 pruebas**, con 2 advertencias deprecadas de SWIG. Core sin Torch: **208 aprobadas y 11 ML excluidas**. Cobertura local de sentencias **85.68 % (2,831/3,304)**, frente a **94.02 %** de la Fase 02-A. La base se amplió y los caminos CUDA, NCCL y algunos errores de UI y evaluación no se ejecutaron. Se conservaron las 200 pruebas previas, sin añadir exclusiones para subir el porcentaje.
+Implementación inicial publicada en `b34bf571f5896af83dfd3a674a32084f32793c35`. Los recuentos incluyen el endurecimiento final de claves Ed25519. Linux, Python 3.12.14 y PyTorch 2.8.0+cpu. Pasaron **220 pruebas**, con 2 advertencias deprecadas de SWIG. Core sin Torch: **209 aprobadas y 11 ML excluidas**. Cobertura local de sentencias **85.71 % (2,837/3,310)**, frente a **94.02 %** de la Fase 02-A. La base se amplió y los caminos CUDA, NCCL y algunos errores de UI y evaluación no se ejecutaron. Se conservaron las 200 pruebas previas, sin añadir exclusiones para subir el porcentaje.
 
 | Comando o verificación | Resultado |
 |---|---|
-| `HF_HUB_OFFLINE=1 .venv/bin/pytest -q --cov=rsec --cov-report=json:reports/phase02b-coverage-final.json --junitxml=reports/phase02b-tests-final.xml` | 219 aprobadas |
-| `../core-check/bin/python -m pytest -q -m 'not ml and not gpu and not multigpu'` | 208 aprobadas, 11 excluidas |
+| `HF_HUB_OFFLINE=1 .venv/bin/pytest -q --cov=rsec --cov-report=json:reports/phase02b-coverage-final.json --junitxml=reports/phase02b-tests-final.xml` | 220 aprobadas |
+| `../core-check/bin/python -m pytest -q -m 'not ml and not gpu and not multigpu'` | 209 aprobadas, 11 excluidas |
 | `ruff check .`, `ruff format --check .`, `python scripts/check_repository.py` | Pasaron |
 | `python -m pip check`, `python -m build --no-isolation` | Sin dependencias rotas y wheel/sdist 0.2.1a0 construidos |
 | `python scripts/check_gitleaks_scope.py ../gitleaks-bin`, `gitleaks git --redact --exit-code 1` | Controles positivos y negativos aprobaron y el historial quedó limpio |
@@ -15,7 +15,7 @@ Implementación publicada en `b34bf571f5896af83dfd3a674a32084f32793c35`. Linux, 
 | `rsec gpu diagnose --output reports/phase02b-hardware.json --markdown reports/phase02b-hardware.md` | CUDA y NVIDIA ausentes en el entorno |
 | `rsec gpu validate --device 0 --output reports/nongpu-should-not-exist` | Exit 2 esperado, sin fallback ni carpeta de pruebas |
 
-Las 19 pruebas nuevas ejercitan referencias congeladas, evaluaciones incompatibles, pass@k con recuentos conocidos, firmas Ed25519 reales temporales, HTTP localhost, rechazo de origen externo, separación autor/adjudicador, rechazo de decisiones inválidas, replay y manipulación de un manifiesto íntegramente recalculado. Se usaron evidencias de prueba y telemetría simulada explícita donde aplica. Hardware físico, arnés de código generado, revisiones expertas reales y resultados de modelos quedan pendientes.
+Las 20 pruebas nuevas ejercitan referencias congeladas, evaluaciones incompatibles, pass@k con recuentos conocidos, firmas Ed25519 reales temporales, rechazo de claves equivalentes codificadas en PEM distinto, HTTP localhost, rechazo de origen externo, separación autor/adjudicador, rechazo de decisiones inválidas, replay y manipulación de un manifiesto íntegramente recalculado. Se usaron evidencias de prueba y telemetría simulada explícita donde aplica. Hardware físico, arnés de código generado, revisiones expertas reales y resultados de modelos quedan pendientes.
 
 Los tres checks del código del PR #5 pasaron en [CPU](https://github.com/Snowwiy/Rsec/actions/runs/45912973547), [ML offline](https://github.com/Snowwiy/Rsec/actions/runs/45912973545) y [seguridad](https://github.com/Snowwiy/Rsec/actions/runs/45912973570). Consulta [PR #5](https://github.com/Snowwiy/Rsec/pull/5) para su commit de informes. [PR #4](https://github.com/Snowwiy/Rsec/pull/4) aprobó ambos eventos, tal como se registra en [GITHUB_INTEGRATION_REPORT.md](GITHUB_INTEGRATION_REPORT.md).
 

@@ -1,20 +1,19 @@
 {
   "phase": "02-B",
   "version": "v0.2.1-alpha",
-  "tested_code_commit": "b34bf571f5896af83dfd3a674a32084f32793c35",
   "local_tests": {
-    "pass": 219,
+    "pass": 220,
     "fail": 0,
-    "core_no_torch": 208,
+    "core_no_torch": 209,
     "deselected_ml": 11,
     "statement_coverage": {
-      "covered_lines": 2831,
-      "num_statements": 3304,
-      "percent_covered": 85.68401937046005,
+      "covered_lines": 2837,
+      "num_statements": 3310,
+      "percent_covered": 85.70996978851964,
       "percent_covered_display": "86",
       "missing_lines": 473,
       "excluded_lines": 5,
-      "percent_statements_covered": 85.68401937046005,
+      "percent_statements_covered": 85.70996978851964,
       "percent_statements_covered_display": "86"
     }
   },
@@ -50,5 +49,7 @@
     "No functional harness execution",
     "Semantic match logic tested with synthetic vectors",
     "Detailed branch protection GET returned 403"
-  ]
+  ],
+  "initial_code_commit": "b34bf571f5896af83dfd3a674a32084f32793c35",
+  "tested_scope": "Initial code plus final reviewer key identity hardening; see final PR head."
 }

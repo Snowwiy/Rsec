@@ -67,8 +67,11 @@ class Reviewers:
         self.path = Path(path).resolve(strict=True)
         items = [Reviewer.model_validate(row) for row in read_json(self.path)["reviewers"]]
         self.items = {row.id: row for row in items}
-        if len(self.items) != len(items) or len({row.key_sha256 for row in items}) != len(items):
-            raise RsecError("Reviewers must have distinct IDs and public keys")
+        if len(self.items) != len(items) or len(items) > 100:
+            raise RsecError("Reviewers require distinct IDs and a bounded registry")
+        keys = [self._key(row)[1] for row in items if row.active and not row.fixture]
+        if len(keys) != len(set(keys)):
+            raise RsecError("Active reviewers must have distinct Ed25519 public keys")
 
     def authority(self, reviewer_id, domain):
         row = self.items.get(reviewer_id)
@@ -80,6 +83,10 @@ class Reviewers:
             or "review" not in row.permissions
         ):
             raise RsecError("Reviewer is not authorized for this domain")
+        key, _ = self._key(row)
+        return row, key
+
+    def _key(self, row):
         key = self.path.parent / row.public_key
         if (
             Path(row.public_key).name != row.public_key
@@ -93,7 +100,7 @@ class Reviewers:
         der = openssl(["pkey", "-pubin", "-in", str(key), "-outform", "DER"])
         if len(der) != 44 or der[:12] != bytes.fromhex("302a300506032b6570032100"):
             raise RsecError("Reviewer key must be Ed25519")
-        return row, key
+        return key, der
 
 
 def openssl(args):

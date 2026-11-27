@@ -1,0 +1,16 @@
+# Public tokenizer file SHA-256 false positives only; keep every default rule.
+title = "Rsec narrowly scoped public tokenizer fingerprints"
+[extend]
+useDefault = true
+
+[[rules]]
+id = "generic-api-key"
+[[rules.allowlists]]
+description = "Two inspected public tokenizer hashes in the two measured statistics files"
+condition = "AND"
+paths = ['''^data/manifests/(pilot|benchmark)_statistics\.json$''']
+regexTarget = "match"
+regexes = [
+  '''tokenizer_config\.json": "bd9df05957db8b747d5b6fae78d8a00cc1f1bebe46f7bf3d159c17e0aaf9a5b2"''',
+  '''tokenizer\.json": "3fd169731d2cbde95e10bf356d66d5997fd885dd8dbb6fb4684da3f23b2585d8"''',
+]

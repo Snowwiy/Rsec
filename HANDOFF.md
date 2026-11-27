@@ -1,5 +1,9 @@
 # Handoff · v0.3.0-alpha.1
 
+## Transición al checkout de Windows
+
+La rama feat/rsec-physical-validation-v0.3.0 parte de dev en 63d14f7, que ya incorpora los PR #4, #5 y #6. El checkout autorizado está en Documents/Rsec del perfil local. El lanzador permite seleccionar la rama física y conserva los cambios pendientes. En la sesión que preparó esta transición sólo fue accesible el ejecutor Linux CPU. Para reanudar desde Windows, comprobar primero raíz y origen Git, estado del árbol, nvidia-smi y WSL. Enumerar las tarjetas antes de seleccionar sus UUID. La instalación actual de la 3060 sigue sin observarse. Mantener los informes con identificadores fuera de Git.
+
 PR #2 llegó a la rama de fundamentos. Los PR #4 y #5 llegaron a dev; el PR #3 llevó dev a main. La rama de Fase 03-A parte del merge de #5 en dev (cb3d15a). El PC requiere una sesión de escritorio con la unidad de datos y la RTX 4070 accesibles. Comenzar por [instalación y diagnóstico](LOCAL_INSTALLATION_REPORT.md), después [inventario privado](LOCAL_MODEL_INVENTORY.md), backend y smoke térmico. La suite de revisión conserva 64 candidatos SFT y 32 CyberBench, 96 preauditorías, 12 CodeBench, una fuente SQLite acotada y cero aprobados. Para soporte físico compartir únicamente resultados sanitizados. Las secciones siguientes son historia de fases anteriores.
 
 ---

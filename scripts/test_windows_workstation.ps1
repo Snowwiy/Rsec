@@ -19,3 +19,15 @@ if ($result.models.Count -ne 1 -or $result.models[0].path -ne $file -or !$result
 $blocked = $false
 try { & "$PSScriptRoot/checkout_local.ps1" -Destination $fixture } catch { $blocked = $true }
 if (!$blocked -or !(Test-Path -LiteralPath $file)) { throw 'Occupied directory guard failed' }
+
+# Exercise the real transition checkout under an isolated destination.
+$checkout = Join-Path $fixture 'project checkout'
+& "$PSScriptRoot/checkout_local.ps1" -Destination $checkout
+$current = & git -C $checkout branch --show-current
+if ($LASTEXITCODE -ne 0 -or $current -ne 'dev') { throw 'Expected integration branch on first checkout' }
+$marker = Join-Path $checkout 'local-uncommitted.txt'
+Set-Content -LiteralPath $marker -Value 'preserve this change'
+$blocked = $false
+try { & "$PSScriptRoot/checkout_local.ps1" -Destination $checkout -Branch feat/rsec-physical-validation-v0.3.0 } catch { $blocked = $true }
+$current = & git -C $checkout branch --show-current
+if (!$blocked -or $current -ne 'dev' -or (Get-Content -LiteralPath $marker) -ne 'preserve this change') { throw 'Dirty checkout guard failed' }

@@ -1,5 +1,9 @@
 # Fase 03-A · perfiles para la segunda tarjeta
 
+## Verificación pendiente en la estación
+
+La última sesión sólo observó un ejecutor Linux CPU. Confirmar en Windows si la 3060 ya está instalada; el texto de instalación pendiente que sigue describe el estado declarado al inicio de 03-A.
+
 **MULTI-GPU VALIDATION PENDING — SECOND GPU NOT INSTALLED.** Estado informado al comenzar. Confirmar la instalación antes de modificarlo. Enumerar las GPU por UUID con el mismo entorno, validar individualmente la 4070 (A) y la 3060 (B), y comparar memoria y latencia. Para procesos independientes (C), asignar un UUID distinto a cada proceso. Para DDP (D), ejecutar `bash scripts/validate_multi_gpu.sh "$GPU_4070" "$GPU_3060" reports/ddp-first`. El supervisor observa las dos temperaturas y exige dos dispositivos distintos; no inicia DDP durante el arranque normal. Para FSDP/QLoRA (E) e inferencia dividida (F) seguir las secciones C y D siguientes después de los smoke tests. Usar supervisión térmica independiente para esas cargas. P2P, enlaces PCIe y mejoras de rendimiento requieren mediciones.
 
 ---

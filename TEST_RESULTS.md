@@ -1,5 +1,9 @@
 # Evidencia · Fase 03-A · v0.3.0-alpha.1
 
+## Revalidación de la transición a Windows
+
+Base dev 63d14f7. En el ejecutor Linux aislado, `HF_HUB_OFFLINE=1 .venv/bin/pytest -q --cov=rsec --cov-report=json:reports/transition-cov.json` produjo 235 aprobadas, 2 advertencias y 85.79 % de cobertura. Pasaron git fsck --full --no-dangling, pip check, Ruff y la comprobación del repositorio. El diagnóstico observó Torch 2.8.0+cpu, cero dispositivos CUDA y NCCL no disponible. La invocación real de `rsec gpu validate --device 0` terminó con código 2 y no creó artefactos. Quedan sin medir driver, WSL, precisión, NF4, checkpoints, distribución, temperatura y VRAM de la estación. La prueba Windows del PR incluye checkout de dev y preservación de cambios locales.
+
 | Ejecución | Resultado observado en Linux |
 |---|---|
 | `HF_HUB_OFFLINE=1 .venv/bin/pytest -q --cov=rsec --cov-report=json:reports/03a-release.json` | 235 aprobadas, 2 advertencias SWIG. 3,024 de 3,525 sentencias, 85.79 % |

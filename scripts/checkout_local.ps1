@@ -1,6 +1,8 @@
-param([string]$Destination = 'G:\Rsec')
+param(
+  [string]$Destination = (Join-Path (Join-Path $env:USERPROFILE 'Documents') 'Rsec'),
+  [ValidateSet('dev','feat/rsec-physical-validation-v0.3.0')][string]$Branch = 'dev'
+)
 $ErrorActionPreference = 'Stop'
-$branch = 'feat/rsec-local-infrastructure-v0.3.0'
 $url = 'https://github.com/Snowwiy/Rsec.git'
 if (!(Test-Path -LiteralPath $Destination)) {
   & git clone --branch $branch -- $url $Destination

@@ -1,0 +1,330 @@
+{
+  "records": 64,
+  "domains": {
+    "application_security": 8,
+    "soc_detection": 8,
+    "vulnerability_management": 8,
+    "infrastructure_security": 8,
+    "dfir": 8,
+    "grc": 8,
+    "ai_security": 8,
+    "cryptography_identity": 8
+  },
+  "languages": {
+    "en": 32,
+    "es": 32
+  },
+  "difficulties": {
+    "fundamental": 32,
+    "intermediate": 32
+  },
+  "whitespace_units": {
+    "count": 64,
+    "mean": 103.203125,
+    "median": 102.0,
+    "p90": 109.0,
+    "p95": 115.24999999999997,
+    "p99": 134.85,
+    "max": 138,
+    "sum": 6605
+  },
+  "serialized_utf8_bytes": 155760,
+  "tokenizer_tokens": {
+    "count": 64,
+    "mean": 251.78125,
+    "median": 261.5,
+    "p90": 279.0,
+    "p95": 291.19999999999993,
+    "p99": 381.8699999999999,
+    "max": 414,
+    "sum": 16114
+  },
+  "tokens_per_epoch_eligible_sft": 0,
+  "contexts": {
+    "1024": {
+      "over_context": 0,
+      "within_context": 64
+    },
+    "2048": {
+      "over_context": 0,
+      "within_context": 64
+    },
+    "4096": {
+      "over_context": 0,
+      "within_context": 64
+    },
+    "8192": {
+      "over_context": 0,
+      "within_context": 64
+    }
+  },
+  "note": "Whitespace units are not tokenizer counts; memory feasibility and training time are not measured.",
+  "tokenizer_identity": {
+    "files": {
+      "chat_template.jinja": "cd8e9439f0570856fd70470bf8889ebd8b5d1107207f67a5efb46e342330527f",
+      "tokenizer_config.json": "bd9df05957db8b747d5b6fae78d8a00cc1f1bebe46f7bf3d159c17e0aaf9a5b2",
+      "generation_config.json": "fcd815b360626c137aa85acf5a6257f7cb2f9f0b1edf45653a5d25aefac8b695",
+      "config.json": "05ab308aaa56d3ff63eff1f2c87c38131c5d349a897b7f6029dfc34b7fbae124",
+      "tokenizer.json": "3fd169731d2cbde95e10bf356d66d5997fd885dd8dbb6fb4684da3f23b2585d8"
+    },
+    "chat_template_hash": "2e2d2512cfe46af53dc1eed45368ecaab26ac4461c480e6b69fe571cf0ceaa75"
+  },
+  "token_lengths": [
+    {
+      "id": "pilot-000-en",
+      "tokens": 293
+    },
+    {
+      "id": "pilot-000-es",
+      "tokens": 342
+    },
+    {
+      "id": "pilot-001-en",
+      "tokens": 363
+    },
+    {
+      "id": "pilot-001-es",
+      "tokens": 414
+    },
+    {
+      "id": "pilot-002-en",
+      "tokens": 224
+    },
+    {
+      "id": "pilot-002-es",
+      "tokens": 279
+    },
+    {
+      "id": "pilot-003-en",
+      "tokens": 215
+    },
+    {
+      "id": "pilot-003-es",
+      "tokens": 266
+    },
+    {
+      "id": "pilot-004-en",
+      "tokens": 230
+    },
+    {
+      "id": "pilot-004-es",
+      "tokens": 280
+    },
+    {
+      "id": "pilot-005-en",
+      "tokens": 214
+    },
+    {
+      "id": "pilot-005-es",
+      "tokens": 262
+    },
+    {
+      "id": "pilot-006-en",
+      "tokens": 223
+    },
+    {
+      "id": "pilot-006-es",
+      "tokens": 264
+    },
+    {
+      "id": "pilot-007-en",
+      "tokens": 228
+    },
+    {
+      "id": "pilot-007-es",
+      "tokens": 274
+    },
+    {
+      "id": "pilot-008-en",
+      "tokens": 228
+    },
+    {
+      "id": "pilot-008-es",
+      "tokens": 275
+    },
+    {
+      "id": "pilot-009-en",
+      "tokens": 219
+    },
+    {
+      "id": "pilot-009-es",
+      "tokens": 270
+    },
+    {
+      "id": "pilot-010-en",
+      "tokens": 229
+    },
+    {
+      "id": "pilot-010-es",
+      "tokens": 275
+    },
+    {
+      "id": "pilot-011-en",
+      "tokens": 224
+    },
+    {
+      "id": "pilot-011-es",
+      "tokens": 266
+    },
+    {
+      "id": "pilot-012-en",
+      "tokens": 219
+    },
+    {
+      "id": "pilot-012-es",
+      "tokens": 271
+    },
+    {
+      "id": "pilot-013-en",
+      "tokens": 226
+    },
+    {
+      "id": "pilot-013-es",
+      "tokens": 275
+    },
+    {
+      "id": "pilot-014-en",
+      "tokens": 215
+    },
+    {
+      "id": "pilot-014-es",
+      "tokens": 266
+    },
+    {
+      "id": "pilot-015-en",
+      "tokens": 212
+    },
+    {
+      "id": "pilot-015-es",
+      "tokens": 260
+    },
+    {
+      "id": "pilot-016-en",
+      "tokens": 223
+    },
+    {
+      "id": "pilot-016-es",
+      "tokens": 277
+    },
+    {
+      "id": "pilot-017-en",
+      "tokens": 224
+    },
+    {
+      "id": "pilot-017-es",
+      "tokens": 281
+    },
+    {
+      "id": "pilot-018-en",
+      "tokens": 217
+    },
+    {
+      "id": "pilot-018-es",
+      "tokens": 270
+    },
+    {
+      "id": "pilot-019-en",
+      "tokens": 222
+    },
+    {
+      "id": "pilot-019-es",
+      "tokens": 273
+    },
+    {
+      "id": "pilot-020-en",
+      "tokens": 210
+    },
+    {
+      "id": "pilot-020-es",
+      "tokens": 263
+    },
+    {
+      "id": "pilot-021-en",
+      "tokens": 220
+    },
+    {
+      "id": "pilot-021-es",
+      "tokens": 266
+    },
+    {
+      "id": "pilot-022-en",
+      "tokens": 215
+    },
+    {
+      "id": "pilot-022-es",
+      "tokens": 269
+    },
+    {
+      "id": "pilot-023-en",
+      "tokens": 215
+    },
+    {
+      "id": "pilot-023-es",
+      "tokens": 261
+    },
+    {
+      "id": "pilot-024-en",
+      "tokens": 229
+    },
+    {
+      "id": "pilot-024-es",
+      "tokens": 278
+    },
+    {
+      "id": "pilot-025-en",
+      "tokens": 215
+    },
+    {
+      "id": "pilot-025-es",
+      "tokens": 262
+    },
+    {
+      "id": "pilot-026-en",
+      "tokens": 223
+    },
+    {
+      "id": "pilot-026-es",
+      "tokens": 271
+    },
+    {
+      "id": "pilot-027-en",
+      "tokens": 220
+    },
+    {
+      "id": "pilot-027-es",
+      "tokens": 266
+    },
+    {
+      "id": "pilot-028-en",
+      "tokens": 208
+    },
+    {
+      "id": "pilot-028-es",
+      "tokens": 263
+    },
+    {
+      "id": "pilot-029-en",
+      "tokens": 215
+    },
+    {
+      "id": "pilot-029-es",
+      "tokens": 267
+    },
+    {
+      "id": "pilot-030-en",
+      "tokens": 216
+    },
+    {
+      "id": "pilot-030-es",
+      "tokens": 271
+    },
+    {
+      "id": "pilot-031-en",
+      "tokens": 224
+    },
+    {
+      "id": "pilot-031-es",
+      "tokens": 279
+    }
+  ]
+}

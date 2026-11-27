@@ -1,0 +1,10 @@
+{"id": "benchmark-00", "label": "vulnerable", "cwe": ["CWE-209"], "references": [], "answer": "Synthetic reference fixture; not model output."}
+{"id": "benchmark-01", "label": "benign", "cwe": [], "references": [], "answer": "Synthetic reference fixture; not model output."}
+{"id": "benchmark-02", "label": "insufficient", "cwe": [], "references": [], "answer": "Synthetic reference fixture; not model output."}
+{"id": "benchmark-03", "label": "insufficient", "cwe": [], "references": [], "answer": "Synthetic reference fixture; not model output."}
+{"id": "benchmark-04", "label": "vulnerable", "cwe": ["CWE-306"], "references": [], "answer": "Synthetic reference fixture; not model output."}
+{"id": "benchmark-05", "label": "benign", "cwe": [], "references": [], "answer": "Synthetic reference fixture; not model output."}
+{"id": "benchmark-06", "label": "insufficient", "cwe": [], "references": [], "answer": "Synthetic reference fixture; not model output."}
+{"id": "benchmark-07", "label": "insufficient", "cwe": [], "references": [], "answer": "Synthetic reference fixture; not model output."}
+{"id": "benchmark-08", "label": "vulnerable", "cwe": ["CWE-369"], "references": [], "answer": "Synthetic reference fixture; not model output."}
+{"id": "benchmark-09", "label": "benign", "cwe": [], "references": [], "answer": "Synthetic reference fixture; not model output."}

@@ -1,0 +1,68 @@
+{
+  "version": "software-1.0.0",
+  "domains": {
+    "software_engineering": {
+      "target": 1.0,
+      "subcategories": [
+        "code_generation",
+        "debugging",
+        "refactoring",
+        "architecture",
+        "frontend",
+        "backend",
+        "apis",
+        "automation",
+        "defensive_tools",
+        "databases",
+        "testing",
+        "devsecops",
+        "ci_cd",
+        "repository_analysis",
+        "optimization",
+        "secure_coding",
+        "documentation"
+      ]
+    }
+  },
+  "task_types": [
+    "implement",
+    "diagnose",
+    "repair",
+    "design",
+    "review",
+    "test",
+    "document",
+    "optimize",
+    "explain"
+  ],
+  "programming_languages": [
+    "Python",
+    "JavaScript",
+    "TypeScript",
+    "Java",
+    "C",
+    "C++",
+    "C#",
+    "PHP",
+    "Go",
+    "Rust",
+    "SQL",
+    "PowerShell",
+    "Bash"
+  ],
+  "languages": {
+    "en": 0.65,
+    "es": 0.35
+  },
+  "difficulties": {
+    "fundamental": 0.15,
+    "intermediate": 0.35,
+    "advanced": 0.35,
+    "expert": 0.15
+  },
+  "split_targets": {
+    "train": 0.85,
+    "eval": 0.1,
+    "test": 0.05
+  }
+}

@@ -1,0 +1,4 @@
+# Isolated experimental Unsloth environment; not a validated lock.
+# BLOCKED: unsloth==2026.11.12 requires incompatible Transformers/TRL/datasets versions.
+tensorboard==2.20.0
+# llama-cpp-python: compile against a reviewed llama.cpp revision separately.

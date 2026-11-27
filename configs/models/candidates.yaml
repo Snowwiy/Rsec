@@ -1,0 +1,18 @@
+experimental:
+- id: null
+  size: 3B-4B
+- id: meta-llama/Llama-3.1-8B-Instruct
+  size: 7B-8B
+- id: mistralai/Mistral-Nemo-Instruct-2407
+  size: 12B-14B
+- id: null
+  size: 20B-24B
+- id: Qwen/Qwen3-Coder-30B-A3B-Instruct
+  size: 30B-32B MoE
+note: Unselected candidates require license/revision/hardware review; null means intentionally
+  unselected, not a fictitious identifier.
+selected:
+  id: Qwen/Qwen2.5-Coder-7B-Instruct
+  license: Apache-2.0
+  revision: c03e6d358207e414f1eca0bb1891e29f1db0e242
+  status: GPU VALIDATION PENDING

@@ -1,0 +1,19 @@
+{
+  "version": "1.0.0",
+  "domains": {
+    "application_security": {"target": 0.25, "subcategories": ["secure_coding", "code_audit", "authentication", "authorization", "api_security", "dependencies", "remediation", "secure_sdlc"]},
+    "soc_detection": {"target": 0.20, "subcategories": ["alert_triage", "log_analysis", "detection_rules", "threat_hunting", "false_positives", "telemetry"]},
+    "vulnerability_management": {"target": 0.15, "subcategories": ["advisories", "cve_cwe_cvss", "exposure", "prioritization", "version_matching"]},
+    "infrastructure_security": {"target": 0.15, "subcategories": ["linux", "windows", "active_directory", "network", "cloud", "containers", "hardening"]},
+    "dfir": {"target": 0.10, "subcategories": ["evidence_preservation", "timeline", "incident_response", "artifact_analysis", "reporting"]},
+    "grc": {"target": 0.05, "subcategories": ["risk", "asset_management", "controls", "audit", "reporting"]},
+    "ai_security": {"target": 0.05, "subcategories": ["prompt_injection", "rag_security", "agent_security", "data_poisoning", "model_supply_chain"]},
+    "cryptography_identity": {"target": 0.05, "subcategories": ["tls", "pki", "hashing", "key_management", "mfa", "iam", "oauth_oidc", "secrets"]}
+  },
+  "languages": {"en": 0.65, "es": 0.35},
+  "difficulties": {"fundamental": 0.15, "intermediate": 0.35, "advanced": 0.35, "expert": 0.15},
+  "task_types": ["grounded_qa", "code_audit", "vulnerability_classification", "secure_insecure_comparison", "cwe_mapping", "log_interpretation", "alert_classification", "configuration_audit", "remediation", "incident_prioritization", "false_positive_validation", "advisory_interpretation", "technical_report", "insufficient_evidence", "claim_correction", "contradictory_evidence", "structured_json", "multi_turn"],
+  "programming_languages": ["Python", "JavaScript", "TypeScript", "Java", "C", "C++", "C#", "PHP", "Go", "Rust", "SQL", "PowerShell", "Bash"],
+  "split_targets": {"train": 0.85, "eval": 0.10, "test": 0.05},
+  "note": "Targets are advisory. Difficulty/language labels require technical review; no quota overrides rights or quality."
+}

@@ -1,0 +1,6 @@
+# Install torch separately for your device. Ollama backend needs only the core.
+-r requirements.txt
+transformers==5.24.1
+peft==0.22.0
+accelerate==1.16.0
+safetensors==0.8.0

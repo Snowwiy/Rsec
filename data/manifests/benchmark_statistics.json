@@ -1,0 +1,202 @@
+{
+  "records": 32,
+  "domains": {
+    "application_security": 4,
+    "soc_detection": 4,
+    "vulnerability_management": 4,
+    "infrastructure_security": 4,
+    "dfir": 4,
+    "grc": 4,
+    "ai_security": 4,
+    "cryptography_identity": 4
+  },
+  "languages": {
+    "en": 16,
+    "es": 16
+  },
+  "difficulties": {
+    "fundamental": 16,
+    "intermediate": 16
+  },
+  "whitespace_units": {
+    "count": 32,
+    "mean": 101.5,
+    "median": 99.5,
+    "p90": 107.50000000000001,
+    "p95": 113.85,
+    "p99": 125.14000000000001,
+    "max": 127,
+    "sum": 3248
+  },
+  "serialized_utf8_bytes": 77075,
+  "tokenizer_tokens": {
+    "count": 32,
+    "mean": 250.1875,
+    "median": 264.0,
+    "p90": 274.6,
+    "p95": 290.29999999999995,
+    "p99": 344.88000000000005,
+    "max": 361,
+    "sum": 8006
+  },
+  "tokens_per_epoch_eligible_sft": 0,
+  "contexts": {
+    "1024": {
+      "over_context": 0,
+      "within_context": 32
+    },
+    "2048": {
+      "over_context": 0,
+      "within_context": 32
+    },
+    "4096": {
+      "over_context": 0,
+      "within_context": 32
+    },
+    "8192": {
+      "over_context": 0,
+      "within_context": 32
+    }
+  },
+  "note": "Whitespace units are not tokenizer counts; memory feasibility and training time are not measured.",
+  "tokenizer_identity": {
+    "files": {
+      "chat_template.jinja": "cd8e9439f0570856fd70470bf8889ebd8b5d1107207f67a5efb46e342330527f",
+      "tokenizer_config.json": "bd9df05957db8b747d5b6fae78d8a00cc1f1bebe46f7bf3d159c17e0aaf9a5b2",
+      "generation_config.json": "fcd815b360626c137aa85acf5a6257f7cb2f9f0b1edf45653a5d25aefac8b695",
+      "config.json": "05ab308aaa56d3ff63eff1f2c87c38131c5d349a897b7f6029dfc34b7fbae124",
+      "tokenizer.json": "3fd169731d2cbde95e10bf356d66d5997fd885dd8dbb6fb4684da3f23b2585d8"
+    },
+    "chat_template_hash": "2e2d2512cfe46af53dc1eed45368ecaab26ac4461c480e6b69fe571cf0ceaa75"
+  },
+  "token_lengths": [
+    {
+      "id": "bench-000-en",
+      "tokens": 309
+    },
+    {
+      "id": "bench-000-es",
+      "tokens": 361
+    },
+    {
+      "id": "bench-001-en",
+      "tokens": 229
+    },
+    {
+      "id": "bench-001-es",
+      "tokens": 275
+    },
+    {
+      "id": "bench-002-en",
+      "tokens": 223
+    },
+    {
+      "id": "bench-002-es",
+      "tokens": 271
+    },
+    {
+      "id": "bench-003-en",
+      "tokens": 215
+    },
+    {
+      "id": "bench-003-es",
+      "tokens": 263
+    },
+    {
+      "id": "bench-004-en",
+      "tokens": 222
+    },
+    {
+      "id": "bench-004-es",
+      "tokens": 270
+    },
+    {
+      "id": "bench-005-en",
+      "tokens": 218
+    },
+    {
+      "id": "bench-005-es",
+      "tokens": 266
+    },
+    {
+      "id": "bench-006-en",
+      "tokens": 219
+    },
+    {
+      "id": "bench-006-es",
+      "tokens": 267
+    },
+    {
+      "id": "bench-007-en",
+      "tokens": 219
+    },
+    {
+      "id": "bench-007-es",
+      "tokens": 267
+    },
+    {
+      "id": "bench-008-en",
+      "tokens": 220
+    },
+    {
+      "id": "bench-008-es",
+      "tokens": 268
+    },
+    {
+      "id": "bench-009-en",
+      "tokens": 220
+    },
+    {
+      "id": "bench-009-es",
+      "tokens": 268
+    },
+    {
+      "id": "bench-010-en",
+      "tokens": 221
+    },
+    {
+      "id": "bench-010-es",
+      "tokens": 269
+    },
+    {
+      "id": "bench-011-en",
+      "tokens": 219
+    },
+    {
+      "id": "bench-011-es",
+      "tokens": 267
+    },
+    {
+      "id": "bench-012-en",
+      "tokens": 227
+    },
+    {
+      "id": "bench-012-es",
+      "tokens": 275
+    },
+    {
+      "id": "bench-013-en",
+      "tokens": 221
+    },
+    {
+      "id": "bench-013-es",
+      "tokens": 269
+    },
+    {
+      "id": "bench-014-en",
+      "tokens": 217
+    },
+    {
+      "id": "bench-014-es",
+      "tokens": 265
+    },
+    {
+      "id": "bench-015-en",
+      "tokens": 219
+    },
+    {
+      "id": "bench-015-es",
+      "tokens": 267
+    }
+  ]
+}

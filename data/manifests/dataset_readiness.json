@@ -1,0 +1,112 @@
+{
+  "version": "0.2.0-alpha",
+  "dataset_readiness": "FAIL",
+  "training_readiness": "NOT READY",
+  "scope": "Corpus release verdict; implemented infrastructure is available for code review.",
+  "registered_sources": 22,
+  "verified_external_source_existence": 20,
+  "internal_fixture_sources": 2,
+  "source_policy_states": {
+    "APPROVED": 3,
+    "REVIEW REQUIRED": 18,
+    "RESTRICTED": 1,
+    "REJECTED": 0
+  },
+  "external_sources_approved_for_sft": 0,
+  "unique_phase2_records_processed": 99,
+  "downloaded_external_records": 3,
+  "pilot_candidates": 64,
+  "development_benchmark_cases": 32,
+  "expert_approved_sft": 0,
+  "expert_reviewed_benchmark_cases": 0,
+  "pending_sft_review": 64,
+  "pending_benchmark_review": 32,
+  "knowledge_pending_interpretation": 3,
+  "rejected_records": 0,
+  "quarantined_records": 0,
+  "private_final_gold_cases": 0,
+  "actual_sft_splits": {
+    "train": 0,
+    "eval": 0,
+    "test": 0
+  },
+  "pilot": {
+    "processed": 64,
+    "structurally_accepted": 64,
+    "approved_sft": 0,
+    "pending_review": 64,
+    "rejected": 0,
+    "quarantined": 0,
+    "reasons": {},
+    "domains": {
+      "application_security": 8,
+      "soc_detection": 8,
+      "vulnerability_management": 8,
+      "infrastructure_security": 8,
+      "dfir": 8,
+      "grc": 8,
+      "ai_security": 8,
+      "cryptography_identity": 8
+    },
+    "languages": {
+      "en": 32,
+      "es": 32
+    },
+    "difficulties": {
+      "fundamental": 32,
+      "intermediate": 32
+    },
+    "purposes": {
+      "sft": 64
+    },
+    "version": "pilot-0.2.0",
+    "contamination": {
+      "contaminated_ids": [],
+      "candidate_records": 64,
+      "reserved_records": 42,
+      "link_count": 51,
+      "limits": "Provenance/translation IDs, lexical overlap and whitespace-normalized code; no universal semantic or cross-language detector"
+    },
+    "sft_release": "BLOCKED: no expert-approved examples"
+  },
+  "benchmark": {
+    "name": "Rsec-CyberBench",
+    "version": "0.1.0",
+    "scope": "public development; not final hidden gold",
+    "cases": 32,
+    "families": 15,
+    "link_count": 17,
+    "expert_reviewed": 0,
+    "human_gold_certified": false,
+    "labels": {
+      "vulnerable": 10,
+      "benign": 10,
+      "insufficient": 12
+    },
+    "domains": {
+      "application_security": 4,
+      "soc_detection": 4,
+      "vulnerability_management": 4,
+      "infrastructure_security": 4,
+      "dfir": 4,
+      "grc": 4,
+      "ai_security": 4,
+      "cryptography_identity": 4
+    },
+    "languages": {
+      "en": 16,
+      "es": 16
+    },
+    "benchmark_hash": "80c63ac74b7ca54fee0a4f7e4252e4b6ceed9733277ae2a785b7c6c083590a95"
+  },
+  "pilot_manifest_sha256": "764a04ba9506a660ef8b254941ad93280c5f737bff6272dd050a1c04951973af",
+  "pilot_reproduced_identically": true,
+  "generator_code_sha256": "426a3ac51d4e7b10c9a959510dfe1581b190b29329adcab7d88b93b7f2288036",
+  "blockers": [
+    "No expert-approved SFT corpus",
+    "No independently expert-reviewed or hidden final gold cases",
+    "Pilot 500-1000 goal not met; no padding to meet volume",
+    "External SFT source rights not approved",
+    "Physical QLoRA/CUDA and multi-GPU validation pending"
+  ]
+}

@@ -1,0 +1,3 @@
+# Linux/WSL2 GPU candidate; install a verified PyTorch CUDA wheel first.
+-r requirements-ml.txt
+bitsandbytes==0.50.2

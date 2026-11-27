@@ -2,6 +2,11 @@
 param(
   [Parameter(Mandatory)][ValidateSet('diagnose','setup','inventory','review','inference','probe','goose','gpu')][string]$Action,
   [string]$Library, [string]$Model, [string]$GpuUuid, [int]$Port,
+  [string]$PythonExe, [string]$LlamaServerExe = 'llama-server', [string]$GooseExe = 'goose',
+  [ValidateSet('ollama','openai')][string]$GooseBackend = 'ollama',
+  [switch]$GooseSmoke,
+  [switch]$DisableReasoning,
+  [ValidateRange(1,64)][int]$Threads = 2,
   [ValidateRange(128,32768)][int]$Context = 2048,
   [string]$ReviewBundle = 'data/processed/pilot-review-1'
 )
@@ -13,7 +18,8 @@ $Run = Join-Path $Local ('runs/' + [guid]::NewGuid())
 $Saved = @{}
 function Set-ScopedEnv($Name,$Value) {
   if (!$Saved.ContainsKey($Name)) { $Saved[$Name] = [Environment]::GetEnvironmentVariable($Name,'Process') }
-  [Environment]::SetEnvironmentVariable($Name,$Value,'Process')
+  if ($null -eq $Value) { Remove-Item -LiteralPath "Env:$Name" -ErrorAction SilentlyContinue }
+  else { [Environment]::SetEnvironmentVariable($Name,$Value,'Process') }
 }
 function Run-Checked($Program,[string[]]$Arguments) {
   & $Program @Arguments
@@ -34,7 +40,13 @@ try {
     New-Item -ItemType Directory -Path $dir -Force | Out-Null
     Set-ScopedEnv $item.Key $dir
   }
-  if ($Port -eq 0) { $Port = switch ($Action) { 'goose' {11434} 'review' {8765} default {8081} } }
+  if ($Port -eq 0) {
+    $Port = switch ($Action) {
+      'goose' { if ($GooseBackend -eq 'ollama') { 11434 } else { 8081 } }
+      'review' { 8765 }
+      default { 8081 }
+    }
+  }
   if ($Port -lt 1 -or $Port -gt 65535) { throw 'Invalid port' }
   if ($Action -eq 'diagnose') {
     $report = [ordered]@{os=[Environment]::OSVersion.VersionString; powershell=$PSVersionTable.PSVersion.ToString();
@@ -61,10 +73,18 @@ try {
   if ($Action -eq 'setup') {
     if (!(Test-Path -LiteralPath $Python)) {
       if (Test-Path (Join-Path $Local 'windows-venv')) { throw 'Inspect incomplete existing environment before setup' }
-      Run-Checked 'py' @('-3.12','-m','venv',(Join-Path $Local 'windows-venv'))
+      $venvArgs = @('-m','venv',(Join-Path $Local 'windows-venv'))
+      if ($PythonExe) { Run-Checked $PythonExe $venvArgs }
+      else { Run-Checked 'py' (@('-3.12') + $venvArgs) }
     }
     Run-Checked $Python @('-m','pip','install','-r','requirements-dev.txt','-e','.')
     Run-Checked $Python @('-m','pip','check')
+    return
+  }
+  if ($Action -eq 'gpu') {
+    if (!$GpuUuid) { throw 'Select one NVIDIA UUID' }
+    if (!$PythonExe) { $PythonExe = $env:RSEC_CUDA_PYTHON }
+    & "$PSScriptRoot/validate_gpu.ps1" -GpuUuid $GpuUuid -OutputDirectory (Join-Path $Run 'gpu') -PythonExe $PythonExe
     return
   }
   if (!(Test-Path -LiteralPath $Python)) { throw 'Run workstation.ps1 setup first' }
@@ -86,13 +106,18 @@ try {
       if (!$Model -or !(Test-Path -LiteralPath $Model -PathType Leaf) -or [IO.Path]::GetExtension($Model) -ine '.gguf') { throw 'Select a local GGUF file' }
       Require-Port $Port
       $layers=0
+      $deviceArgs = @('--device','none')
+      Set-ScopedEnv 'CUDA_VISIBLE_DEVICES' '-1'
       if ($GpuUuid) {
         $ids = & nvidia-smi --query-gpu=uuid --format=csv,noheader
         if ($LASTEXITCODE -ne 0 -or $GpuUuid -cnotin @($ids)) { throw 'Unknown NVIDIA UUID' }
         Set-ScopedEnv 'CUDA_VISIBLE_DEVICES' $GpuUuid
+        $deviceArgs = @()
         $layers=99
       }
-      Run-Checked 'llama-server' @('-m',(Get-Item -LiteralPath $Model).FullName,'--alias','local-baseline','--host','127.0.0.1','--port',$Port,'-c',$Context,'-ngl',$layers)
+      $serverArgs = @('-m',(Get-Item -LiteralPath $Model).FullName,'--alias','local-baseline','--host','127.0.0.1','--port',$Port,'-c',$Context,'-ngl',$layers,'-t',$Threads,'-tb',$Threads)
+      if ($DisableReasoning) { $serverArgs += @('--reasoning-budget','0') }
+      Run-Checked $LlamaServerExe ($serverArgs + $deviceArgs)
     }
     'probe' {
       if (!$Model) { $Model='local-baseline' }
@@ -100,19 +125,41 @@ try {
       Write-Output $Run
     }
     'goose' {
-      if (!$Model) { throw 'Select the exact installed Ollama model tag' }
-      Run-Checked $Python @('-m','rsec.local','probe','--port',$Port,'--model',$Model,'--ollama','--output',(Join-Path $Run 'baseline.json'))
-      Set-ScopedEnv 'OLLAMA_HOST' "http://127.0.0.1:$Port"
-      Set-ScopedEnv 'GOOSE_PROVIDER' 'ollama'
+      if (!$Model) { throw 'Select the exact model ID published by the local server' }
+      $probeArgs = @('-m','rsec.local','probe','--port',$Port,'--model',$Model,'--catalog-only','--output',(Join-Path $Run 'baseline.json'))
+      if ($GooseBackend -eq 'ollama') { $probeArgs += '--ollama' }
+      Run-Checked $Python $probeArgs
+      Set-ScopedEnv 'GOOSE_PATH_ROOT' (Join-Path $Local 'goose')
+      Set-ScopedEnv 'GOOSE_DISABLE_KEYRING' '1'
+      Set-ScopedEnv 'GOOSE_MODE' 'approve'
+      Set-ScopedEnv 'NO_PROXY' '127.0.0.1,localhost,::1'
+      Set-ScopedEnv 'GOOSE_PROVIDER' $GooseBackend
+      Set-ScopedEnv 'GOOSE_PROVIDER__TYPE' $GooseBackend
+      Set-ScopedEnv 'GOOSE_PROVIDER__HOST' "http://127.0.0.1:$Port"
       Set-ScopedEnv 'GOOSE_MODEL' $Model
-      Run-Checked 'goose' @('session')
-    }
-    'gpu' {
-      if (!$GpuUuid) { throw 'Select one NVIDIA UUID' }
-      Run-Checked $Python @('-m','rsec.thermal','--uuid',$GpuUuid,'--output',(Join-Path $Run 'gpu'))
+      if ($GooseBackend -eq 'ollama') {
+        Set-ScopedEnv 'OLLAMA_HOST' "http://127.0.0.1:$Port"
+        Set-ScopedEnv 'GOOSE_PROVIDER__API_KEY' $null
+      }
+      else {
+        Set-ScopedEnv 'OPENAI_HOST' "http://127.0.0.1:$Port"
+        Set-ScopedEnv 'OPENAI_BASE_PATH' 'v1/chat/completions'
+        Set-ScopedEnv 'OPENAI_API_KEY' 'local-baseline'
+        Set-ScopedEnv 'GOOSE_PROVIDER__API_KEY' 'local-baseline'
+        foreach ($name in 'OPENAI_CUSTOM_HEADERS','OPENAI_ORGANIZATION','OPENAI_PROJECT') { Set-ScopedEnv $name $null }
+      }
+      if ($GooseSmoke) {
+        Set-ScopedEnv 'GOOSE_MAX_TOKENS' '8'
+        Set-ScopedEnv 'GOOSE_MAX_TURNS' '1'
+        Set-ScopedEnv 'GOOSE_DISABLE_SESSION_NAMING' '1'
+        Set-ScopedEnv 'CONTEXT_FILE_NAMES' '[]'
+        Run-Checked $GooseExe @('run','--no-profile','--no-session','--text','Reply with the digit 7 only.')
+      } else {
+        Run-Checked $GooseExe @('session','--no-profile')
+      }
     }
   }
 } finally {
-  foreach ($name in $Saved.Keys) { [Environment]::SetEnvironmentVariable($name,$Saved[$name],'Process') }
+  foreach ($name in $Saved.Keys) { Set-ScopedEnv $name ($Saved[$name]) }
   Pop-Location
 }

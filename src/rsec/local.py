@@ -166,6 +166,14 @@ def goose_settings(path):
         for key in ("GOOSE_PROVIDER", "GOOSE_MODEL")
         if isinstance(cfg.get(key), str)
     }
+    active_provider = cfg.get("active_provider")
+    if isinstance(active_provider, str):
+        result.setdefault("GOOSE_PROVIDER", active_provider)
+        providers = cfg.get("providers")
+        if isinstance(providers, dict):
+            settings = providers.get(active_provider)
+            if isinstance(settings, dict) and isinstance(settings.get("model"), str):
+                result.setdefault("GOOSE_MODEL", settings["model"])
     for key in ("OLLAMA_HOST", "OPENAI_HOST"):
         host = cfg.get(key)
         if isinstance(host, str):
@@ -197,7 +205,7 @@ def request(port, path, payload=None):
         conn.close()
 
 
-def probe(port, model, *, ollama=False):
+def probe(port, model, *, ollama=False, catalog_only=False):
     if ollama:
         info = request(port, "/api/show", {"model": model})
         if (
@@ -211,7 +219,9 @@ def probe(port, model, *, ollama=False):
     ids = [row["id"] for row in request(port, "/v1/models")["data"]]
     if model not in ids:
         raise ValueError("Baseline is absent from local server inventory")
-    start = time.monotonic()
+    if catalog_only:
+        return {"status": "LOCAL_BASELINE_LISTED", "model": model}
+    start = time.perf_counter()
     reply = request(
         port,
         "/v1/chat/completions",
@@ -223,7 +233,7 @@ def probe(port, model, *, ollama=False):
             "max_tokens": 8,
         },
     )
-    elapsed = time.monotonic() - start
+    elapsed = time.perf_counter() - start
     if not (reply["choices"][0]["message"].get("content") or "").strip():
         raise ValueError("Empty completion")
     tokens = reply.get("usage", {}).get("completion_tokens")
@@ -232,7 +242,7 @@ def probe(port, model, *, ollama=False):
         "model": model,
         "elapsed_seconds": elapsed,
         "completion_tokens": tokens,
-        "end_to_end_tokens_per_second": tokens / elapsed if tokens else None,
+        "end_to_end_tokens_per_second": tokens / elapsed if tokens and elapsed else None,
     }
 
 
@@ -246,6 +256,7 @@ def main():
     check.add_argument("--port", type=int, required=True)
     check.add_argument("--model", required=True)
     check.add_argument("--ollama", action="store_true")
+    check.add_argument("--catalog-only", action="store_true")
     check.add_argument("--output", type=Path, required=True)
     goose = subs.add_parser("goose-config")
     goose.add_argument("config", type=Path)
@@ -256,7 +267,7 @@ def main():
     elif args.action == "goose-config":
         value = goose_settings(args.config)
     else:
-        value = probe(args.port, args.model, ollama=args.ollama)
+        value = probe(args.port, args.model, ollama=args.ollama, catalog_only=args.catalog_only)
     write_json(args.output, value)
 
 

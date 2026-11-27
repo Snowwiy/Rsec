@@ -46,7 +46,15 @@ def test_probe_only_generates_for_installed_baseline(monkeypatch):
     with pytest.raises(ValueError, match="absent"):
         local.probe(8081, "missing")
     assert requests == [None]
-    assert local.probe(8081, "fixture")["completion_tokens"] == 1
+    assert local.probe(8081, "fixture", catalog_only=True) == {
+        "status": "LOCAL_BASELINE_LISTED",
+        "model": "fixture",
+    }
+    assert requests == [None, None]
+    monkeypatch.setattr(local.time, "perf_counter", lambda: 123.0)
+    result = local.probe(8081, "fixture")
+    assert result["completion_tokens"] == 1
+    assert result["end_to_end_tokens_per_second"] is None
     assert requests[-1]["max_tokens"] == 8
 
 
@@ -101,6 +109,13 @@ def test_goose_reports_routing_without_credentials(tmp_path):
         "GOOSE_PROVIDER": "ollama",
         "GOOSE_MODEL": "baseline",
         "OLLAMA_HOST": {"loopback": True, "port": 11434},
+    }
+    path.write_text(
+        "active_provider: openai\nproviders:\n  openai:\n    model: local-baseline\n    api_key: example\n"
+    )
+    assert local.goose_settings(path) == {
+        "GOOSE_PROVIDER": "openai",
+        "GOOSE_MODEL": "local-baseline",
     }
 
 

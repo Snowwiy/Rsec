@@ -1,6 +1,23 @@
 # Evidencia · Fase 03-A · v0.3.0-alpha.1
 
-## Revalidación de la transición a Windows
+## Estación física · 2026-11-27
+
+| Comprobación local | Resultado |
+|---|---|
+| Windows, Python 3.12.16 | Core y desarrollo instalados. `pip check`, CLI, inventario y comprobación del repositorio pasaron |
+| Ubuntu 24.04 WSL2, Python 3.12.3 | Importación de PyTorch 2.8.0+cu128 y dependencias ML con CUDA oculta. PyTorch reportó NCCL disponible en su build. `pip check` pasó |
+| Regresión Windows | 214 aprobadas, 6 saltadas y 15 excluidas. Cuatro casos requieren privilegio para crear enlaces simbólicos. Se corrigieron un cero en la medición del sondeo y la codificación de una fixture |
+| Regresión WSL2 | 224 aprobadas, 11 ML excluidas. La ejecución final usó una caché pytest en ext4 |
+| Lanzadores | PowerShell y Bash parseados. El test Windows clonó en un directorio vacío, comprobó el inventario y conservó el cambio local de la fixture |
+| Perfiles Accelerate | Single, DDP y FSDP se cargaron con Accelerate 1.16.0. Queda pendiente su ejecución distribuida |
+| Build y lock CPU | Wheel y sdist generados. Auditoría del lock sin hallazgos en las entradas consultadas. PyPI no cubrió la entrada Torch CPU |
+| Revisión local | Piloto de 64 candidatos preparado, cero aprobados. La interfaz respondió HTTP 200 en loopback |
+| Inferencia local y Goose | llama.cpp respondió desde CPU con un solo hilo y sin offload. Goose 1.54.0 recibió el dígito solicitado mediante OpenAI-compatible en loopback y sin extensiones |
+| GPU y distribución | GPU VALIDATION PENDING. Detección NVIDIA y puente WSL observados. FP16/BF16, NF4/LoRA, checkpoints, NCCL/DDP y FSDP bajo carga siguen pendientes |
+
+Inventario detallado, UUID, configuraciones, logs y modelos permanecen en almacenamiento privado.
+
+## Revalidación histórica de la transición a Windows
 
 Base dev 63d14f7. En el ejecutor Linux aislado, `HF_HUB_OFFLINE=1 .venv/bin/pytest -q --cov=rsec --cov-report=json:reports/transition-cov.json` produjo 235 aprobadas, 2 advertencias y 85.79 % de cobertura. Pasaron git fsck --full --no-dangling, pip check, Ruff y la comprobación del repositorio. El diagnóstico observó Torch 2.8.0+cpu, cero dispositivos CUDA y NCCL no disponible. La invocación real de `rsec gpu validate --device 0` terminó con código 2 y no creó artefactos. Quedan sin medir driver, WSL, precisión, NF4, checkpoints, distribución, temperatura y VRAM de la estación. La prueba Windows del PR incluye checkout de dev y preservación de cambios locales.
 

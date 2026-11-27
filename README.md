@@ -117,6 +117,8 @@ Rejects retain hashes and reasons only. Secret/PII/poisoning detection and anony
 
 ## GPU training and recovery — future gated execution
 
+For local installation and CPU-only preparation, see the [Windows and WSL2 setup](LOCAL_INSTALLATION_REPORT.md). Run the [supervised physical validation](GPU_VALIDATION_PLAN.md) separately.
+
 The following GPU commands are procedures for a later authorized phase after TRAINING_READINESS.md gates pass. Use Linux or WSL2 with a verified NVIDIA driver. The owner's RTX 4070 has 12 GB VRAM and the planned RTX 3060 has a separate 12 GB. Neither DDP nor adding a second card creates a contiguous 24 GB allocation.
 
 Install the correct **PyTorch 2.8.0 CUDA wheel separately** using the official PyTorch installer for the driver, then:

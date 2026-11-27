@@ -1,4 +1,6 @@
-# Estado y comandos físicos · Fase 02-B
+# Estado y comandos físicos · Fase 03-A
+
+El host detectó la RTX 4070. El entorno cu128 está instalado en Ubuntu WSL2 y queda por comprobar en hardware. Cuando el operador confirme el fin de la sesión de juego y la instalación de la RTX 3060, actualizar el inventario, revisar VRAM disponible y procesos, y ejecutar `validate_gpu.sh` una vez por UUID, primero en la 4070. Ejecutar `validate_multi_gpu.sh` sólo tras revisar ambos resultados. El supervisor registra aviso a 80 °C y detiene la carga a 85 °C o ante pérdida de telemetría, error del proceso o límite de tiempo.
 
 GPU READINESS **VALIDATION PENDING**. Se implementaron diagnóstico NVIDIA JSON/Markdown, selección por UUID y pruebas CUDA que rechazan fallback CPU. El smoke single usa una capa NF4 con LoRA y el DDP usa una capa densa sincronizada por NCCL. FSDP + QLoRA y GGUF repartido tienen procedimiento experimental. Ninguno se ejecutó en el equipo físico durante esta fase.
 

@@ -1,10 +1,12 @@
 # Handoff · v0.3.0-alpha.1
 
-## Transición al checkout de Windows
+## Reanudación en la estación Windows · 2026-11-27
 
-La rama feat/rsec-physical-validation-v0.3.0 parte de dev en 63d14f7, que ya incorpora los PR #4, #5 y #6. El checkout autorizado está en Documents/Rsec del perfil local. El lanzador permite seleccionar la rama física y conserva los cambios pendientes. En la sesión que preparó esta transición sólo fue accesible el ejecutor Linux CPU. Para reanudar desde Windows, comprobar primero raíz y origen Git, estado del árbol, nvidia-smi y WSL. Enumerar las tarjetas antes de seleccionar sus UUID. La instalación actual de la 3060 sigue sin observarse. Mantener los informes con identificadores fuera de Git.
+El [PR #7](https://github.com/Snowwiy/Rsec/pull/7) continúa en `feat/rsec-physical-validation-v0.3.0`, con base dev `63d14f7`. Se clonó el checkout oficial en la unidad de datos y se instalaron los entornos separados de Windows y Ubuntu 24.04 WSL2. Consulta [instalación](LOCAL_INSTALLATION_REPORT.md), [pruebas](TEST_RESULTS.md) e [integración con Goose](GOOSE_INTEGRATION.md).
 
-PR #2 llegó a la rama de fundamentos. Los PR #4 y #5 llegaron a dev; el PR #3 llevó dev a main. La rama de Fase 03-A parte del merge de #5 en dev (cb3d15a). El PC requiere una sesión de escritorio con la unidad de datos y la RTX 4070 accesibles. Comenzar por [instalación y diagnóstico](LOCAL_INSTALLATION_REPORT.md), después [inventario privado](LOCAL_MODEL_INVENTORY.md), backend y smoke térmico. La suite de revisión conserva 64 candidatos SFT y 32 CyberBench, 96 preauditorías, 12 CodeBench, una fuente SQLite acotada y cero aprobados. Para soporte físico compartir únicamente resultados sanitizados. Las secciones siguientes son historia de fases anteriores.
+**GPU VALIDATION PENDING.** La RTX 4070 es la única GPU detectada. Tras la confirmación del operador de que terminó de jugar e instaló la RTX 3060, volver a enumerar por UUID y validar la 4070 primero. Validar la 3060 individualmente antes de NCCL/DDP. Aplicar aviso a 80 °C y parada a 85 °C o ante inestabilidad. Conservar la evidencia cruda fuera de Git.
+
+**TRAINING READINESS NOT READY.** El piloto de revisión contiene 64 candidatos y cero aprobaciones. Se mantienen los gates de derechos, revisión humana y evaluación independiente. Las secciones siguientes corresponden al historial.
 
 ---
 

@@ -22,6 +22,7 @@ if (!$blocked -or !(Test-Path -LiteralPath $file)) { throw 'Occupied directory g
 
 # Exercise the real transition checkout under an isolated destination.
 $checkout = Join-Path $fixture 'project checkout'
+New-Item -ItemType Directory -Path $checkout | Out-Null
 & "$PSScriptRoot/checkout_local.ps1" -Destination $checkout
 $current = & git -C $checkout branch --show-current
 if ($LASTEXITCODE -ne 0 -or $current -ne 'dev') { throw 'Expected integration branch on first checkout' }

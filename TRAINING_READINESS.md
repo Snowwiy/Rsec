@@ -1,8 +1,8 @@
 # Entrenamiento · Fase 03-A
 
-## Estado tras el cambio de checkout
+## Estado de la estación · 2026-11-27
 
-Persisten cero registros aprobados. El diagnóstico del ejecutor de transición devuelve CUDA y NCCL indisponibles. La selección provisional del modelo base y los criterios de salida continúan en [MODEL_BASE_SELECTION.md](MODEL_BASE_SELECTION.md). El siguiente paso físico es validar una tarjeta a la vez y revisar cada registro térmico antes de DDP o FSDP. El estado de instalación de la segunda GPU requiere una lectura en la estación.
+La estación tiene un entorno WSL2 con PyTorch cu128 y NCCL instalado y comprobación de dependencias satisfactoria. CUDA, NF4, actualización LoRA, guardado y recuperación físicos requieren la prueba supervisada. La RTX 3060 sigue pendiente de instalación. La selección provisional del modelo base y los criterios de salida continúan en [MODEL_BASE_SELECTION.md](MODEL_BASE_SELECTION.md).
 
 **NOT READY.** Cero registros aprobados. El smoke técnico de la capa NF4, la reanudación de checkpoint en hardware y las mediciones térmicas de la estación siguen pendientes. No hay adaptador especializado ni métricas comparativas de CyberBench/CodeBench. Completar revisión humana, benchmark independiente, selección del base y validación física antes del piloto.
 

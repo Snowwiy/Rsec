@@ -79,6 +79,8 @@ El modo smoke crea un modelo diminuto aleatorio y un tokenizer de prueba local, 
 
 ## Entrenamiento con GPU: procedimiento futuro sujeto a gates
 
+Para instalar el entorno y preparar la estación en CPU, consulta la [guía de Windows y WSL2](LOCAL_INSTALLATION_REPORT.md). Sigue por separado el [plan de validación física supervisada](GPU_VALIDATION_PLAN.md).
+
 Estos comandos corresponden a una fase posterior tras cumplir TRAINING_READINESS.md. El modelo preliminar es `Qwen/Qwen2.5-Coder-7B-Instruct`, con revisión SHA fijada y licencia Apache-2.0. La licencia MIT existente del código se conserva. Instala primero una rueda CUDA de PyTorch 2.8.0 compatible con tu controlador; después instala `requirements-train.txt`.
 
 ```bash

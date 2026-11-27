@@ -1,3 +1,115 @@
+# Validación · Fase 02-B · 2026-11-26
+
+Implementación inicial publicada en `b34bf571f5896af83dfd3a674a32084f32793c35`. Los recuentos incluyen el endurecimiento final de claves Ed25519. Linux, Python 3.12.14 y PyTorch 2.8.0+cpu. Pasaron **220 pruebas**, con 2 advertencias deprecadas de SWIG. Core sin Torch: **209 aprobadas y 11 ML excluidas**. Cobertura local de sentencias **85.71 % (2,837/3,310)**, frente a **94.02 %** de la Fase 02-A. La base se amplió y los caminos CUDA, NCCL y algunos errores de UI y evaluación no se ejecutaron. Se conservaron las 200 pruebas previas, sin añadir exclusiones para subir el porcentaje.
+
+| Comando o verificación | Resultado |
+|---|---|
+| `HF_HUB_OFFLINE=1 .venv/bin/pytest -q --cov=rsec --cov-report=json:reports/phase02b-coverage-final.json --junitxml=reports/phase02b-tests-final.xml` | 220 aprobadas |
+| `../core-check/bin/python -m pytest -q -m 'not ml and not gpu and not multigpu'` | 209 aprobadas, 11 excluidas |
+| `ruff check .`, `ruff format --check .`, `python scripts/check_repository.py` | Pasaron |
+| `python -m pip check`, `python -m build --no-isolation` | Sin dependencias rotas y wheel/sdist 0.2.1a0 construidos |
+| `python scripts/check_gitleaks_scope.py ../gitleaks-bin`, `gitleaks git --redact --exit-code 1` | Controles positivos y negativos aprobaron y el historial quedó limpio |
+| `rsec data preaudit --input data/pilot/candidates.jsonl benchmarks/rsec_cyberbench/development.jsonl --output reports/phase02b-preaudit.jsonl` | 96 preauditorías, 0 decisiones |
+| `rsec data download --registered --config configs/software_sources.yaml` | Caché verificada tras adquisición real por conector, 12,269 bytes y 0 solicitudes HTTP adicionales |
+| `rsec benchmark code-validate`, `rsec benchmark contamination-check --input data/pilot/candidates.jsonl` | 12 CodeBench, 54 reservas, ninguna coincidencia del piloto |
+| `rsec gpu diagnose --output reports/phase02b-hardware.json --markdown reports/phase02b-hardware.md` | CUDA y NVIDIA ausentes en el entorno |
+| `rsec gpu validate --device 0 --output reports/nongpu-should-not-exist` | Exit 2 esperado, sin fallback ni carpeta de pruebas |
+
+Las 20 pruebas nuevas ejercitan referencias congeladas, evaluaciones incompatibles, pass@k con recuentos conocidos, firmas Ed25519 reales temporales, rechazo de claves equivalentes codificadas en PEM distinto, HTTP localhost, rechazo de origen externo, separación autor/adjudicador, rechazo de decisiones inválidas, replay y manipulación de un manifiesto íntegramente recalculado. Se usaron evidencias de prueba y telemetría simulada explícita donde aplica. Hardware físico, arnés de código generado, revisiones expertas reales y resultados de modelos quedan pendientes.
+
+Los tres checks del código del PR #5 pasaron en [CPU](https://github.com/Snowwiy/Rsec/actions/runs/45912973547), [ML offline](https://github.com/Snowwiy/Rsec/actions/runs/45912973545) y [seguridad](https://github.com/Snowwiy/Rsec/actions/runs/45912973570). Consulta [PR #5](https://github.com/Snowwiy/Rsec/pull/5) para su commit de informes. [PR #4](https://github.com/Snowwiy/Rsec/pull/4) aprobó ambos eventos, tal como se registra en [GITHUB_INTEGRATION_REPORT.md](GITHUB_INTEGRATION_REPORT.md).
+
+Se preserva abajo la evidencia histórica de las fases previas.
+
+---
+
+# Test results — Phase 02 dataset engineering, 2026-11-26
+
+Published feature implementation `849f0053bf3443b8d270945da9bdcaac6665667a`, tree `5470aefa8422c971c842c702ee7629c44b1d0f5b`; scanner-only correction `cb3d2d639ed99a0c8f16291353553fe734f224cb`, tree `81a032f9ae7052ffe1a6d3e56f5e973f9fc3e94c`. Linux/Python 3.12 CPU; no NVIDIA device. Audited Phase 01-B baseline was independently reproduced: **97 passed / 91.34% statement coverage**.
+
+**Final local: 200 passed, 0 failed, 2 SWIG deprecation warnings; 94.02% statement coverage, 2,168 / 2,306 statements, 138 missing.** Core environment without Torch: **189 passed, 11 ML deselected**. All original 97 tests preserved; 103 additional meaningful cases. Existing protocol contracts remain in the denominator and no new coverage exclusions were added.
+
+## Commands actually executed
+
+Run from checkout root. Logs, heavy artifacts, temporary test attestations and source payloads remain ignored; sanitized reproducible evidence is [audits/phase02/validation.json](audits/phase02/validation.json).
+
+| Command | Actual result |
+|---|---|
+| `HF_HUB_OFFLINE=1 .venv/bin/pytest -q --cov=rsec --cov-report=json:reports/phase2-coverage.json --cov-report=term-missing --junitxml=reports/phase2-pytest.xml` |200 passed, 0 failed,94.02% |
+| `/workspace/scratch/faecd1545a19/core-check/bin/python -m pytest -q -m 'not ml'` |189 passed, 11 deselected; no Torch installed |
+| `.venv/bin/ruff check .` and `.venv/bin/ruff format --check .` | Passed,51 Python files formatted |
+| `.venv/bin/python scripts/check_repository.py` | Configs/notebooks/pins/schema/registry/benchmark and public artifact rules passed |
+| `.venv/bin/python -m pip install --no-build-isolation -e . --no-deps` | Installed rsec-ai 0.2.0a0 |
+| `.venv/bin/python -m pip check` | No broken requirements |
+| `.venv/bin/python -m build --no-isolation` | Wheel and source distribution 0.2.0a0 built |
+| `.venv/bin/pip-audit --disable-pip --no-deps -r requirements-cpu-test.lock --format=json` | No known vulnerabilities for auditable entries; torch 2.8.0+cpu skipped (non-PyPI) |
+| Gitleaks 8.24.3 `git --redact --exit-code 1` | Initial 4 public-checksum false positives; after narrow config correction, history passed |
+| Temporary scanner control: exact known public checksum / other synthetic high-entropy value in same path | Exit 0 / exit 1 as expected; no broad path suppression |
+| `.venv/bin/rsec data sources` |22 registered, 20 external locations verified, 0 external SFT-approved |
+| `.venv/bin/rsec data download --registered` |3 pinned CVE cache snapshots verified; 0 DNS; native live download initially failed DNS |
+| `.venv/bin/rsec data normalize-cve --input data/raw/cve/CVE-2021-44228.json data/raw/cve/CVE-2022-22965.json data/raw/cve/CVE-2023-34362.json --output data/interim/cve-reference-final.jsonl` |3 reference indexes, no SFT/no payload redistribution |
+| `.venv/bin/rsec data curate --input data/pilot/candidates.jsonl --output data/processed/phase2-pilot-final --version pilot-0.2.0` |64 structurally accepted, 0 expert approved, 64 pending, 0 rejected/quarantined; SFT blocked |
+| Same curation to `data/processed/phase2-pilot-reproduced`, same version/seed | Identical full curation-manifest SHA-256 |
+| `.venv/bin/rsec data validate data/processed/phase2-pilot-final` | Passed integrity/semantic staging validation; does not approve SFT |
+| `.venv/bin/rsec data review data/processed/phase2-pilot-final --output reports/phase2-review-final.json` |64 record hash packet, 0 approvals |
+| `.venv/bin/rsec data split data/processed/phase2-pilot-final --output data/processed/phase2-sft-blocked` | Expected exit 2: no expert-approved examples |
+| `.venv/bin/rsec benchmark validate` |32 cases, 15 families, 0 expert gold |
+| `.venv/bin/rsec benchmark contamination-check --input data/pilot/candidates.jsonl` |64 candidates vs 42 reserved, 0 known links to reserved cases |
+| `.venv/bin/rsec benchmark export --output reports/phase2-cyberbench-cases.jsonl` |32 legacy-runner-compatible development cases; no model generation |
+| `.venv/bin/rsec data stats data/processed/phase2-pilot-final --tokenizer models/gguf-cpu-validation-256 --output reports/phase2-token-final.json` |16,114 actual chat-template tokens, max 414; eligible tokens/epoch 0 |
+
+The three external payloads were really fetched via the authorized GitHub connector and matched to official pinned Git blobs before local SHA-256 pinning. Native HTTPS DNS failure is not counted as successful native acquisition. Subsequent cache-only validation does not demonstrate native live networking. Source and CISA 403 limits are documented in DATASET_SOURCES.md.
+
+Corrected code head hosted checks all succeeded: [CPU45908654504](https://github.com/Snowwiy/Rsec/actions/runs/45908654504), [offline ML45908654526](https://github.com/Snowwiy/Rsec/actions/runs/45908654526), [security45908654641](https://github.com/Snowwiy/Rsec/actions/runs/45908654641). Initial code head security run 45908274891 failed on 4 exact public tokenizer hashes; the failure is retained in reporting and fixed without history rewrite. Check [PR #2](https://github.com/Snowwiy/Rsec/pull/2) for final reporting-head checks.
+
+## Coverage by module
+
+| Module | Statement coverage |
+|---|---|
+| src/rsec/__init__.py | 100.00% |
+| src/rsec/artifacts.py | 96.88% |
+| src/rsec/cli.py | 97.55% |
+| src/rsec/config.py | 98.44% |
+| src/rsec/data.py | 95.18% |
+| src/rsec/datasets/__init__.py | 100.00% |
+| src/rsec/datasets/benchmark.py | 98.55% |
+| src/rsec/datasets/cli.py | 96.58% |
+| src/rsec/datasets/knowledge.py | 100.00% |
+| src/rsec/datasets/linkage.py | 98.94% |
+| src/rsec/datasets/pilot.py | 100.00% |
+| src/rsec/datasets/quality.py | 99.07% |
+| src/rsec/datasets/registry.py | 99.07% |
+| src/rsec/datasets/release.py | 93.43% |
+| src/rsec/datasets/review.py | 100.00% |
+| src/rsec/datasets/schema.py | 100.00% |
+| src/rsec/datasets/stats.py | 93.94% |
+| src/rsec/download.py | 91.00% |
+| src/rsec/environment.py | 72.55% |
+| src/rsec/errors.py | 100.00% |
+| src/rsec/evaluate.py | 98.82% |
+| src/rsec/export.py | 93.48% |
+| src/rsec/inference.py | 91.95% |
+| src/rsec/interfaces.py | 0.00% |
+| src/rsec/knowledge.py | 92.19% |
+| src/rsec/predict.py | 100.00% |
+| src/rsec/tracking.py | 94.29% |
+| src/rsec/train.py | 80.77% |
+| src/rsec/utils.py | 98.15% |
+
+Coverage measures exercised lines, not expert data correctness or hardware support. Training remains80.77% because CUDA/distributed/OOM branches require physical tests. Rubric/transport/review doubles verify math/validation contracts, not real reviewer identities, network availability or model quality.
+
+## Meaningful negative/integration cases
+
+Tests cover missing/unknown licenses, disallowed purposes, exact source/reference revisions, role/boolean/schema/taxonomy failures, heuristic language/domain mismatches, empty/inconsistent/long answers, secret/PII/poison detection, quarantine without sensitive content, exact/approximate duplicates, forward translation links and code fingerprints, default benchmark reservations, forged expert flags, hash/policy-bound decisions, duplicate/insufficient reviewers and partial review. Tamper tests include inventory additions, nested manifest names, symlinks, modified bridge content, and recomputed file hashes that still fail semantic checks. Generator bytes, distributions, contexts and local tokenizer metadata exclusion are asserted. Real CPU TRL checks the reviewed-test bridge target masks/loss. Case rubric scores are checked against weighted hand calculations and invalid attestations. No real corpus review is inferred from these temporary test fixtures.
+
+## Explicitly not executed / not measured
+
+No specialized Rsec training, actual expert corpus review, independent expert gold, model baseline/adapter quality benchmark, semantic hallucination measurement, dynamic remediation runner, CUDA/NF4/QLoRA, physical4070/3060/DDP/FSDP, real OOM, distributed optimizer recovery, Unsloth, Ollama/bindings/providers or Windows/WSL2 execution. Phase 01-B native tiny GGUF results below are historical; Phase 02 did not rerun or modify native export code. No training duration, VRAM fit or speed estimate was invented.
+
+The Phase 01-B and original Phase01 evidence below is preserved as history, not the current test count.
+
+---
+
 # Test results — independent Phase 01-B, 2026-11-26
 
 Audited implementation: `44084096dc231b7726ca1490c5e65f69a01956f9`; tested local tree `6bd98e7db4c7d9ac05633e1db57fbe6121312929`. Linux/Python 3.12.14, PyTorch 2.8.0+cpu, no NVIDIA device. Same pinned CPU stack as initial Phase 01. The initial suite was rerun unchanged before auditing: **39 passed / 75.15% statement coverage**.

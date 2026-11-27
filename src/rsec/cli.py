@@ -10,11 +10,14 @@ from rsec.errors import RsecError
 
 
 def parser():
-    p = argparse.ArgumentParser(prog="rsec", description="Rsec defensive AI research foundation")
+    p = argparse.ArgumentParser(
+        prog="rsec", description="Rsec local cybersecurity and software engineering research"
+    )
     p.add_argument("--version", action="version", version=__version__)
     commands = p.add_subparsers(dest="command", required=True)
     doc = commands.add_parser("doctor", help="Inspect CPU/GPU/tool availability")
     doc.add_argument("--output")
+    doc.add_argument("--markdown")
     cfg = commands.add_parser("config", help="Validate training configuration")
     cfg.add_argument("--config", default="configs/qlora_cybersec.yaml")
     cfg.add_argument("--profile")
@@ -114,18 +117,29 @@ def parser():
     experiments = commands.add_parser("experiments", help="Inspect local experiment records")
     experiments.add_argument("action", choices=["list"])
     experiments.add_argument("--root", default="experiments")
+    from rsec.datasets.cli import add_commands
+
+    add_commands(commands, ds, download)
     return p
 
 
 def dispatch(args):
-    if args.command == "doctor":
-        from rsec.environment import doctor
-        from rsec.utils import write_json
+    from rsec import phase02b
 
-        result = doctor()
-        if args.output:
-            write_json(args.output, result)
-        return result
+    if args.command == "gpu":
+        return phase02b.dispatch_gpu(args)
+    if args.command == "data" and args.action in phase02b.DATA_ACTIONS:
+        return phase02b.dispatch_data(args)
+    if args.command == "benchmark" and args.action in phase02b.BENCH_ACTIONS:
+        return phase02b.dispatch_benchmark(args)
+    if args.command == "benchmark":
+        from rsec.datasets.cli import dispatch_benchmark
+
+        return dispatch_benchmark(args)
+    if args.command == "doctor":
+        from rsec.gpu import write_diagnostic
+
+        return write_diagnostic(args.output, args.markdown)
     if args.command in {"config", "train"}:
         from rsec.config import Training, load_training
 
@@ -144,6 +158,31 @@ def dispatch(args):
 
         return train(config, args.smoke, args.resume, args.allow_experimental)
     if args.command == "data":
+        from pathlib import Path
+
+        if (
+            args.action
+            in {
+                "sources",
+                "pilot",
+                "curate",
+                "quality",
+                "quarantine",
+                "stats",
+                "split",
+                "version",
+                "review",
+                "normalize-cve",
+            }
+            or (args.action == "download" and args.registered)
+            or (
+                args.action == "validate"
+                and (Path(args.directory) / "curation_manifest.json").exists()
+            )
+        ):
+            from rsec.datasets.cli import dispatch_data
+
+            return dispatch_data(args)
         if args.action == "ingest":
             from rsec.knowledge import ingest
 

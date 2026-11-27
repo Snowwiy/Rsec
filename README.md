@@ -1,11 +1,38 @@
-# Rsec AI · v0.1.0-alpha
+# Rsec AI · v0.2.1-alpha
 
-Independent, local model research for **defensive cybersecurity**, owned by Snowwiy.
+Independent local model research for **defensive cybersecurity, programming and software engineering**, owned by Snowwiy.
 [Independent audit](INDEPENDENT_AUDIT.md) · [Español](README.es.md) · [Architecture](docs/ARCHITECTURE.md) · [Test evidence](TEST_RESULTS.md) · [Handoff](HANDOFF.md)
 
 Rsec specializes open-weight models through adapter training. This repository provides the foundation for acquisition, curation, SFT/QLoRA, independent evaluation, artifact export and local inference. It does **not** distribute a trained cybersecurity model or demonstrate superiority over a base model.
 
 Phase 01-B independent audit: **PASS WITH CONDITIONS** for foundation review, **97 tests / 91.34% statement coverage**. GPU training and source-reviewed gold data remain gates; Unsloth is blocked by confirmed dependency conflicts. See [GPU validation](GPU_VALIDATION_PLAN.md) and [dataset readiness](DATASET_READINESS.md).
+
+## Phase 02-B · current status
+
+Programming is a core capability. Rsec now has a complementary software taxonomy, a scoped source catalog, a reproducible train-only replay planner and trainer-compatible mixed release validation. The two tracks retain independent development suites, Rsec-CyberBench and Rsec-CodeBench. Compare both against the pinned base before selecting adapters or quantized artifacts. Advanced software specialization follows expert data review and the hardware gate. See [software engineering](docs/SOFTWARE_ENGINEERING.md) and [benchmark contracts](BENCHMARK_VALIDATION_REPORT.md).
+
+The Phase 02-B branch includes a localhost review UI with Ed25519 decisions, preaudit observations for all 96 original candidates, isolated evidence imports and scripts for CUDA checks. **Dataset readiness FAIL, GPU validation pending, training not ready.** No approved SFT row or private expert gold exists. See [review setup](DATASET_REVIEW_GUIDE.md), [GPU setup](LOCAL_GPU_SETUP.md) and [integration](GITHUB_INTEGRATION_REPORT.md).
+
+## Phase 02-A dataset engineering · historical evidence
+
+**DATASET READINESS: FAIL** for an expert-approved SFT corpus. **TRAINING READINESS: NOT READY.** Phase 02-A was merged into the foundation branch in [PR #2](https://github.com/Snowwiy/Rsec/pull/2); no specialized model was trained. Actual validation: **200 tests / 94.02% statement coverage**, core without Torch **189 passed**.
+
+The registry inventories **20 external sources plus 2 internal fixture sources** with separate access/download/training/redistribution permissions. Only three pinned CVE documents were acquired for reference-only normalization; no external source is SFT-approved. There are **64 synthetic SFT drafts**, **32 public development/regression cases**, **0 expert-approved examples**, **0 expert gold** and **0 rejected/quarantined actual records**. All 96 conversations await human review, plus three reference interpretations. The quality-conditional 500–1,000 pilot goal is unmet.
+
+```bash
+rsec data sources
+rsec data download --registered
+rsec data curate --input data/pilot/candidates.jsonl --output data/processed/pilot-review --version pilot-0.2.0
+rsec data validate data/processed/pilot-review
+rsec data quality data/processed/pilot-review
+rsec data review data/processed/pilot-review --output reports/pilot-review.json
+rsec benchmark validate
+rsec benchmark contamination-check --input data/pilot/candidates.jsonl
+```
+
+Review packet creation approves nothing. `data split` correctly blocks this unreviewed pilot; no train/eval/test release exists. Optional `rsec data stats data/processed/pilot-review --tokenizer /local/reviewed-tokenizer` measures actual template lengths; without a tokenizer, whitespace counts are explicitly separate. Measured existing Qwen tokenizer total: 16,114 pilot conversation tokens, max 414, eligible SFT tokens/epoch 0. No VRAM/time estimate follows.
+
+[Dataset architecture](docs/DATASET_ARCHITECTURE.md) · [Sources](docs/DATASET_SOURCES.md) · [License matrix](docs/LICENSE_MATRIX.md) · [Taxonomy](docs/DATASET_TAXONOMY.md) · [Human review](docs/DATASET_REVIEW_GUIDE.md) · [Engineering report](DATASET_ENGINEERING_REPORT.md) · [Dataset card](DATASET_CARD.md) · [CyberBench](BENCHMARK_REPORT.md) · [Training gates](TRAINING_READINESS.md).
 
 ## Current scope
 
@@ -65,7 +92,7 @@ rsec experiments list
 
 Smoke mode creates a randomly initialized tiny Qwen2 architecture and a local toy tokenizer. It performs real optimization, evaluation and checkpoint writes. Its losses are infrastructure evidence and have no cybersecurity quality interpretation. `requirements-cpu-test.lock` records exact transitive versions from the tested Python 3.12 CPU environment. GPU profiles are candidate configurations, not validated CUDA locks.
 
-## Data releases
+## Legacy foundation data fixtures
 
 ```bash
 rsec data download
@@ -73,7 +100,7 @@ rsec data prepare --input data/samples/defensive.jsonl --output data/processed/d
 rsec data validate data/processed/demo
 ```
 
-The source list is intentionally empty pending per-source license review. Downloads require a pinned SHA-256, reviewed rights, approved HTTPS hosts, bounded retries/timeouts and size limits. JSON, JSONL, CSV and optional Parquet are supported. HF acquisition requires `rsec data download-hf --help` and a pinned dataset revision. Markdown/text belong to knowledge ingestion, never automatically to instruction-response training:
+The legacy `sources: []` remains opt-in/empty; `--registered` enables only the three scoped pinned CVE references. The 22-entry registry does not authorize broad acquisition or external SFT. Downloads require a pinned SHA-256, reviewed rights, approved HTTPS hosts, bounded retries/timeouts and size limits. JSON, JSONL, CSV and optional Parquet are supported. HF acquisition requires `rsec data download-hf --help` and a pinned dataset revision. Markdown/text belong to knowledge ingestion, never automatically to instruction-response training:
 
 ```bash
 rsec data ingest --input authorized.md --output data/interim/knowledge.jsonl \
@@ -82,13 +109,13 @@ rsec data ingest --input authorized.md --output data/interim/knowledge.jsonl \
   --redistribution internal-only --reviewed --purpose knowledge
 ```
 
-Every SFT record carries source URL, license, source version, provenance family, domain, language, synthetic marker and review status. `--replay` combines reviewed historical inputs before the same screening/splitting process; `--category-cap` bounds dominant categories. The bundled independent benchmark is excluded by default. Extend the benchmark list when adding external suites. Splits are stable for fixed inputs and seed; acquisition timestamps naturally differ between new releases.
+The following paragraph describes the legacy fixture path; Phase 02 corpus promotion requires `data curate` and hash-bound human decisions. Every legacy SFT record carries source URL, license, source version, provenance family, domain, language, synthetic marker and review status. `--replay` combines reviewed historical inputs before the same screening/splitting process; `--category-cap` bounds dominant categories. The bundled independent benchmark is excluded by default. Extend the benchmark list when adding external suites. Splits are stable for fixed inputs and seed; acquisition timestamps naturally differ between new releases.
 
 Rejects retain hashes and reasons only. Secret/PII/poisoning detection and anonymization are conservative heuristics, with false positives and false negatives. Human review remains necessary. See [dataset policy](docs/DATASET_POLICY.md).
 
-## GPU training and recovery
+## GPU training and recovery — future gated execution
 
-Use Linux or WSL2 with a verified NVIDIA driver. The owner's RTX 4070 has 12 GB VRAM and the planned RTX 3060 has a separate 12 GB. Neither DDP nor adding a second card creates a contiguous 24 GB allocation.
+The following GPU commands are procedures for a later authorized phase after TRAINING_READINESS.md gates pass. Use Linux or WSL2 with a verified NVIDIA driver. The owner's RTX 4070 has 12 GB VRAM and the planned RTX 3060 has a separate 12 GB. Neither DDP nor adding a second card creates a contiguous 24 GB allocation.
 
 Install the correct **PyTorch 2.8.0 CUDA wheel separately** using the official PyTorch installer for the driver, then:
 

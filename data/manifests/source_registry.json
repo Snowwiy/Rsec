@@ -1,0 +1,846 @@
+{
+  "schema_version": 1,
+  "checked_at": "2026-11-26",
+  "sources": [
+    {
+      "id": "rsec-pilot",
+      "name": "Rsec deterministic defensive templates",
+      "url": "https://github.com/Snowwiy/Rsec",
+      "organization": "Rsec",
+      "version": "generator-1.0.0",
+      "published_at": null,
+      "checked_at": "2026-11-26",
+      "acquired_at": null,
+      "license": "MIT",
+      "license_url": "https://github.com/Snowwiy/Rsec/blob/main/LICENSE",
+      "public_access": true,
+      "download_allowed": false,
+      "training_allowed": true,
+      "redistribution_allowed": true,
+      "training_conditions": "Public access is not training authorization. Original controlled templates only; expert review required for SFT promotion.",
+      "redistribution_conditions": "Retain source attribution, license and modification notice; no third-party linked material is sublicensed.",
+      "restrictions": "Authored infrastructure fixtures, not incidents or expert gold. No commercial API outputs harvested. No automatic expert status.",
+      "format": "Python templates",
+      "quality_estimate": "Primary technical reference; accuracy/completeness and record-level suitability still need review.",
+      "domains": [
+        "application_security",
+        "soc_detection",
+        "vulnerability_management",
+        "infrastructure_security",
+        "dfir",
+        "grc",
+        "ai_security",
+        "cryptography_identity"
+      ],
+      "status": "APPROVED",
+      "review_method": "Primary publisher page/license inspected by engineering agent; not expert record review or legal counsel signoff.",
+      "intended_uses": [
+        "sft"
+      ],
+      "references": [
+        {
+          "id": "rsec-pilot-spec",
+          "source_id": "rsec-pilot",
+          "url": "https://github.com/Snowwiy/Rsec",
+          "revision": "generator-1.0.0"
+        }
+      ],
+      "identifiers": [],
+      "snapshot_sha256": null,
+      "snapshots": {}
+    },
+    {
+      "id": "rsec-cyberbench",
+      "name": "Rsec-CyberBench development candidates",
+      "url": "https://github.com/Snowwiy/Rsec",
+      "organization": "Rsec",
+      "version": "cyberbench-0.1.0",
+      "published_at": null,
+      "checked_at": "2026-11-26",
+      "acquired_at": null,
+      "license": "MIT",
+      "license_url": "https://github.com/Snowwiy/Rsec/blob/main/LICENSE",
+      "public_access": true,
+      "download_allowed": false,
+      "training_allowed": false,
+      "redistribution_allowed": true,
+      "training_conditions": "Public access is not training authorization. Not enabled for automatic SFT; source-specific training review remains pending.",
+      "redistribution_conditions": "Retain source attribution, license and modification notice; no third-party linked material is sublicensed.",
+      "restrictions": "Public development only; expert review pending. Reserved final evaluation must be independently authored and kept outside Git.",
+      "format": "JSONL",
+      "quality_estimate": "Primary technical reference; accuracy/completeness and record-level suitability still need review.",
+      "domains": [
+        "application_security",
+        "soc_detection",
+        "vulnerability_management",
+        "infrastructure_security",
+        "dfir",
+        "grc",
+        "ai_security",
+        "cryptography_identity"
+      ],
+      "status": "APPROVED",
+      "review_method": "Primary publisher page/license inspected by engineering agent; not expert record review or legal counsel signoff.",
+      "intended_uses": [
+        "benchmark",
+        "regression"
+      ],
+      "references": [
+        {
+          "id": "rsec-bench-spec",
+          "source_id": "rsec-cyberbench",
+          "url": "https://github.com/Snowwiy/Rsec",
+          "revision": "cyberbench-0.1.0"
+        }
+      ],
+      "identifiers": [],
+      "snapshot_sha256": null,
+      "snapshots": {}
+    },
+    {
+      "id": "nvd",
+      "name": "NIST NVD",
+      "url": "https://nvd.nist.gov/general",
+      "organization": "NIST",
+      "version": "live site; reviewed 2026-11-26",
+      "published_at": null,
+      "checked_at": "2026-11-26",
+      "acquired_at": null,
+      "license": "NIST data statement; third-party materials excluded",
+      "license_url": "https://www.nist.gov/open/license",
+      "public_access": true,
+      "download_allowed": false,
+      "training_allowed": false,
+      "redistribution_allowed": false,
+      "training_conditions": "Public access is not training authorization. Not enabled for automatic SFT; source-specific training review remains pending.",
+      "redistribution_conditions": "No public payload redistribution enabled by this registry.",
+      "restrictions": "Per-item rights, provenance, technical review and immutable snapshot required before ingestion.",
+      "format": "API JSON",
+      "quality_estimate": "Primary technical reference; accuracy/completeness and record-level suitability still need review.",
+      "domains": [
+        "vulnerability_management"
+      ],
+      "status": "REVIEW REQUIRED",
+      "review_method": "Primary publisher page/license inspected by engineering agent; not expert record review or legal counsel signoff.",
+      "intended_uses": [
+        "knowledge",
+        "rag"
+      ],
+      "references": [],
+      "identifiers": [],
+      "snapshot_sha256": null,
+      "snapshots": {}
+    },
+    {
+      "id": "cve-program",
+      "name": "CVE List V5",
+      "url": "https://github.com/CVEProject/cvelistV5",
+      "organization": "CVE Program / MITRE and CNAs",
+      "version": "1bb6bf3e2a5dac32d643b091c6f4d9ed6026653e",
+      "published_at": null,
+      "checked_at": "2026-11-26",
+      "acquired_at": "2026-11-26",
+      "license": "LicenseRef-CVE-Terms",
+      "license_url": "https://cveproject.github.io/docs/terms.html",
+      "public_access": true,
+      "download_allowed": true,
+      "training_allowed": false,
+      "redistribution_allowed": false,
+      "training_conditions": "Public access is not training authorization. Not enabled for automatic SFT; source-specific training review remains pending.",
+      "redistribution_conditions": "No public payload redistribution enabled by this registry.",
+      "restrictions": "Bounded internal reference acquisition only under published CVE copy/derivative terms; retain MITRE notice/license locally. Linked advisories not covered; ML training and public payload redistribution disabled.",
+      "format": "CVE JSON 5",
+      "quality_estimate": "Primary technical reference; accuracy/completeness and record-level suitability still need review.",
+      "domains": [
+        "vulnerability_management"
+      ],
+      "status": "APPROVED",
+      "review_method": "Primary publisher page/license inspected by engineering agent; not expert record review or legal counsel signoff.",
+      "intended_uses": [
+        "knowledge",
+        "rag"
+      ],
+      "references": [
+        {
+          "id": "CVE-2021-44228",
+          "source_id": "cve-program",
+          "url": "https://www.cve.org/CVERecord?id=CVE-2021-44228",
+          "revision": "1bb6bf3e2a5dac32d643b091c6f4d9ed6026653e"
+        },
+        {
+          "id": "CVE-2022-22965",
+          "source_id": "cve-program",
+          "url": "https://www.cve.org/CVERecord?id=CVE-2022-22965",
+          "revision": "1bb6bf3e2a5dac32d643b091c6f4d9ed6026653e"
+        },
+        {
+          "id": "CVE-2023-34362",
+          "source_id": "cve-program",
+          "url": "https://www.cve.org/CVERecord?id=CVE-2023-34362",
+          "revision": "1bb6bf3e2a5dac32d643b091c6f4d9ed6026653e"
+        }
+      ],
+      "identifiers": [
+        "CVE-2021-44228",
+        "CVE-2022-22965",
+        "CVE-2023-34362"
+      ],
+      "snapshot_sha256": null,
+      "snapshots": {
+        "CVE-2021-44228.json": "3339a1f92543f173c820b6037b6cbc4e008723d5ef545be9f073029e871e8d28",
+        "CVE-2022-22965.json": "d66ba26f927f30d47e6aac6af4d69a35897ed03b8b1e0b7d6ad3c2cd4ded2ec4",
+        "CVE-2023-34362.json": "4754c2f88fe058490c50e971dce855f4823cc6d733cf41f9aa81b88b8997051b"
+      }
+    },
+    {
+      "id": "cwe",
+      "name": "Common Weakness Enumeration",
+      "url": "https://cwe.mitre.org/",
+      "organization": "MITRE",
+      "version": "live site; reviewed 2026-11-26",
+      "published_at": null,
+      "checked_at": "2026-11-26",
+      "acquired_at": null,
+      "license": "LicenseRef-CWE-Terms",
+      "license_url": "https://cwe.mitre.org/about/termsofuse.html",
+      "public_access": true,
+      "download_allowed": false,
+      "training_allowed": false,
+      "redistribution_allowed": false,
+      "training_conditions": "Public access is not training authorization. Not enabled for automatic SFT; source-specific training review remains pending.",
+      "redistribution_conditions": "No public payload redistribution enabled by this registry.",
+      "restrictions": "Per-item rights, provenance, technical review and immutable snapshot required before ingestion.",
+      "format": "HTML",
+      "quality_estimate": "Primary technical reference; accuracy/completeness and record-level suitability still need review.",
+      "domains": [
+        "application_security",
+        "vulnerability_management"
+      ],
+      "status": "REVIEW REQUIRED",
+      "review_method": "Primary publisher page/license inspected by engineering agent; not expert record review or legal counsel signoff.",
+      "intended_uses": [
+        "knowledge",
+        "rag"
+      ],
+      "references": [
+        {
+          "id": "cwe-89",
+          "source_id": "cwe",
+          "url": "https://cwe.mitre.org/data/definitions/89.html",
+          "revision": "definition; checked 2026-11-26"
+        },
+        {
+          "id": "cwe-79",
+          "source_id": "cwe",
+          "url": "https://cwe.mitre.org/data/definitions/79.html",
+          "revision": "definition; checked 2026-11-26"
+        }
+      ],
+      "identifiers": [
+        "CWE-89",
+        "CWE-79"
+      ],
+      "snapshot_sha256": null,
+      "snapshots": {}
+    },
+    {
+      "id": "attack",
+      "name": "MITRE ATT&CK",
+      "url": "https://attack.mitre.org/",
+      "organization": "MITRE",
+      "version": "live site; reviewed 2026-11-26",
+      "published_at": null,
+      "checked_at": "2026-11-26",
+      "acquired_at": null,
+      "license": "LicenseRef-ATTACK-Terms",
+      "license_url": "https://attack.mitre.org/resources/legal-and-branding/terms-of-use/",
+      "public_access": true,
+      "download_allowed": false,
+      "training_allowed": false,
+      "redistribution_allowed": false,
+      "training_conditions": "Public access is not training authorization. Not enabled for automatic SFT; source-specific training review remains pending.",
+      "redistribution_conditions": "No public payload redistribution enabled by this registry.",
+      "restrictions": "Per-item rights, provenance, technical review and immutable snapshot required before ingestion.",
+      "format": "STIX JSON",
+      "quality_estimate": "Primary technical reference; accuracy/completeness and record-level suitability still need review.",
+      "domains": [
+        "soc_detection",
+        "dfir"
+      ],
+      "status": "REVIEW REQUIRED",
+      "review_method": "Primary publisher page/license inspected by engineering agent; not expert record review or legal counsel signoff.",
+      "intended_uses": [
+        "knowledge",
+        "rag"
+      ],
+      "references": [],
+      "identifiers": [],
+      "snapshot_sha256": null,
+      "snapshots": {}
+    },
+    {
+      "id": "cisa-kev",
+      "name": "CISA Known Exploited Vulnerabilities",
+      "url": "https://github.com/cisagov/kev-data",
+      "organization": "CISA",
+      "version": "live site; reviewed 2026-11-26",
+      "published_at": null,
+      "checked_at": "2026-11-26",
+      "acquired_at": null,
+      "license": "Unverified primary license access (403)",
+      "license_url": "https://www.cisa.gov/sites/default/files/licenses/kev/license.txt",
+      "public_access": true,
+      "download_allowed": false,
+      "training_allowed": false,
+      "redistribution_allowed": false,
+      "training_conditions": "Public access is not training authorization. Not enabled for automatic SFT; source-specific training review remains pending.",
+      "redistribution_conditions": "No public payload redistribution enabled by this registry.",
+      "restrictions": "Official mirror existence verified. CISA website/license returned 403 in this environment; no blanket license inferred from third-party summaries.",
+      "format": "JSON/CSV",
+      "quality_estimate": "Primary technical reference; accuracy/completeness and record-level suitability still need review.",
+      "domains": [
+        "vulnerability_management"
+      ],
+      "status": "REVIEW REQUIRED",
+      "review_method": "Primary publisher page/license inspected by engineering agent; not expert record review or legal counsel signoff.",
+      "intended_uses": [
+        "knowledge",
+        "rag"
+      ],
+      "references": [],
+      "identifiers": [],
+      "snapshot_sha256": null,
+      "snapshots": {}
+    },
+    {
+      "id": "owasp-top10",
+      "name": "OWASP Top 10",
+      "url": "https://owasp.org/projects/top-ten",
+      "organization": "OWASP",
+      "version": "2025",
+      "published_at": null,
+      "checked_at": "2026-11-26",
+      "acquired_at": null,
+      "license": "Project-specific attribution/share-alike review required",
+      "license_url": "https://github.com/OWASP/Top10",
+      "public_access": true,
+      "download_allowed": false,
+      "training_allowed": false,
+      "redistribution_allowed": false,
+      "training_conditions": "Public access is not training authorization. Not enabled for automatic SFT; source-specific training review remains pending.",
+      "redistribution_conditions": "No public payload redistribution enabled by this registry.",
+      "restrictions": "Per-item rights, provenance, technical review and immutable snapshot required before ingestion.",
+      "format": "HTML/Markdown",
+      "quality_estimate": "Primary technical reference; accuracy/completeness and record-level suitability still need review.",
+      "domains": [
+        "application_security"
+      ],
+      "status": "REVIEW REQUIRED",
+      "review_method": "Primary publisher page/license inspected by engineering agent; not expert record review or legal counsel signoff.",
+      "intended_uses": [
+        "knowledge",
+        "rag"
+      ],
+      "references": [
+        {
+          "id": "owasp-top10-2025",
+          "source_id": "owasp-top10",
+          "url": "https://top10.owasp.org/2025/0x00_2025-Introduction/",
+          "revision": "2025"
+        }
+      ],
+      "identifiers": [],
+      "snapshot_sha256": null,
+      "snapshots": {}
+    },
+    {
+      "id": "osv",
+      "name": "OSV data sources",
+      "url": "https://google.github.io/osv.dev/data/",
+      "organization": "Google / contributing ecosystems",
+      "version": "live site; reviewed 2026-11-26",
+      "published_at": null,
+      "checked_at": "2026-11-26",
+      "acquired_at": null,
+      "license": "Mixed per upstream source",
+      "license_url": "https://google.github.io/osv.dev/data/",
+      "public_access": true,
+      "download_allowed": false,
+      "training_allowed": false,
+      "redistribution_allowed": false,
+      "training_conditions": "Public access is not training authorization. Not enabled for automatic SFT; source-specific training review remains pending.",
+      "redistribution_conditions": "No public payload redistribution enabled by this registry.",
+      "restrictions": "OSV aggregates CC-BY, CC0, MIT, share-alike and restricted/NC-ND datasets. Schema/software licenses do not relicense every advisory. Review each upstream.",
+      "format": "OSV JSON",
+      "quality_estimate": "Primary technical reference; accuracy/completeness and record-level suitability still need review.",
+      "domains": [
+        "vulnerability_management"
+      ],
+      "status": "REVIEW REQUIRED",
+      "review_method": "Primary publisher page/license inspected by engineering agent; not expert record review or legal counsel signoff.",
+      "intended_uses": [
+        "knowledge",
+        "rag"
+      ],
+      "references": [],
+      "identifiers": [],
+      "snapshot_sha256": null,
+      "snapshots": {}
+    },
+    {
+      "id": "github-advisories",
+      "name": "GitHub Advisory Database",
+      "url": "https://github.com/github/advisory-database",
+      "organization": "GitHub and contributors",
+      "version": "live site; reviewed 2026-11-26",
+      "published_at": null,
+      "checked_at": "2026-11-26",
+      "acquired_at": null,
+      "license": "CC-BY-4.0",
+      "license_url": "https://docs.github.com/en/site-policy/github-terms/github-terms-for-additional-products-and-features",
+      "public_access": true,
+      "download_allowed": false,
+      "training_allowed": false,
+      "redistribution_allowed": false,
+      "training_conditions": "Public access is not training authorization. Not enabled for automatic SFT; source-specific training review remains pending.",
+      "redistribution_conditions": "No public payload redistribution enabled by this registry.",
+      "restrictions": "Retain attribution to individual advisories; source-linked code/advisories have separate rights. No corpus imported in this phase.",
+      "format": "OSV JSON",
+      "quality_estimate": "Primary technical reference; accuracy/completeness and record-level suitability still need review.",
+      "domains": [
+        "vulnerability_management",
+        "application_security"
+      ],
+      "status": "REVIEW REQUIRED",
+      "review_method": "Primary publisher page/license inspected by engineering agent; not expert record review or legal counsel signoff.",
+      "intended_uses": [
+        "knowledge",
+        "rag"
+      ],
+      "references": [],
+      "identifiers": [],
+      "snapshot_sha256": null,
+      "snapshots": {}
+    },
+    {
+      "id": "python-docs",
+      "name": "Python documentation",
+      "url": "https://docs.python.org/3/",
+      "organization": "Python Software Foundation",
+      "version": "live site; reviewed 2026-11-26",
+      "published_at": null,
+      "checked_at": "2026-11-26",
+      "acquired_at": null,
+      "license": "PSF-2.0 and documentation/code-example conditions",
+      "license_url": "https://docs.python.org/3/license.html",
+      "public_access": true,
+      "download_allowed": false,
+      "training_allowed": false,
+      "redistribution_allowed": false,
+      "training_conditions": "Public access is not training authorization. Not enabled for automatic SFT; source-specific training review remains pending.",
+      "redistribution_conditions": "No public payload redistribution enabled by this registry.",
+      "restrictions": "Per-item rights, provenance, technical review and immutable snapshot required before ingestion.",
+      "format": "HTML",
+      "quality_estimate": "Primary technical reference; accuracy/completeness and record-level suitability still need review.",
+      "domains": [
+        "application_security",
+        "cryptography_identity"
+      ],
+      "status": "REVIEW REQUIRED",
+      "review_method": "Primary publisher page/license inspected by engineering agent; not expert record review or legal counsel signoff.",
+      "intended_uses": [
+        "knowledge",
+        "rag"
+      ],
+      "references": [
+        {
+          "id": "python-sqlite-params",
+          "source_id": "python-docs",
+          "url": "https://docs.python.org/3/library/sqlite3.html#sqlite3-placeholders",
+          "revision": "Python 3; checked 2026-11-26"
+        }
+      ],
+      "identifiers": [],
+      "snapshot_sha256": null,
+      "snapshots": {}
+    },
+    {
+      "id": "microsoft-learn",
+      "name": "Microsoft Learn",
+      "url": "https://learn.microsoft.com/",
+      "organization": "Microsoft",
+      "version": "live site; reviewed 2026-11-26",
+      "published_at": null,
+      "checked_at": "2026-11-26",
+      "acquired_at": null,
+      "license": "Per-page/document license review",
+      "license_url": "https://learn.microsoft.com/en-us/legal/termsofuse",
+      "public_access": true,
+      "download_allowed": false,
+      "training_allowed": false,
+      "redistribution_allowed": false,
+      "training_conditions": "Public access is not training authorization. Not enabled for automatic SFT; source-specific training review remains pending.",
+      "redistribution_conditions": "No public payload redistribution enabled by this registry.",
+      "restrictions": "Per-item rights, provenance, technical review and immutable snapshot required before ingestion.",
+      "format": "HTML",
+      "quality_estimate": "Primary technical reference; accuracy/completeness and record-level suitability still need review.",
+      "domains": [
+        "infrastructure_security",
+        "cryptography_identity"
+      ],
+      "status": "REVIEW REQUIRED",
+      "review_method": "Primary publisher page/license inspected by engineering agent; not expert record review or legal counsel signoff.",
+      "intended_uses": [
+        "knowledge",
+        "rag"
+      ],
+      "references": [],
+      "identifiers": [],
+      "snapshot_sha256": null,
+      "snapshots": {}
+    },
+    {
+      "id": "kubernetes-docs",
+      "name": "Kubernetes documentation",
+      "url": "https://kubernetes.io/docs/home/",
+      "organization": "Kubernetes contributors",
+      "version": "live site; reviewed 2026-11-26",
+      "published_at": null,
+      "checked_at": "2026-11-26",
+      "acquired_at": null,
+      "license": "Site documentation license; per-page review pending",
+      "license_url": "https://kubernetes.io/docs/home/",
+      "public_access": true,
+      "download_allowed": false,
+      "training_allowed": false,
+      "redistribution_allowed": false,
+      "training_conditions": "Public access is not training authorization. Not enabled for automatic SFT; source-specific training review remains pending.",
+      "redistribution_conditions": "No public payload redistribution enabled by this registry.",
+      "restrictions": "Per-item rights, provenance, technical review and immutable snapshot required before ingestion.",
+      "format": "HTML",
+      "quality_estimate": "Primary technical reference; accuracy/completeness and record-level suitability still need review.",
+      "domains": [
+        "infrastructure_security"
+      ],
+      "status": "REVIEW REQUIRED",
+      "review_method": "Primary publisher page/license inspected by engineering agent; not expert record review or legal counsel signoff.",
+      "intended_uses": [
+        "knowledge",
+        "rag"
+      ],
+      "references": [],
+      "identifiers": [],
+      "snapshot_sha256": null,
+      "snapshots": {}
+    },
+    {
+      "id": "nist-csf",
+      "name": "NIST Cybersecurity Framework",
+      "url": "https://www.nist.gov/cyberframework",
+      "organization": "NIST",
+      "version": "CSF 2.0; publication-level pin pending",
+      "published_at": null,
+      "checked_at": "2026-11-26",
+      "acquired_at": null,
+      "license": "NIST technical publication statement",
+      "license_url": "https://www.nist.gov/open/license",
+      "public_access": true,
+      "download_allowed": false,
+      "training_allowed": false,
+      "redistribution_allowed": false,
+      "training_conditions": "Public access is not training authorization. Not enabled for automatic SFT; source-specific training review remains pending.",
+      "redistribution_conditions": "No public payload redistribution enabled by this registry.",
+      "restrictions": "Per-item rights, provenance, technical review and immutable snapshot required before ingestion.",
+      "format": "HTML/PDF",
+      "quality_estimate": "Primary technical reference; accuracy/completeness and record-level suitability still need review.",
+      "domains": [
+        "grc",
+        "dfir"
+      ],
+      "status": "REVIEW REQUIRED",
+      "review_method": "Primary publisher page/license inspected by engineering agent; not expert record review or legal counsel signoff.",
+      "intended_uses": [
+        "knowledge",
+        "rag"
+      ],
+      "references": [],
+      "identifiers": [],
+      "snapshot_sha256": null,
+      "snapshots": {}
+    },
+    {
+      "id": "iso-27001",
+      "name": "ISO/IEC 27001",
+      "url": "https://www.iso.org/standard/27001",
+      "organization": "ISO / IEC",
+      "version": "ISO/IEC 27001:2022",
+      "published_at": null,
+      "checked_at": "2026-11-26",
+      "acquired_at": null,
+      "license": "Commercial protected standard",
+      "license_url": "https://www.iso.org/standard/27001",
+      "public_access": true,
+      "download_allowed": false,
+      "training_allowed": false,
+      "redistribution_allowed": false,
+      "training_conditions": "Public access is not training authorization. Not enabled for automatic SFT; source-specific training review remains pending.",
+      "redistribution_conditions": "No public payload redistribution enabled by this registry.",
+      "restrictions": "Public catalog metadata only. No standard text acquired, reproduced or used as SFT; obtain explicit permission for intended use.",
+      "format": "Commercial PDF",
+      "quality_estimate": "Primary technical reference; accuracy/completeness and record-level suitability still need review.",
+      "domains": [
+        "grc"
+      ],
+      "status": "RESTRICTED",
+      "review_method": "Primary publisher page/license inspected by engineering agent; not expert record review or legal counsel signoff.",
+      "intended_uses": [
+        "knowledge",
+        "rag"
+      ],
+      "references": [],
+      "identifiers": [],
+      "snapshot_sha256": null,
+      "snapshots": {}
+    },
+    {
+      "id": "cis-controls",
+      "name": "CIS Controls",
+      "url": "https://www.cisecurity.org/controls",
+      "organization": "Center for Internet Security",
+      "version": "v8.1 (publisher page)",
+      "published_at": null,
+      "checked_at": "2026-11-26",
+      "acquired_at": null,
+      "license": "CIS terms; exact artifact review pending",
+      "license_url": "https://www.cisecurity.org/controls",
+      "public_access": true,
+      "download_allowed": false,
+      "training_allowed": false,
+      "redistribution_allowed": false,
+      "training_conditions": "Public access is not training authorization. Not enabled for automatic SFT; source-specific training review remains pending.",
+      "redistribution_conditions": "No public payload redistribution enabled by this registry.",
+      "restrictions": "Per-item rights, provenance, technical review and immutable snapshot required before ingestion.",
+      "format": "HTML/PDF",
+      "quality_estimate": "Primary technical reference; accuracy/completeness and record-level suitability still need review.",
+      "domains": [
+        "grc",
+        "infrastructure_security"
+      ],
+      "status": "REVIEW REQUIRED",
+      "review_method": "Primary publisher page/license inspected by engineering agent; not expert record review or legal counsel signoff.",
+      "intended_uses": [
+        "knowledge",
+        "rag"
+      ],
+      "references": [],
+      "identifiers": [],
+      "snapshot_sha256": null,
+      "snapshots": {}
+    },
+    {
+      "id": "sigma-rules",
+      "name": "SigmaHQ detection rules",
+      "url": "https://github.com/SigmaHQ/sigma",
+      "organization": "SigmaHQ / individual rule authors",
+      "version": "live site; reviewed 2026-11-26",
+      "published_at": null,
+      "checked_at": "2026-11-26",
+      "acquired_at": null,
+      "license": "DRL-1.1",
+      "license_url": "https://github.com/SigmaHQ/Detection-Rule-License",
+      "public_access": true,
+      "download_allowed": false,
+      "training_allowed": false,
+      "redistribution_allowed": false,
+      "training_conditions": "Public access is not training authorization. Not enabled for automatic SFT; source-specific training review remains pending.",
+      "redistribution_conditions": "No public payload redistribution enabled by this registry.",
+      "restrictions": "DRL requires author attribution in rule reproductions and displayed matches. Review how that obligation applies to outputs and derived training data.",
+      "format": "YAML",
+      "quality_estimate": "Primary technical reference; accuracy/completeness and record-level suitability still need review.",
+      "domains": [
+        "soc_detection"
+      ],
+      "status": "REVIEW REQUIRED",
+      "review_method": "Primary publisher page/license inspected by engineering agent; not expert record review or legal counsel signoff.",
+      "intended_uses": [
+        "knowledge",
+        "rag"
+      ],
+      "references": [],
+      "identifiers": [],
+      "snapshot_sha256": null,
+      "snapshots": {}
+    },
+    {
+      "id": "yara-rules",
+      "name": "Yara-Rules community rules",
+      "url": "https://github.com/Yara-Rules/rules",
+      "organization": "Yara-Rules contributors",
+      "version": "live site; reviewed 2026-11-26",
+      "published_at": null,
+      "checked_at": "2026-11-26",
+      "acquired_at": null,
+      "license": "Repository license plus per-rule provenance review",
+      "license_url": "https://github.com/Yara-Rules/rules/blob/master/LICENSE",
+      "public_access": true,
+      "download_allowed": false,
+      "training_allowed": false,
+      "redistribution_allowed": false,
+      "training_conditions": "Public access is not training authorization. Not enabled for automatic SFT; source-specific training review remains pending.",
+      "redistribution_conditions": "No public payload redistribution enabled by this registry.",
+      "restrictions": "Community detection corpus; license of YARA software is not license of rule contents. No rules executed or imported.",
+      "format": "YARA",
+      "quality_estimate": "Primary technical reference; accuracy/completeness and record-level suitability still need review.",
+      "domains": [
+        "soc_detection",
+        "dfir"
+      ],
+      "status": "REVIEW REQUIRED",
+      "review_method": "Primary publisher page/license inspected by engineering agent; not expert record review or legal counsel signoff.",
+      "intended_uses": [
+        "knowledge",
+        "rag"
+      ],
+      "references": [],
+      "identifiers": [],
+      "snapshot_sha256": null,
+      "snapshots": {}
+    },
+    {
+      "id": "primevul",
+      "name": "PrimeVul upstream",
+      "url": "https://github.com/DLVulDet/PrimeVul",
+      "organization": "DLVulDet research authors",
+      "version": "PrimeVul-v0.1",
+      "published_at": null,
+      "checked_at": "2026-11-26",
+      "acquired_at": null,
+      "license": "Dataset/project and underlying repositories require review",
+      "license_url": "https://github.com/DLVulDet/PrimeVul",
+      "public_access": true,
+      "download_allowed": false,
+      "training_allowed": false,
+      "redistribution_allowed": false,
+      "training_conditions": "Public access is not training authorization. Not enabled for automatic SFT; source-specific training review remains pending.",
+      "redistribution_conditions": "No public payload redistribution enabled by this registry.",
+      "restrictions": "Code originates from many upstream projects with separate rights. Preserve chronological/project splits; reserve evaluation families. No bulk download.",
+      "format": "JSONL",
+      "quality_estimate": "Primary technical reference; accuracy/completeness and record-level suitability still need review.",
+      "domains": [
+        "application_security"
+      ],
+      "status": "REVIEW REQUIRED",
+      "review_method": "Primary publisher page/license inspected by engineering agent; not expert record review or legal counsel signoff.",
+      "intended_uses": [
+        "knowledge",
+        "rag"
+      ],
+      "references": [],
+      "identifiers": [],
+      "snapshot_sha256": null,
+      "snapshots": {}
+    },
+    {
+      "id": "hf-primevul",
+      "name": "PrimeVul mirror (colin/PrimeVul)",
+      "url": "https://huggingface.co/datasets/colin/PrimeVul",
+      "organization": "Mirror maintainer; upstream DLVulDet",
+      "version": "live site; reviewed 2026-11-26",
+      "published_at": null,
+      "checked_at": "2026-11-26",
+      "acquired_at": null,
+      "license": "Card labels MIT; upstream rights not established",
+      "license_url": "https://huggingface.co/datasets/colin/PrimeVul",
+      "public_access": true,
+      "download_allowed": false,
+      "training_allowed": false,
+      "redistribution_allowed": false,
+      "training_conditions": "Public access is not training authorization. Not enabled for automatic SFT; source-specific training review remains pending.",
+      "redistribution_conditions": "No public payload redistribution enabled by this registry.",
+      "restrictions": "Verified real mirror; original code licenses and original splits prevail. Card license alone is insufficient for approval; no download.",
+      "format": "JSON/Parquet",
+      "quality_estimate": "Primary technical reference; accuracy/completeness and record-level suitability still need review.",
+      "domains": [
+        "application_security"
+      ],
+      "status": "REVIEW REQUIRED",
+      "review_method": "Primary publisher page/license inspected by engineering agent; not expert record review or legal counsel signoff.",
+      "intended_uses": [
+        "knowledge",
+        "rag"
+      ],
+      "references": [],
+      "identifiers": [],
+      "snapshot_sha256": null,
+      "snapshots": {}
+    },
+    {
+      "id": "hf-cyberseceval",
+      "name": "CyberSecEval mirror (walledai/CyberSecEval)",
+      "url": "https://huggingface.co/datasets/walledai/CyberSecEval",
+      "organization": "Walled AI mirror / upstream Meta",
+      "version": "live site; reviewed 2026-11-26",
+      "published_at": null,
+      "checked_at": "2026-11-26",
+      "acquired_at": null,
+      "license": "Card labels MIT; inherited code/provenance review",
+      "license_url": "https://huggingface.co/datasets/walledai/CyberSecEval",
+      "public_access": true,
+      "download_allowed": false,
+      "training_allowed": false,
+      "redistribution_allowed": false,
+      "training_conditions": "Public access is not training authorization. Not enabled for automatic SFT; source-specific training review remains pending.",
+      "redistribution_conditions": "No public payload redistribution enabled by this registry.",
+      "restrictions": "Evaluation suite candidate; exclude from SFT, retain upstream restrictions and project/CVE families. No records downloaded.",
+      "format": "Parquet",
+      "quality_estimate": "Primary technical reference; accuracy/completeness and record-level suitability still need review.",
+      "domains": [
+        "application_security",
+        "ai_security"
+      ],
+      "status": "REVIEW REQUIRED",
+      "review_method": "Primary publisher page/license inspected by engineering agent; not expert record review or legal counsel signoff.",
+      "intended_uses": [
+        "benchmark"
+      ],
+      "references": [],
+      "identifiers": [],
+      "snapshot_sha256": null,
+      "snapshots": {}
+    },
+    {
+      "id": "hf-cybernative",
+      "name": "CyberNative Code Vulnerability Security DPO",
+      "url": "https://huggingface.co/datasets/CyberNative/Code_Vulnerability_Security_DPO",
+      "organization": "CyberNative",
+      "version": "live site; reviewed 2026-11-26",
+      "published_at": null,
+      "checked_at": "2026-11-26",
+      "acquired_at": null,
+      "license": "Card labels Apache-2.0; generation/technical rights unverified",
+      "license_url": "https://huggingface.co/datasets/CyberNative/Code_Vulnerability_Security_DPO",
+      "public_access": true,
+      "download_allowed": false,
+      "training_allowed": false,
+      "redistribution_allowed": false,
+      "training_conditions": "Public access is not training authorization. Not enabled for automatic SFT; source-specific training review remains pending.",
+      "redistribution_conditions": "No public payload redistribution enabled by this registry.",
+      "restrictions": "DPO preferred/rejected answers are not gold. Sample card contains claims requiring technical verification; generation origin/service terms and code rights need review. Not automatically converted to SFT.",
+      "format": "JSON DPO",
+      "quality_estimate": "Primary technical reference; accuracy/completeness and record-level suitability still need review.",
+      "domains": [
+        "application_security"
+      ],
+      "status": "REVIEW REQUIRED",
+      "review_method": "Primary publisher page/license inspected by engineering agent; not expert record review or legal counsel signoff.",
+      "intended_uses": [
+        "knowledge",
+        "rag"
+      ],
+      "references": [],
+      "identifiers": [],
+      "snapshot_sha256": null,
+      "snapshots": {}
+    }
+  ]
+}

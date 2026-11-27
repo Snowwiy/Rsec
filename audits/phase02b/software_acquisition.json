@@ -1,0 +1,10 @@
+{
+  "source_id": "sqlite-completeness",
+  "revision": "95170adc372e2a3d7ca664c3f3673a5258b0dd78",
+  "git_blob": "9a26b606b39d4008307e9172a5da1c5861ee8a95",
+  "sha256": "83584978e86b201455660c6663772fc1882c43bca155e9653d68cdacb140b375",
+  "bytes": 12269,
+  "transport": "Authorized GitHub connector; blob matched locally",
+  "sft_candidates": 0,
+  "raw_payload_published": false
+}

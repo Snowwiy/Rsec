@@ -26,3 +26,7 @@ Retrieved text must remain an evidence object, never a higher-priority instructi
 ## Future SENTRA
 
 `LocalAnalyzer` receives JSON events plus versioned evidence and returns findings, uncertainties, references and remediations. A future authenticated loopback API can expose it. SENTRA remains independent; this phase neither connects to nor modifies it.
+
+## Dos capacidades centrales
+
+La arquitectura de v0.2.1-alpha preserva dos tracks de datos y evaluación sobre el mismo ciclo local de entrenamiento y artefactos. Las fuentes y familias de ingeniería de software siguen su taxonomía propia. Los releases mixtos fusionan sólo datos ya revisados y conservan las particiones de evaluación de ambos tracks. CodeBench evalúa programación por separado de CyberBench. Véase [diseño de software y replay](SOFTWARE_ENGINEERING.md).

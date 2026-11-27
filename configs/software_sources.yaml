@@ -1,0 +1,10 @@
+allowed_hosts:
+- raw.githubusercontent.com
+sources: []
+registry: data/manifests/software_source_registry.json
+registered_sources:
+- source_id: sqlite-completeness
+  revision: 95170adc372e2a3d7ca664c3f3673a5258b0dd78
+  url: https://raw.githubusercontent.com/sqlite/sqlite/95170adc372e2a3d7ca664c3f3673a5258b0dd78/src/complete.c
+  filename: software/sqlite-complete.c
+  sha256: 83584978e86b201455660c6663772fc1882c43bca155e9653d68cdacb140b375

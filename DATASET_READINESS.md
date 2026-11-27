@@ -1,44 +1,27 @@
-# Rsec — preparación de datos para Fase 02
+# Estado de datos · Fase 02-B
 
-Fecha: 2026-11-26. **Preparado condicionalmente para comenzar curación; NO preparado para entrenamiento especializado.** La lista de fuentes externas sigue vacía. Solo existen 12 conversaciones sintéticas y 10 fixtures de benchmark, no un corpus de ciberseguridad validado.
+**DATASET READINESS FAIL.** Preauditoría asistida completa en los 96 casos previos, 0 decisiones humanas, 0 ejemplos elegibles, 0 gold privado. El track de software suma 12 casos de evaluación pública y un archivo SQLite con autorización acotada a uso local. No suma ejemplos SFT aprobados. La reserva por defecto tiene 54 casos. Consulta [preauditoría](EXPERT_CURATION_REPORT.md), [derechos](DATASET_LICENSE_REPORT.md) y [gates](TRAINING_READINESS.md).
 
-## Lo comprobado
+Datos históricos de Fase 02-A a continuación.
 
-Esquema estricto de conversaciones alternas y metadatos, normalización NFKC, booleanos de revisión/synthetic estrictos, deduplicación lexical, familias por procedencia/preguntas/contenido, splits no vacíos y separación train/eval/test. El filtro excluye preguntas del benchmark incluso si cambia la respuesta o se declara otra familia. La validación repite aislamiento, propósito, contenido y screening de metadata después de verificar hashes.
+---
 
-Se probaron JSON, JSONL, CSV multilínea y Parquet real; entradas inválidas se rechazan o van a cuarentena de hashes y motivos. Fallos globales de formato/presupuesto abortan sin aprobar una release. Los manifests registran inputs/benchmarks/hashes/seed y ficheros resultantes. Para inputs ordenados y seed iguales, los bytes de cada split se repiten; timestamps/manifests completos de dos ejecuciones no son idénticos por definición.
+# Rsec — dataset readiness, Phase 02 current state
 
-Secretos y PII reconocidos no entran en cuarentena textual ni logs propios. Anonimización solo sustituye patrones de email/IP/teléfono en contenido; metadata sensible se rechaza. Knowledge/RAG se mantiene separado, `trusted=False`; documentos no se convierten automáticamente en ejemplos SFT ni se ejecutan.
+2026-11-26 · **DATASET READINESS: FAIL** for an approved corpus release. **TRAINING READINESS: NOT READY.** This supersedes the Phase 01-B snapshot of an empty external catalog; the historical independent audit is preserved separately.
 
-## Gates antes de aceptar un corpus real
+Data engineering is implemented/tested and available in [dependent PR #2](https://github.com/Snowwiy/Rsec/pull/2). Catalog 22 =20 external locations verified +2 internal fixtures. Only3 pinned CVE documents were acquired for reference-only indexes, not SFT. External SFT-approved sources0. Legacy download list is still empty; registered download is a separate explicit command.
 
-| Gate | Evidencia exigida | Estado actual |
-|---|---|---|
-| Derechos por fuente | Licencia/versión, URL oficial, fecha, condiciones de uso/redistribución y decisión humana | BLOCKED para corpus real; no hay fuente aprobada |
-| Procedencia y autenticidad | Snapshot/hash independiente, propietario/origen y familias documento/repositorio/CVE | Infraestructura TESTED; revisión real pendiente |
-| Privacidad | Revisión humana, minimización de datos, política de retención y exclusión de material privado | Heurísticas TESTED; revisión corpus pendiente |
-| Correctitud | Respuestas verificadas por expertos, referencias y incertidumbre, distinción de hipótesis | No existe gold amplio |
-| Español/inglés y dominios | Distribuciones y revisión humana por idioma/appsec/SOC/DFIR/hardening | Solo fixtures sintéticos |
-| Dedupe/escalabilidad | Shards bajo presupuesto, grupos de origen revisados y análisis semántico adicional | Baseline lexical acotado; semántico pendiente |
-| Independencia de benchmark | Listado completo reservado, hashes, grupos externos y preguntas protegidas | Suite sintética aislada; suites externas pendientes |
-| Liberación reproducible | IDs inmutables, inputs ordenados, seed/config/tool versions, revisión de reportes | Mecanismo TESTED; release real pendiente |
-| Incremental/replay | Fuentes antiguas por el mismo pipeline, benchmark congelado y regresión por dominio | Implementado, no probado con corpus real |
+Current unique records99:64 SFT candidates, 32 public development/regression candidates, 3 reference indexes. Expert approved 0, rejected0, quarantined0. Pending96 candidate expert reviews +3 reference interpretations. No actual SFT train/eval/test or independent expert/private gold exists. The conditional 500–1,000 pilot target is unmet. No synthetic draft is a real incident or validated truth.
 
-No declarar `reviewed=true` únicamente porque el pipeline no encontró un patrón. Los identificadores de licencia no son un validador jurídico; una URL no prueba origen. La MIT de Rsec no relicencia publicaciones, modelos o datos de terceros.
+| Gate | State |
+|---|---|
+| Taxonomy/source/rights/schema/quality/CLI infrastructure | IMPLEMENTED / CPU TESTED |
+| Immutable manifests, policies, review binding and reviewed-only SFT bridge | TESTED with test-only attestations; no real promotion |
+| Bilingual draft pilot |64 mechanically accepted; 64 expert reviews pending |
+| Approved SFT corpus and external SFT permissions | BLOCKED |
+| Independent expert gold and hidden final evaluation | BLOCKED |
+| Semantic multilingual deduplication / dynamic remediation | NOT IMPLEMENTED |
+| Physical CUDA/NF4/QLoRA and heterogeneous GPUs | GPU VALIDATION PENDING |
 
-## Procedimiento de Fase 02
-
-1. Seleccionar pocas fuentes oficiales y revisar derechos antes de configurar adquisición; no instalar scripts de datasets ni abrir archivos como ejecutables.
-2. Congelar un benchmark externo y gold revisado por personas antes de seleccionar ejemplos SFT. Mantener familias completas y versiones fuera de entrenamiento/replay.
-3. Guardar material privado y registros de revisión fuera del repositorio público. Adaptar esquemas externos explícitamente a Record; no añadir licencias o etiquetas sintéticas por inferencia silenciosa.
-4. Curar shards pequeños. La deduplicación mantiene coste cuadrático y puede abortar por presupuesto aun por debajo de 64 MiB o 10,000 registros. Un tamaño permitido no implica capacidad de cómputo suficiente.
-5. Preparar una release nueva, incluyendo todas las suites reservadas. El default reservado solo se aplica a CLI; quienes llamen `prepare()` deben pasar sus benchmarks explícitamente.
-6. Revisar dataset_quality_report, motivos de rechazo, distribuciones, grupos y contenido aprobado; verificar hashes y no-leakage mediante `rsec data validate`.
-7. Mantener test congelado. Volver a dividir una mezcla de replay con fuentes nuevas puede mover familias; no usar la nueva división como sustituto del mismo test externo para comparación longitudinal.
-8. Obtener revisión humana de privacidad, derechos y correctitud antes de entregar el corpus al plan GPU. No iniciar entrenamiento en esta fase.
-
-## Límites que impiden interpretar fixtures como conocimiento
-
-Las muestras y predicciones de referencia son authored synthetic fixtures y llevan su procedencia explícita. Puntuarlas contra sus etiquetas solo verifica el scorer. Ninguna prueba demuestra comprensión de vulnerabilidades, recuperación de evidencias, seguridad adversarial de un modelo ni superioridad sobre un base.
-
-La detección de inyección indirecta es heurística y no cubre ataques multilingües/parafraseados/codificados. Hashes, filtros regex y límites de esquema no resuelven data poisoning ni garantizan anonimato. No existe un validador semántico automático que convierta esos límites en PASS.
+Full accounting and source/rights boundaries: [engineering report](DATASET_ENGINEERING_REPORT.md), [dataset card](DATASET_CARD.md), [quality report](DATASET_QUALITY_REPORT.md), [benchmark report](BENCHMARK_REPORT.md). Review procedure: [human guide](docs/DATASET_REVIEW_GUIDE.md). Next-phase sequence: [training readiness](TRAINING_READINESS.md). High process scores and passing tests do not satisfy technical correctness or independent benchmark gates.

@@ -1,25 +1,33 @@
-# Review before merge — Phase 01-B
+# Revisión de integración · Fase 02-B
 
-## Verdict and recommendation
+Revisa [PR #4](https://github.com/Snowwiy/Rsec/pull/4) primero para corregir dev. Verifica que Gitleaks siga escaneando todo el historial con el mismo detector, salida y redacción. La excepción exacta se probó contra otro valor en la misma ruta y con las coincidencias conocidas en otra ruta.
 
-**PASS WITH CONDITIONS** for review as foundation alpha into `dev`. Keep PR #1 in draft pending the owner's human review. Do not merge automatically into `dev` or `main`, release specialized weights, or infer GPU/model-quality approval from passing CI.
+Revisa [PR #5](https://github.com/Snowwiy/Rsec/pull/5) después. Comprueba que contiene la historia auditada de Fase 02-A, el código nuevo y el mismo hotfix como ancestro. Mantén 64 candidatos SFT y 32 de CyberBench sin ninguna promoción automática. Revisa los controles de autoridad local y las limitaciones de rúbricas y GPU. Verifica los tres checks del commit que se vaya a integrar.
 
-Initial head independently reviewed: `48709e49c2650793f8af792344988552151de158`. Corrected implementation: `44084096dc231b7726ca1490c5e65f69a01956f9`, with all three hosted workflows successful. Review the checks of the latest reporting head as well.
+La programación y la ciberseguridad conservan suites y permisos propios. Los datos de entrenamiento requieren autorización y revisión experta en ambos tracks. Evalúa CodeBench y CyberBench contra el mismo modelo base antes de cualquier promoción. Los planes de GPU, modelo y corpus siguen sujetos a sus gates. No se ha iniciado entrenamiento especializado.
 
-## Review gates
+Revisión histórica de Fase 02-A a continuación.
 
-- Read findings A01–A15 in INDEPENDENT_AUDIT.md and inspect target masks/token counting, benchmark prompt isolation, metric label sets, comparable-condition gates and local artifact guards.
-- Confirm TEST_RESULTS.md and structured evidence: 97 tests / 91.34% statement coverage, independent baseline 39 / 75.15%, core without torch 88 passed / 9 deselected, native GGUF repeated.
-- Confirm no real specialized model, external corpus approval, paid service, repository policy change or merge occurred. Existing MIT and prior work remain preserved.
-- Treat Unsloth as BLOCKED. FSDP fixes address documented incompatibilities but do not certify distributed execution, memory feasibility or checkpoint layout.
-- Verify the final PR head's CPU quality, offline ML and security jobs before integrating. Coverage is statement coverage; tests with fake transports/engines are contract evidence only.
+---
 
-## Accepted alpha limitations
+# Review before merge — Phase 02 dependent PR
 
-No NVIDIA device was available. Physical QLoRA, mixed precision, DDP/FSDP, heterogeneous topology/NCCL/OOM and distributed recovery remain required before training. Ollama/bindings/providers/Windows/WSL2 need separate execution. GPU dependency graph is not transitively locked/audited. Training CUDA branches remain below the aspirational 90% line-coverage goal; mocking them would not establish physical support.
+[PR #2](https://github.com/Snowwiy/Rsec/pull/2) is a **draft infrastructure review** based on audited PR #1. **DATASET READINESS: FAIL; TRAINING READINESS: NOT READY.** Do not interpret code integration as corpus/model/hardware approval. No merge or specialized training was performed.
 
-Data/source rights, expert labels, privacy, semantic poisoning, authenticating artifacts and benchmark breadth require review; regex/hash checks cannot certify them. Registry TESTED remains a human assertion. Dataset releases and external test families must stay frozen. Exported weights must be evaluated under comparable conditions; native tiny GGUF plumbing is not proof of quantized model quality.
+## Integration gates
 
-## Fase 02 decision
+- Review the22 source policies, separate permissions and three scoped CVE snapshots. No external SFT source or raw payload redistribution is enabled; MIT does not relicense upstream assets.
+- Review actual counts99 processed/0 expert-approved/0 rejected/0 quarantined/99 pending, distinguishing64 SFT, 32 public dev/regression and3 reference indexes. No500–1,000 approved pilot or independent expert/private gold exists.
+- Inspect Candidate roles, JSON target consistency, metadata exclusion from tokens, review hash/policy bindings, partial-review safe failure, inventory/symlink checks and source/code/translation/reservation isolation. Review the legacy-path boundary; it remains for foundation fixtures, not expert promotion.
+- Inspect tests:200 passed,94.02% statementcoverage, core 189 passed/11 MLdeselected. Real CPU TRL/tokenizer checks are distinct from hypothetical review/transport controls. No original tests removed or new coverage exclusions added.
+- Inspect scanner configuration: every default rule retained; only two exact verified public tokenizer hashes in two paths are exempted using AND. Initial CI failed on 4 false positives; corrected history scan and synthetic negative control pass. Review CPU dependency audit's torch+cpu skip and unresolved GPU graph.
+- Verify **all three final-head** CPU quality/offline ML/security workflows. Corrected code head runs passed; they cannot substitute for checks on later reporting heads.
+- Read residual limits in BENCHMARK_REPORT.md and TRAINING_READINESS.md: case ratings lack prediction/model binding, no real expert gold, semantic metrics or dynamic remediation, lexical/privacy/poison heuristics and unsigned/operator trust roots.
 
-Conditional readiness to begin rights review, curation and external benchmark construction. DATASET_READINESS.md lists release gates; GPU_VALIDATION_PLAN.md lists physical acceptance. **Not ready for real specialized training or public model release.** These conditions are compatible with merging foundation code into dev after human review; they are not waived by that merge.
+First review/integrate PR #1 into dev with its Phase 01-B conditions, then verify audited ancestry/content, retarget PR #2 to dev and rerun CI. Current target is `feat/rsec-foundation-v0.1.0` so Phase01 changes are not duplicated. Preserve history; after squash/rebase use content comparison and a normal conflict-resolution merge where needed, never force push or delete prior work. No automatic merge to dev/main.
+
+## Gates before real training
+
+Actual bilingual qualified review and source-specific rights; independently authored/adjudicated frozen gold outside the tuning loop; reviewed pilot with meaningful depth/diversity; physical RTX4070/CUDA/NF4, memory, optimizer resume/export and regression evidence. Advanced/expert need two reviewers. Preserve separate 12 GBallocations for4070/3060. Unsloth remains BLOCKED; audited main stack and training code/pins unchanged. Read GPU_VALIDATION_PLAN.md and the exact 11later steps in TRAINING_READINESS.md.
+
+Historical foundation verdict remains **PASS WITH CONDITIONS** for PR #1; it does not override the current Phase 02 corpus FAIL. The missing expert/private benchmark is a confirmed exit gap, not something passing CI can waive.

@@ -1,0 +1,7 @@
+# Inferencia local y comprobación del backend
+
+Desde el checkout en PowerShell, usar un llama-server CUDA/CPU ya disponible en PATH. En una consola ejecutar `& .\scripts\workstation.ps1 inference -Model "RUTA AL ARCHIVO.gguf" -Port 8081 -Context 2048`; añadir `-GpuUuid UUID_REAL` si se comprobó la compilación CUDA. El servidor se mantiene en primer plano y escucha en 127.0.0.1. Verificar en el log el número de capas realmente descargadas a GPU y cruzarlo con nvidia-smi. Ante un puerto ocupado, inspeccionar el servicio existente.
+
+En otra consola ejecutar `& .\scripts\workstation.ps1 probe -Port 8081`. Comprueba el alias local-baseline en el catálogo y solicita como máximo ocho tokens con temperatura 0 y top-p 1. Registra tokens y latencia de extremo a extremo sin guardar el texto. Repetir con contexto y presupuestos idénticos para comparar backends. El cliente usa HTTP directo a loopback, sin proxy ni redirecciones.
+
+Prueba ejecutada en Linux CPU: llama.cpp b671865c, GGUF Q4_K_M diminuto ya existente, dos hilos, contexto 512. Una respuesta de ocho tokens en 31.5 ms (~254 tokens/s de extremo a extremo). Es una comprobación del protocolo con pesos técnicos; no mide rendimiento de la estación, competencia del modelo ni carga sostenida. El servidor se detuvo al terminar. Para uso de CLI sin servidor se conserva `rsec infer --help`. Véase la [referencia oficial de llama-server](https://github.com/ggml-org/llama.cpp/blob/master/tools/server/README.md).

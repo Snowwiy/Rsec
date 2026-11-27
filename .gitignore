@@ -32,3 +32,4 @@ data/quarantine/
 # Never commit real reviewer identities or final hidden evaluation cases.
 data/reviews/
 benchmarks/private/
+/.rsec-local/

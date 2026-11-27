@@ -1,5 +1,7 @@
 # Preparación local y diagnóstico de GPU
 
+Para la Fase 03-A utilizar el [procedimiento Windows/WSL vigente](LOCAL_INSTALLATION_REPORT.md) con cachés del proyecto y supervisión térmica. Se conserva a continuación la referencia de Fase 02-B.
+
 Esta guía parte de Windows 11 y WSL2/Linux. El entorno de desarrollo reportó PyTorch 2.8.0+cpu y ningún dispositivo CUDA. La instalación física y validación dependen del equipo del propietario. GPU READINESS se mantiene en VALIDATION PENDING.
 
 ## Checkout y entorno CPU

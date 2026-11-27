@@ -1,3 +1,9 @@
+# Handoff · v0.3.0-alpha.1
+
+PR #2 llegó a la rama de fundamentos. Los PR #4 y #5 llegaron a dev; el PR #3 llevó dev a main. La rama de Fase 03-A parte del merge de #5 en dev (cb3d15a). El PC requiere una sesión de escritorio con la unidad de datos y la RTX 4070 accesibles. Comenzar por [instalación y diagnóstico](LOCAL_INSTALLATION_REPORT.md), después [inventario privado](LOCAL_MODEL_INVENTORY.md), backend y smoke térmico. La suite de revisión conserva 64 candidatos SFT y 32 CyberBench, 96 preauditorías, 12 CodeBench, una fuente SQLite acotada y cero aprobados. Para soporte físico compartir únicamente resultados sanitizados. Las secciones siguientes son historia de fases anteriores.
+
+---
+
 # Handoff · v0.2.1-alpha · Phase 02-B
 
 Review [hotfix #4](https://github.com/Snowwiy/Rsec/pull/4) first, then [Phase 02-B #5](https://github.com/Snowwiy/Rsec/pull/5) into dev. PR #1 reached dev and PR #2 reached the foundation branch. The main PR preserves that ancestry and includes the hotfix. PR #3 is the later dev-to-main review. See [integration evidence](GITHUB_INTEGRATION_REPORT.md).

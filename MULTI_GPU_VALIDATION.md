@@ -1,3 +1,9 @@
+# Fase 03-A · perfiles para la segunda tarjeta
+
+**MULTI-GPU VALIDATION PENDING — SECOND GPU NOT INSTALLED.** Estado informado al comenzar. Confirmar la instalación antes de modificarlo. Enumerar las GPU por UUID con el mismo entorno, validar individualmente la 4070 (A) y la 3060 (B), y comparar memoria y latencia. Para procesos independientes (C), asignar un UUID distinto a cada proceso. Para DDP (D), ejecutar `bash scripts/validate_multi_gpu.sh "$GPU_4070" "$GPU_3060" reports/ddp-first`. El supervisor observa las dos temperaturas y exige dos dispositivos distintos; no inicia DDP durante el arranque normal. Para FSDP/QLoRA (E) e inferencia dividida (F) seguir las secciones C y D siguientes después de los smoke tests. Usar supervisión térmica independiente para esas cargas. P2P, enlaces PCIe y mejoras de rendimiento requieren mediciones.
+
+---
+
 # Validación física con RTX 4070 y RTX 3060
 
 La configuración objetivo contiene dos GPU con 12 GB cada una. Registra UUID, slots, ancho y generación PCIe efectivos, RAM, unidad, driver, versión CUDA de la rueda, NCCL, matriz P2P, potencia y temperatura. Las dos memorias físicas son asignaciones separadas. La instalación y el enlace real siguen pendientes de verificación local.

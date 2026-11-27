@@ -1,0 +1,10 @@
+# Goose · integración local
+
+Goose del propietario, sus proveedores activos y sus modelos están pendientes de inspección. No se modificó su configuración. La API de inferencia local sí respondió desde un llama-server CPU con el fixture. Una aceptación de Goose además exige observar una sesión real.
+
+1. En Windows ejecutar el diagnóstico, comprobar la versión instalada y usar la pantalla Settings o la ayuda de esa versión para identificar la configuración efectiva. Si existe un YAML de usuario conocido, ejecutar en el entorno privado `python -m rsec.local goose-config "RUTA_CONFIRMADA" --output ".rsec-local/goose-routing.json"`. El lector selecciona los campos de enrutamiento y omite credenciales. Las variables que recibió Goose pueden tener precedencia sobre el archivo.
+2. Para un servidor Ollama local ya activo, comprobar en `ollama list` el identificador exacto de un baseline y su presencia en disco; descartar variantes cloud. En una sesión offline usar `workstation.ps1 goose -Model "TAG_LOCAL"`. El lanzador verifica catálogo y respuesta del endpoint en loopback, y después inicia Goose con proveedor, host y modelo acotados al proceso. Confirmar herramientas autorizadas individualmente en Goose.
+3. Para llama.cpp usar [el lanzador de inferencia](LOCAL_INFERENCE_GUIDE.md). En una versión compatible de Goose, un proveedor personalizado OpenAI-compatible puede usar la URL base de loopback con /v1 y el alias local-baseline. El probe cubre el protocolo de chat. Verificar por separado el soporte de tool calling del modelo y su chat template antes de habilitar herramientas. Un nuevo perfil persistente requiere respaldar únicamente el archivo real antes de modificarlo.
+4. Para utilizar pesos futuros de Rsec, cambiar el modelo del perfil independiente tras verificar manifest, plantilla y evaluación. Mantener el proveedor habitual disponible.
+
+[Documentación de proveedores Goose](https://goose-docs.ai/docs/getting-started/providers/) · [configuración y precedencia](https://goose-docs.ai/docs/guides/config-files/)

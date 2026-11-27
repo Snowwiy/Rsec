@@ -1,3 +1,21 @@
+# Evidencia · Fase 03-A · v0.3.0-alpha.1
+
+| Ejecución | Resultado observado en Linux |
+|---|---|
+| `HF_HUB_OFFLINE=1 .venv/bin/pytest -q --cov=rsec --cov-report=json:reports/03a-release.json` | 235 aprobadas, 2 advertencias SWIG. 3,024 de 3,525 sentencias, 85.79 % |
+| `../core-check/bin/python -m pytest -q -m 'not ml and not gpu and not multigpu'` | 224 aprobadas, 11 excluidas, entorno sin Torch |
+| Ruff check y format, build sin aislamiento, pip check, validación del repo y sintaxis Bash | Aprobados |
+| Gitleaks historial, configuración y controles negativos | Aprobados, sin ampliar excepciones |
+| llama-server CPU y GET/POST de loopback | Fixture GGUF existente, ocho tokens. Servidor detenido después |
+| UI de revisión del piloto | GET 200 en loopback. Persistencia y firmas bajo identidades de fixture en regresión |
+| PowerShell del propietario, 4070/NF4, DDP/NCCL, Goose | Pendientes de acceso a la estación |
+
+Las 220 pruebas de Fase 02-B se conservaron. Las 15 adicionales cubren inventario, formato de cabeceras, API, controles térmicos, selección de dispositivos, restauración de entorno, rutas con espacios y límites del proveedor. En CI se añadió un job nativo Windows con setup y carpetas de prueba privadas. El resultado de ese job se consulta en el PR.
+
+La cobertura de 02-A fue 94.02 % (138 sin cubrir de 2,306); en 02-B, 85.71 % (473 de 3,310). GPU aportó 134 líneas sin ejecutar y la UI 117; entrenamiento mantuvo 35 en ambas mediciones. Las dos categorías explican 251 de las 335 líneas adicionales sin cubrir. El descenso incluye rutas de software comprobables en CPU. Por sí solo no prueba un fallo funcional. La nueva medición conserva las exclusiones originales.
+
+---
+
 # Validación · Fase 02-B · 2026-11-26
 
 Implementación inicial publicada en `b34bf571f5896af83dfd3a674a32084f32793c35`. Los recuentos incluyen el endurecimiento final de claves Ed25519. Linux, Python 3.12.14 y PyTorch 2.8.0+cpu. Pasaron **220 pruebas**, con 2 advertencias deprecadas de SWIG. Core sin Torch: **209 aprobadas y 11 ML excluidas**. Cobertura local de sentencias **85.71 % (2,837/3,310)**, frente a **94.02 %** de la Fase 02-A. La base se amplió y los caminos CUDA, NCCL y algunos errores de UI y evaluación no se ejecutaron. Se conservaron las 200 pruebas previas, sin añadir exclusiones para subir el porcentaje.

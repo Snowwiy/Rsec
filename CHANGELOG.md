@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.3.0-alpha.1 · local infrastructure
+
+Added guarded checkout, project-scoped Windows and WSL launchers, private metadata inventory, local baseline probes, Goose session routing and UUID-selected thermal supervision for single-card and DDP smoke tests. Physical hardware and the owner’s installation remain pending.
+
 ## 0.2.1-alpha · 2026-11-26
 
 - Reused the audited Gitleaks checksum exceptions in a minimal dev hotfix and confirmed full history plus negative controls.

@@ -1,0 +1,5 @@
+# Monitorización térmica
+
+Temperatura inicial/máxima/sostenida, VRAM, frecuencia, potencia y throttling del PC: pendientes. El supervisor registra muestras por UUID cada segundo más la latencia del comando, incluyendo temperatura de núcleo, memoria usada, utilización, reloj SM y potencia cuando el driver lo informa. El máximo muestreado puede omitir picos entre muestras. Una reducción de frecuencia por sí sola no acredita throttling térmico; contrastar con razones de limitación del driver y sensores disponibles.
+
+El umbral de aviso es 80 °C y el de parada 85 °C; se admiten umbrales inferiores mediante `python -m rsec.thermal --warn 75 --stop 80 ...`. La pérdida de telemetría de temperatura detiene la carga, al igual que el límite temporal de tres minutos. La serie queda en thermal.json; un informe interrumpido requiere diagnóstico antes de repetir. Ningún control escribe ajustes del dispositivo. La protección cubre los smoke tests lanzados por el supervisor. La inferencia interactiva y los experimentos prolongados requieren monitorización separada antes de aumentar la carga.

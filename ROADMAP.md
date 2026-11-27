@@ -5,6 +5,7 @@
 | 01 · v0.1.0-alpha | Foundation, data lifecycle, SFT/QLoRA, evaluation, exports, CLI and MLOps | Reviewable code, CPU tests, explicit hardware pending states |
 | 02 · v0.2.0-alpha | Dataset engineering infrastructure IMPLEMENTED/TESTED; corpus exit FAIL | 22-source scoped registry, 64 SFT drafts, 32 public cases, 3 reference indexes; actual expert reviews and independent gold still BLOCKED |
 | 02-B · v0.2.1-alpha | Expert curation, dev security, GPU preparation and software foundations | Signed local review, independent suite scaffolds, rights-scoped software track and physical gates |
+| 03-A · v0.3.0-alpha.1 | Local Windows/WSL setup, loopback inference, supervised CUDA and agent integration | CPU protocol tested; owner workstation, physical 4070 and Goose pending |
 | 03 · BLOCKED | First local pilot and retention baseline | Real GPU QLoRA, approved releases, both base evaluations and reproducible mixed vs single-track comparison |
 | 04 | Advanced defensive and software specialization | SOC, DFIR, secure coding, general programming, frontend/backend, testing and repo-level tasks with verified isolated evaluation |
 | 05 | Local RAG and repository context | Versioned local knowledge, code indexing, hybrid retrieval, citations and trust boundaries |

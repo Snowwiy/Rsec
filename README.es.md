@@ -1,4 +1,6 @@
-# Rsec AI · v0.2.1-alpha
+# Rsec AI · v0.3.0-alpha.1
+
+La [guía de instalación](LOCAL_INSTALLATION_REPORT.md) reúne los lanzadores, el inventario privado, la inferencia local y las pruebas con supervisión térmica. La validación física y la sesión de Goose en el PC siguen pendientes.
 
 Auditoría independiente Fase 01-B: **PASS WITH CONDITIONS**, **97 pruebas / 91.34 % de cobertura**. [Informe](INDEPENDENT_AUDIT.md) · [Plan GPU](GPU_VALIDATION_PLAN.md) · [Preparación de datos](DATASET_READINESS.md). Unsloth queda **BLOCKED** por conflictos comprobados. El gate de regresión exige metadatos de generación/evaluación comparables; las validaciones físicas y el corpus experto siguen pendientes.
 

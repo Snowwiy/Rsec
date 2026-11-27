@@ -1,0 +1,15 @@
+# Fase 03-A · instalación local
+
+**Estación del propietario: pendiente de acceso.** La sesión permitió trabajar en el checkout Linux y compilar el servidor CPU desde el código de llama.cpp ya presente. El diagnóstico observó Python 3.12.14, Torch 2.8.0+cpu, cero dispositivos CUDA y ausencia de nvidia-smi. La unidad Windows, WSL del propietario y sus aplicaciones no estaban montadas. No se instalaron dependencias en el PC.
+
+## Primera sesión en Windows
+
+1. Ejecutar una copia revisada de `scripts/checkout_local.ps1` en la máquina autorizada. Si falta el directorio lo clona en la ubicación acordada. En un checkout existente valida raíz y origen, hace fetch, conserva modificaciones y sólo admite avance rápido. Una carpeta ocupada o una divergencia requiere inspección.
+2. Desde la raíz, `& .\scripts\workstation.ps1 diagnose` recopila herramientas en PATH, RAM, disco, puertos, WSL y NVIDIA en un directorio privado nuevo. Una aplicación de escritorio ausente de PATH necesita inspección adicional. Verificar el driver y las distribuciones antes de elegir CUDA.
+3. `& .\scripts\workstation.ps1 setup` crea/reutiliza un entorno Windows de Python 3.12 e instala únicamente core y desarrollo. `inventory` examina la biblioteca hermana o la indicada mediante `-Library`. `review` prepara el piloto si falta e inicia la vista local. La revisión con identidad real sigue [la guía de firmas](REVIEWER_SECURITY.md).
+4. En una distro WSL2 ya habilitada, desde el checkout, ejecutar `bash scripts/setup_cuda.sh` sólo tras confirmar que el driver admite cu128. Verificar dispositivo y NCCL con `bash scripts/workstation_wsl.sh -m rsec.cli gpu diagnose --output reports/wsl-initial.json`. Una distro, reinicio o cambio de driver requiere intervención separada del propietario.
+5. Ejecutar `bash scripts/validate_gpu.sh "$GPU_4070" reports/4070-first` con el UUID real. Revisar el informe de la capa NF4 y la serie térmica antes de otras cargas. Con dos tarjetas seguir [el procedimiento distribuido](MULTI_GPU_VALIDATION.md).
+
+Los lanzadores usan procesos de primer plano. Ctrl+C detiene el proceso iniciado en esa consola. Un puerto ocupado cancela el nuevo servidor. Los resultados específicos de cada ejecución y las cachés se guardan debajo de `.rsec-local/`; las ubicaciones de experimentos, checkpoints, modelos registrados y exportaciones siguen siendo las del proyecto. Los cambios de entorno duran sólo la invocación. Windows y Linux tienen entornos virtuales distintos.
+
+WSL usa por defecto el checkout en el volumen de datos para evitar llenar el disco del sistema. Si el rendimiento de metadatos en DrvFS limita el entorno, elegir `RSEC_CUDA_ENV` en ext4 únicamente tras verificar dónde reside físicamente el VHDX y su espacio disponible. Para los lanzadores fijar `RSEC_CUDA_PYTHON` al intérprete correspondiente. Mantener pesos compartidos en su ubicación. El montaje debe permitir archivos temporales, enlaces y la creación del venv. El stack CUDA queda pendiente hasta que pasen pip check y el smoke físico.

@@ -1,3 +1,9 @@
+# Entrenamiento · Fase 03-A
+
+**NOT READY.** Cero registros aprobados. El smoke técnico de la capa NF4, la reanudación de checkpoint en hardware y las mediciones térmicas de la estación siguen pendientes. No hay adaptador especializado ni métricas comparativas de CyberBench/CodeBench. Completar revisión humana, benchmark independiente, selección del base y validación física antes del piloto.
+
+---
+
 # Gates vigentes · Fase 02-B
 
 **TRAINING READINESS NOT READY.** La verificación de CUDA y NF4/QLoRA, la recuperación física y los recursos del perfil siguen pendientes. La primera especialización requiere releases SFT autorizados y firmados por personas competentes y benchmarks adjudicados independientes.

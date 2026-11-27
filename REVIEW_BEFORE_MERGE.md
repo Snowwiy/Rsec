@@ -1,3 +1,9 @@
+# Revisión · Fase 03-A
+
+Revisar el checkout conservador, aislamiento de entornos, privacidad del inventario, selección por UUID, límites térmicos, visibilidad de pesos y ciclos de vida de procesos. Revisar CI en el head del PR. La aceptación de escritorio requiere PowerShell real, inventario local, evidencia CUDA de la 4070 y prueba de Goose con modelo instalado. La revisión de infraestructura es independiente de la aprobación de datos o de un modelo. Véase [evidencia de pruebas](TEST_RESULTS.md).
+
+---
+
 # Revisión de integración · Fase 02-B
 
 Revisa [PR #4](https://github.com/Snowwiy/Rsec/pull/4) primero para corregir dev. Verifica que Gitleaks siga escaneando todo el historial con el mismo detector, salida y redacción. La excepción exacta se probó contra otro valor en la misma ruta y con las coincidencias conocidas en otra ruta.

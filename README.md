@@ -1,4 +1,6 @@
-# Rsec AI · v0.2.1-alpha
+# Rsec AI · v0.3.0-alpha.1
+
+Workstation setup, private model inventory, local inference and thermally supervised smoke tests are available in the [installation report](LOCAL_INSTALLATION_REPORT.md). Physical GPU and Goose validation on the owner workstation are pending.
 
 Independent local model research for **defensive cybersecurity, programming and software engineering**, owned by Snowwiy.
 [Independent audit](INDEPENDENT_AUDIT.md) · [Español](README.es.md) · [Architecture](docs/ARCHITECTURE.md) · [Test evidence](TEST_RESULTS.md) · [Handoff](HANDOFF.md)

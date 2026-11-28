@@ -4,7 +4,16 @@ El perfil alternativo usa el alias `inkling-2-mini` en la API OpenAI-compatible 
 
 Selecciona `GOOSE_PATH_ROOT` nuevo, `GOOSE_PROVIDER=openai`, `GOOSE_MODEL=inkling-2-mini` y `OPENAI_HOST` con el loopback y puerto del servidor. Usa un valor local para la clave si el cliente exige uno. Las pruebas usan un repositorio temporal, un perfil separado y herramientas de fixture con una edición de aritmética predefinida. Se requiere observar una prueba roja, la corrección y una prueba verde, además de una respuesta estructurada. Los textos del modelo se tratan como datos. La configuración normal de Goose queda disponible en su perfil.
 
+Con el servidor ya disponible, usa el lanzador existente para una sesión de chat con el perfil independiente `inkling`.
+
+```powershell
+& .\scripts\workstation.ps1 goose -GooseExe $GooseExe -GooseBackend openai `
+  -GooseProfile inkling -Model inkling-2-mini -Port $InklingPort
+```
+
 La primera corrida física confirmó la sesión de Goose 1.54 con el proveedor OpenAI-compatible y las dos GPU mediante llama.cpp en WSL2. Con un tope de 256 tokens de salida, Goose terminó por longitud antes de llamar una herramienta. La sesión de texto y el flujo de desarrollo tienen resultados independientes.
+
+**Flujo de desarrollo TESTED** con el servidor dual-GPU y el perfil temporal. En la segunda corrida se permitieron 1 024 tokens de salida por turno. Goose listó archivos, leyó el README, el código y la prueba, explicó la corrección, reprodujo el fallo, aplicó la edición permitida y verificó que la prueba pasaba. El informe final incluyó `tests_passed: true` en un objeto JSON. La extensión MCP limitó las operaciones al repositorio sintético y ejecutó una prueba fija revisada. La verificación directa del endpoint también pasó visión, esquema y nombre y argumentos de función. Este caso mide el flujo acotado de la fixture. [Mediciones](MULTI_GPU_VALIDATION.md)
 
 ---
 

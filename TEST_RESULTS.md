@@ -2,12 +2,16 @@
 
 | Control | Resultado |
 |---|---|
-| Windows Python 3.12.16 · suite CPU | 219 pasaron y 7 se omitieron. Cuatro casos de symlink devolvieron Windows 1314 en la corrida completa. Los mismos casos pasaron en WSL2 |
-| WSL2 · CPU y ML offline | 241 pasaron con CUDA oculto, incluidas las pruebas de regresión de Inkling |
+| Windows Python 3.12.16 · suite CPU | 220 pasaron y 7 se omitieron. Cuatro casos de symlink devolvieron Windows 1314 en la corrida completa anterior y se excluyeron de la repetición. Los mismos casos pasaron en WSL2 |
+| WSL2 · CPU y ML offline | 242 pasaron con dispositivos CUDA ocultos en el entorno existente. La suite de GitHub ejecuta por separado la integración offline con la rueda oficial de PyTorch CPU |
+| Lanzador Goose en Windows con catálogo y ejecutable simulados | Seleccionó los directorios independientes para el perfil previo y el perfil Inkling |
 | Validación del repositorio y Ruff | Pasaron |
 | Wheel y sdist en WSL2 | Se construyeron con la versión del paquete 0.3.0a2 |
 | Auditoría del lock CPU | Sin vulnerabilidades conocidas en las entradas auditadas. La rueda oficial `torch==2.8.0+cpu` se omitió porque ese build no se publica en PyPI |
 | `pip check` del entorno Inkling | Dos conflictos declarados con Transformers 5.24.0, en Unsloth y Unsloth Zoo. El entorno CUDA de Fase 03-A conserva sus versiones |
+| GGUF físico en ambas GPU | 4K, 8K, 16K y 32K. Visión, JSON Schema y tool calling pasaron con el presupuesto medido |
+| Integración Goose real | Lectura, fallo reproducido, edición controlada, prueba aprobada y JSON válido |
+| QLoRA físico con el checkpoint completo | Dos pasos, pérdida finita, cambios de LoRA y recuperación verificada de Safetensors con heurísticas MoE y atención eager |
 
 Las pruebas unitarias verifican la arquitectura nativa, la exclusión de gates, los bancos de expertos, el índice de shards y los límites del fixture. El ensayo de shell de llama.cpp usa un ejecutable de prueba. El estado de los runtimes y cualquier resultado físico están en [compatibilidad](INKLING_COMPATIBILITY.md), [dual-GPU](MULTI_GPU_VALIDATION.md), [QLoRA](QLORA_VALIDATION_REPORT.md) y [Goose](GOOSE_INTEGRATION.md).
 

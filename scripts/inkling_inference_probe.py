@@ -11,10 +11,9 @@ import subprocess
 import threading
 import time
 import zlib
+from collections import defaultdict
 from contextlib import closing, suppress
 from pathlib import Path
-
-import psutil
 
 from rsec.thermal import THERMAL_FLAGS, sample
 
@@ -198,10 +197,11 @@ def validate(args):
         t = max(gpu["temperature.gpu"] for gpu in data.values())
         row = {"elapsed": time.perf_counter() - started, "gpus": data}
         if children:
-            try:
-                row["server_rss_bytes"] = psutil.Process(children[0].pid).memory_info().rss
-            except psutil.Error:
-                pass
+            with suppress(OSError):
+                status = Path(f"/proc/{children[0].pid}/status").read_text(encoding="utf-8")
+                rss = re.search(r"^VmRSS:\s+(\d+) kB$", status, re.MULTILINE)
+                if rss:
+                    row["server_rss_bytes"] = int(rss[1]) * 1024
         samples.append(row)
         if t >= 85 or any(
             str(gpu.get(flag, "")).casefold() in {"active", "yes"}
@@ -280,12 +280,7 @@ def validate(args):
             raise RuntimeError("No positive model buffers on both selected CUDA devices")
         report["model_buffers_mib"] = gpu_buffers
         report["offloaded_layers"] = re.findall(r"offloaded (\d+)/(\d+) layers", runtime_log)
-        report["kv_mib"] = {
-            f"CUDA{gpu}": float(size)
-            for gpu, size in re.findall(
-                r"CUDA(\d+)\s+KV buffer size\s*=\s*([\d.]+) MiB", runtime_log
-            )
-        }
+        report["kv_mib"] = kv_allocations(runtime_log)
         print(f"Inkling {args.context} {args.cache} loaded on both GPUs", flush=True)
         if args.quality:
             report["quality"], report["chat_diagnostics"] = quality(port, bool(args.projector))
@@ -375,6 +370,13 @@ def power_summary(readings):
         with suppress(ValueError):
             watts.append(float(reading))
     return {"peak_w": max(watts), "mean_w": sum(watts) / len(watts)} if watts else {}
+
+
+def kv_allocations(runtime_log):
+    allocations = defaultdict(float)
+    for gpu, size in re.findall(r"CUDA(\d+)\s+KV buffer size\s*=\s*([\d.]+) MiB", runtime_log):
+        allocations[f"CUDA{gpu}"] += float(size)
+    return {device: round(size, 2) for device, size in allocations.items()}
 
 
 def main():

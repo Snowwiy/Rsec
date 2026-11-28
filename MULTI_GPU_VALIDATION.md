@@ -17,9 +17,9 @@ El ensayo usa un servidor offline en loopback y solicita un prompt de `contexto 
 
 | Medición | Resultado |
 |---|---:|
-| Capas descargadas a CUDA | 25 de 25 |
+| Capas asignadas a CUDA | 25 de 25 |
 | Pesos CUDA0 / CUDA1 | 7 543,95 / 7 816,42 MiB |
-| KV F16 CUDA0 / CUDA1 | 138 / 102 MiB |
+| KV F16 CUDA0 / CUDA1 | 202 / 166 MiB |
 | Entrada y salida confirmadas | 3 968 / 12 tokens |
 | Prefill y generación | 955,11 / 43,75 tokens/s |
 | Latencia total de la petición | 4,61 s |
@@ -30,6 +30,25 @@ El ensayo usa un servidor offline en loopback y solicita un prompt de `contexto 
 | Consumo máximo RTX 4070 / RTX 3060 | 104,32 / 119,37 W |
 
 Los picos de VRAM incluyen el uso del escritorio. El proyector BF16 fue cargado y el endpoint aceptó una entrada de imagen. La primera corrida de calidad pasó las preguntas de español y aritmética en Python. La pregunta en inglés, el color de la imagen, JSON Schema y la llamada de función quedaron sin aprobar con el primer presupuesto de generación. Los valores de rendimiento usan un prompt repetitivo de fixture. [Integración y pruebas del agente](GOOSE_INTEGRATION.md)
+
+### Contextos de 8K, 16K y 32K · KV Q8_0
+
+**TESTED en ambas GPU.** Las tres peticiones usaron una sola instancia configurada para 32 768 tokens. Cada entrada se procesó sin reutilizar el prompt y generó los 12 tokens solicitados.
+
+| Presupuesto | Tokens de entrada | Prefill tokens/s | Generación tokens/s | Petición total |
+|---|---:|---:|---:|---:|
+| 8 192 | 8 064 | 949,83 | 39,36 | 8,79 s |
+| 16 384 | 16 256 | 915,69 | 40,27 | 18,03 s |
+| 32 768 | 32 640 | 853,92 | 37,12 | 38,53 s |
+
+El arranque tomó 242,74 s y el RSS máximo del servidor fue 4,52 GiB. La reserva KV real Q8_0 fue de 345,31 / 326,19 MiB en CUDA0 / CUDA1, incluidos 544 MiB de atención global y 127,50 MiB de atención local en conjunto. Los campos KV se sumaron por dispositivo. La comparación con la corrida F16 es descriptiva porque cambiaron el contexto de servidor y los presupuestos de generación.
+
+| GPU | VRAM total máxima | Temperatura máxima | Potencia media / máxima |
+|---|---:|---:|---:|
+| RTX 4070 | 10 590 MiB | 54,8 °C | 60,30 / 111,10 W |
+| RTX 3060 | 9 462 MiB | 79,4 °C | 61,84 / 120,57 W |
+
+En la misma corrida pasaron las respuestas en español e inglés, la aritmética en Python, la identificación de color mediante el proyector BF16, JSON Schema y una llamada de función OpenAI-compatible con sus argumentos verificados. Se usó un presupuesto de razonamiento de 128 tokens y hasta 512 tokens de salida en las peticiones directas. El ensayo no caracteriza latencias de un repositorio real ni estabilidad prolongada.
 
 Los registros de velocidad PCIe y NCCL de Fase 03-A siguen siendo evidencia de la estación. La prueba de inferencia usa capas completas y registra las transferencias que admite el runtime. El uso de expert parallelism o tensor parallelism requiere evidencia de soporte y comparación bajo condiciones equivalentes. Los resultados de un contexto sintético repetitivo no representan velocidad sobre repositorios reales.
 

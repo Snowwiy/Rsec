@@ -23,5 +23,6 @@ selected:
   training_revision: 22035f8bf3fd71a588d78591f8b3ec45c0994524
   inference_checkpoint: unsloth/Inkling-2-Mini-GGUF
   inference_revision: 8078d149286eec7193795413b9e0643da6d11fa1
-  status: PHYSICAL INFERENCE TESTED
-  training_status: GPU VALIDATION PENDING
+  status: PHYSICAL INFERENCE AND GOOSE TESTED
+  qlora_fixture: PASS WITH CONDITIONS
+  training_status: SPECIALIZED TRAINING BLOCKED

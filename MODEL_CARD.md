@@ -1,12 +1,12 @@
 # Rsec model card — infrastructure stage
 
-Infrastructure version: v0.3.0-alpha.1. Owner: Snowwiy. Languages intended: Spanish/English. Intended uses include defensive security, authorized analysis, programming and software engineering on local hardware.
+Infrastructure version v0.3.0-alpha.2. Rsec is maintained by Snowwiy for local defensive security, authorized analysis, programming and software engineering in Spanish and English.
 
 **Rsec is at the infrastructure stage.** CPU smoke tests use random tiny weights solely to validate training infrastructure. No benchmark performance or superiority claim is made. Rsec-7B/14B/32B/Coder/SOC/DFIR are future naming possibilities.
 
 The Phase 03-B candidate for Rsec-Core is Thinking Machines Lab Inkling 2 Mini, an Apache-2.0 text-and-image model with 26.4B total parameters and shared layers in its looped decoder. Granite 3B Code Instruct 128K is the technical fallback. The existing Qwen configuration remains available for reproducibility of the generic backend. The Rsec software is MIT. Review provenance, rights and intended use for each future adapter, merged checkpoint and dataset. [Model selection](MODEL_BASE_SELECTION.md) · [Publisher card](https://thinkingmachines.ai/model-card/inkling-2-mini/)
 
-Training method implemented: PEFT LoRA/QLoRA via TRL SFT, configurable response masks and independent test data. Hardware training validation: pending. Dataset:64 controlled bilingual SFT drafts, 32 public development/regression candidates and3 reference indexes; expert-approved SFT0, expert gold0. This is not a released training corpus. DATASET READINESS: FAIL; TRAINING READINESS: NOT READY. See DATASET_CARD.md and TRAINING_READINESS.md. Evaluation: deterministic task scoring, reference fixture tests, no trained model results.
+The infrastructure supports PEFT LoRA/QLoRA with TRL SFT, configurable response masks and independent evaluations. The isolated Inkling profile passed a two-step QLoRA fixture and exact adapter recovery on the two workstation GPUs. The GGUF served a 32K context and the isolated Goose coding fixture. The corpus contains 64 controlled bilingual SFT drafts, 32 public development cases and three reference indexes. Expert-approved SFT and independent gold both remain at zero. **DATASET READINESS BLOCKED. TRAINING READINESS BLOCKED.** [Dataset card](DATASET_CARD.md) · [QLoRA evidence](QLORA_VALIDATION_REPORT.md) · [Training gates](TRAINING_READINESS.md)
 
 Risks: inaccurate security advice, unsupported references, false positives/negatives, language imbalance, poisoned sources, private-data exposure and catastrophic forgetting. Human review and independent task evaluation are required. Do not use an unvalidated future model as an autonomous incident authority or attack agent.
 

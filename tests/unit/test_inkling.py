@@ -1,7 +1,22 @@
+from pathlib import Path
+from runpy import run_path
+
 import pytest
 
 from rsec import inkling
 from rsec.errors import RsecError
+
+
+def test_inference_aggregates_global_and_sliding_window_kv_buffers():
+    script = Path(__file__).parents[2] / "scripts" / "inkling_inference_probe.py"
+    parse = run_path(script)["kv_allocations"]
+    log = (
+        "llama_kv_cache: CUDA0 KV buffer size = 272.00 MiB\n"
+        "llama_kv_cache: CUDA1 KV buffer size = 272.00 MiB\n"
+        "llama_kv_cache: CUDA0 KV buffer size = 73.31 MiB\n"
+        "llama_kv_cache: CUDA1 KV buffer size = 54.19 MiB\n"
+    )
+    assert parse(log) == {"CUDA0": 345.31, "CUDA1": 326.19}
 
 
 def configuration():

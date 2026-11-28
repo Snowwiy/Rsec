@@ -2,6 +2,8 @@
 
 La Fase 03-B selecciona **Inkling 2 Mini de Thinking Machines Lab** como candidato para Rsec-Core. Granite 3B queda como respaldo técnico. El backend de Inkling se prepara en un entorno WSL2 aislado que conserva la instalación validada en Fase 03-A. El corpus tiene cero aprobaciones humanas y la especialización sigue bloqueada. [Selección](MODEL_BASE_SELECTION.md) · [Compatibilidad y evidencia física](INKLING_COMPATIBILITY.md)
 
+La estación dual verificó inferencia hasta 32K, el ciclo de corrección con Goose y dos pasos QLoRA con recuperación exacta del adaptador Safetensors. El resultado QLoRA depende de las heurísticas MoE y la atención eager documentadas. [Inferencia](MULTI_GPU_VALIDATION.md) · [Goose](GOOSE_INTEGRATION.md) · [QLoRA](QLORA_VALIDATION_REPORT.md)
+
 La RTX 4070 y la RTX 3060 aprobaron las fixtures supervisadas CUDA y NF4/LoRA en WSL2. NCCL usó memoria compartida del host. DDP y FSDP verificaron recuperación de checkpoints con cargas sintéticas. [Evidencia física](MULTI_GPU_BENCHMARK.md) · [Preparación para entrenamiento](TRAINING_READINESS.md)
 
 La auditoría histórica de Fase 01-B reportó **PASS WITH CONDITIONS**, con **97 pruebas y 91,34 % de cobertura**. El stack genérico de entonces presentó conflictos con Unsloth. La evidencia del backend aislado de Inkling y los requisitos del corpus se mantienen en los informes de la Fase 03-B. [Auditoría](INDEPENDENT_AUDIT.md) · [Plan GPU](GPU_VALIDATION_PLAN.md) · [Preparación de datos](DATASET_READINESS.md)
@@ -12,7 +14,7 @@ Plataforma independiente de investigación y entrenamiento de modelos especializ
 
 Esta versión entrega infraestructura para especializar pesos abiertos mediante adaptadores. No distribuye un modelo Rsec entrenado ni demuestra superioridad frente al modelo base.
 
-## Fase 02-B · estado actual
+## Fase 02-B · fundamentos de software y evaluación
 
 La programación es una capacidad central de Rsec. Esta versión incorpora taxonomía de software, catálogo de fuentes con derechos definidos, mezclas reproducibles de datos aprobados y Rsec-CodeBench. Las dos suites se compararán contra el modelo base. Los datos revisados y CUDA siguen en el camino crítico. Consulta [programación e ingeniería de software](docs/SOFTWARE_ENGINEERING.md) y [validación de benchmarks](BENCHMARK_VALIDATION_REPORT.md).
 

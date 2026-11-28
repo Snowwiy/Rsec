@@ -1,3 +1,13 @@
+# Handoff · Fase 03-B · 2026-11-28
+
+La rama de adopción deriva de `e67a961`, la cabeza del PR #7 al inicio de esta fase. El borrador de Fase 03-B usa esa rama como base. El candidato principal es Inkling 2 Mini y Granite 3B queda como respaldo. La ruta de inferencia usa un llama.cpp aislado. La ruta de ajuste técnico tiene su propio entorno Unsloth y descargas fijadas. [PR #7](https://github.com/Snowwiy/Rsec/pull/7) · [PR #8](https://github.com/Snowwiy/Rsec/pull/8) · [Plan de adquisición](MODEL_ACQUISITION_PLAN.md)
+
+Consulta los pasos y el estado físico en [compatibilidad](INKLING_COMPATIBILITY.md), [dual-GPU](MULTI_GPU_VALIDATION.md), [QLoRA](QLORA_VALIDATION_REPORT.md) y [Goose](GOOSE_INTEGRATION.md). Los registros crudos, identificadores de hardware, configuración personal y artefactos se mantienen en almacenamiento privado. El [gate de datos](TRAINING_READINESS.md) sigue bloqueando la especialización.
+
+La estación verificó inferencia en cuatro contextos hasta 32K y el ciclo de reparación con Goose. QLoRA pasó con atención eager y heurísticas MoE en su proceso. El adaptador técnico se guardó y restauró con comprobación de integridad. El punto de partida para una evaluación de capacidad es el modelo base congelado y los benchmarks independientes adjudicados.
+
+---
+
 # Handoff · v0.3.0-alpha.2
 
 ## Estación dual · 2026-11-27

@@ -1,3 +1,15 @@
+# Entrenamiento · Fase 03-B
+
+**DATASET READINESS BLOCKED. TRAINING READINESS BLOCKED.** Inkling 2 Mini es el candidato de Rsec-Core. El corpus conserva 64 borradores SFT y cero aprobaciones humanas. Hay cero casos gold independientes aprobados. No se ha iniciado entrenamiento especializado.
+
+La inferencia local del GGUF alcanzó el contexto de 32K en la estación dual. Pasaron visión, JSON Schema, tool calling y una corrección de código con Goose en el fixture autorizado. La suite base completa de CodeBench y CyberBench requiere la adjudicación y el protocolo de evaluación previstos. [Evidencia física](MULTI_GPU_VALIDATION.md) · [Goose](GOOSE_INTEGRATION.md)
+
+El fixture QLoRA de Inkling completó dos pasos y recuperó el adaptador Safetensors en ambas GPU con un perfil aislado. La evidencia habilita revisar la infraestructura para el futuro piloto. Los requisitos de derechos, revisión humana, gold independiente y evaluaciones base se mantienen como gates del piloto. [Resultados QLoRA](QLORA_VALIDATION_REPORT.md)
+
+Antes del piloto, congela la evaluación del Inkling base en CodeBench, CyberBench, visión y uso de herramientas. Aplica la misma procedencia, separación de familias, revisión de derechos y aprobación al release mixto y a las fuentes de replay. Compara el adaptador y sus exportaciones con la base en condiciones equivalentes, incluyendo regresiones multimodales tras ajuste textual. El modelo de respaldo Granite 3B requiere su propia línea base. [Selección](MODEL_BASE_SELECTION.md) · [Validación técnica de Inkling](QLORA_VALIDATION_REPORT.md)
+
+---
+
 # Entrenamiento · Fase 03-A
 
 ## Estado de la estación · v0.3.0-alpha.2

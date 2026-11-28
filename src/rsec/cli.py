@@ -21,6 +21,11 @@ def parser():
     cfg = commands.add_parser("config", help="Validate training configuration")
     cfg.add_argument("--config", default="configs/qlora_cybersec.yaml")
     cfg.add_argument("--profile")
+    from rsec.inkling import add_arguments as add_inkling_arguments
+
+    add_inkling_arguments(
+        commands.add_parser("inkling", help="Inspect or smoke-test local Inkling 2 Mini")
+    )
     data = commands.add_parser("data", help="Acquire, curate and verify datasets")
     ds = data.add_subparsers(dest="action", required=True)
     download = ds.add_parser("download", help="Acquire explicitly reviewed sources")
@@ -140,6 +145,10 @@ def dispatch(args):
         from rsec.gpu import write_diagnostic
 
         return write_diagnostic(args.output, args.markdown)
+    if args.command == "inkling":
+        from rsec.inkling import dispatch as dispatch_inkling
+
+        return dispatch_inkling(args)
     if args.command in {"config", "train"}:
         from rsec.config import Training, load_training
 

@@ -1,4 +1,16 @@
-# Modelo base · evaluación de candidatos · v0.3.0-alpha.2
+# Modelo base · Fase 03-B
+
+**Inkling 2 Mini de Thinking Machines Lab es el candidato principal para Rsec-Core.** Granite 3B Code Instruct 128K queda como respaldo técnico por su menor huella. La referencia Qwen sigue disponible para reproducir la configuración genérica existente. La selección fija los pesos para la evaluación física y los futuros baselines de CodeBench y CyberBench.
+
+| Uso | Paquete | Revisión |
+|---|---|---|
+| Referencia del editor | `thinkingmachines/Inkling-2-Mini` | `c9d028302cd0f035fdf8e7e91f089a4ce94d2195` |
+| Inferencia y agente | `unsloth/Inkling-2-Mini-GGUF`, UD-Q4_K_M y proyector BF16 | `8078d149286eec7193795413b9e0643da6d11fa1` |
+| Validación técnica QLoRA | `unsloth/Inkling-2-Mini-unsloth-bnb-4bit` | `22035f8bf3fd71a588d78591f8b3ec45c0994524` |
+
+Antes de cualquier especialización, mide la base congelada en ambas suites y en fixtures multimodales independientes. Repite las mismas pruebas con adaptador y tras exportación. Usa las mismas plantillas, presupuestos de contexto, configuración de razonamiento y reglas de puntuación. Apache-2.0 se aplica a los paquetes publicados. Revisa el uso previsto conforme a las condiciones de Thinking Machines y los derechos de cada dato o artefacto derivado. [Tarjeta del editor](https://thinkingmachines.ai/model-card/inkling-2-mini/) · [Política de uso](https://thinkingmachines.ai/model-acceptable-use-policy/) · [Compatibilidad](INKLING_COMPATIBILITY.md) · [Adquisición](MODEL_ACQUISITION_PLAN.md)
+
+## Fase 03-A · inventario histórico
 
 **MODEL BASE READINESS BLOCKED.** Los dos grupos locales Safetensors pasaron comprobación de cabeceras, rangos de datos y lectura completa para obtener SHA-256. Los hashes privados no tienen un manifiesto del editor contra el cual autenticar la copia.
 

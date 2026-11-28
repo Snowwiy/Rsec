@@ -4,6 +4,7 @@ param(
   [string]$Library, [string]$Model, [string[]]$GpuUuid, [int]$Port,
   [string]$PythonExe, [string]$LlamaServerExe = 'llama-server', [string]$GooseExe = 'goose',
   [ValidateSet('ollama','openai')][string]$GooseBackend = 'ollama',
+  [ValidatePattern('^[a-z][a-z0-9-]{0,31}$')][string]$GooseProfile = 'default',
   [switch]$GooseSmoke,
   [switch]$DisableReasoning,
   [ValidateSet('default','gaming','agent','inference-dual')][string]$Profile = 'default',
@@ -173,7 +174,8 @@ try {
       $probeArgs = @('-m','rsec.local','probe','--port',$Port,'--model',$Model,'--catalog-only','--output',(Join-Path $Run 'baseline.json'))
       if ($GooseBackend -eq 'ollama') { $probeArgs += '--ollama' }
       Run-Checked $Python $probeArgs
-      Set-ScopedEnv 'GOOSE_PATH_ROOT' (Join-Path $Local 'goose')
+      $gooseDirectory = if ($GooseProfile -eq 'default') { 'goose' } else { "goose-$GooseProfile" }
+      Set-ScopedEnv 'GOOSE_PATH_ROOT' (Join-Path $Local $gooseDirectory)
       Set-ScopedEnv 'GOOSE_DISABLE_KEYRING' '1'
       Set-ScopedEnv 'GOOSE_MODE' 'approve'
       Set-ScopedEnv 'NO_PROXY' '127.0.0.1,localhost,::1'

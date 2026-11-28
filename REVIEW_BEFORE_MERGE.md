@@ -1,6 +1,25 @@
-# Revisión · Fase 03-A
+# Revisión · Fase 03-A · v0.3.0-alpha.2
 
-Revisar el checkout conservador, aislamiento de entornos, privacidad del inventario, selección por UUID, límites térmicos, visibilidad de pesos y ciclos de vida de procesos. Revisar CI en el head del PR. La aceptación de escritorio requiere PowerShell real, inventario local, evidencia CUDA de la 4070 y prueba de Goose con modelo instalado. La revisión de infraestructura es independiente de la aprobación de datos o de un modelo. Véase [evidencia de pruebas](TEST_RESULTS.md).
+Revisar los resultados locales y cada workflow del encabezado del [PR #7](https://github.com/Snowwiy/Rsec/pull/7). Verificar escaneo histórico de Gitleaks, selección por UUID, detención del propio proceso y privacidad de informes. Los resultados técnicamente aprobados corresponden a las cargas publicadas en el informe. Un Transformer completo bajo FSDP, el soporte de agente y la especialización conservan sus condiciones. La aprobación de infraestructura es independiente de los gates de modelo y corpus. [Evidencia de pruebas](TEST_RESULTS.md)
+
+| Veredicto | Estado | Alcance |
+|---|---|---|
+| RTX 4070 VALIDATION | VALIDATED | CUDA, BF16/FP16 y fixture individual |
+| RTX 3060 VALIDATION | VALIDATED | CUDA, BF16/FP16 y fixture individual en WSL2 |
+| CUDA READINESS | VALIDATED | PyTorch cu128 en la distro |
+| NF4 READINESS | VALIDATED | NF4 doble en ambas tarjetas |
+| QLORA READINESS | PASS WITH CONDITIONS | Capa técnica, actualización y recuperación probadas |
+| NCCL READINESS | VALIDATED | Comunicación de datos SHM. P2P directo no soportado |
+| DDP READINESS | VALIDATED | Fixture con dos ranks y recuperación, sin ventaja de velocidad medida |
+| FSDP READINESS | PASS WITH CONDITIONS | FSDP 1 con NF4/BF16, recuperación y exportación. Transformer completo pendiente |
+| DUAL-GPU INFERENCE | VALIDATED | WSL2, GGUF 14B, reparto de capas 2:1 y 1:1 |
+| THERMAL STABILITY | PASS WITH CONDITIONS | Cargas breves observadas. Juego concurrente pendiente |
+| GOOSE GPU INTEGRATION | PASS WITH CONDITIONS | Texto en la 3060 y contrato de herramientas del endpoint. Uso de herramientas reales por Goose pendiente |
+| MODEL BASE READINESS | BLOCKED | Falta un paquete causal local completo con licencia y revisión verificadas |
+| DATASET READINESS | BLOCKED | Cero aprobaciones humanas y cero gold independiente |
+| TRAINING READINESS | BLOCKED | Siguen vigentes los gates de modelo, corpus y evaluación |
+
+La ruta llama.cpp nativa Windows para la 3060 quedó **FAILED** por visibilidad del runtime. La ruta WSL2 se validó sin alterar el controlador. [Benchmark físico](MULTI_GPU_BENCHMARK.md)
 
 ---
 

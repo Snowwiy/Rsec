@@ -1,6 +1,6 @@
-# Rsec AI · v0.3.0-alpha.1
+# Rsec AI · v0.3.0-alpha.2
 
-La [guía de instalación](LOCAL_INSTALLATION_REPORT.md) reúne los lanzadores, el inventario privado, la inferencia local y las pruebas con supervisión térmica. La validación física y la sesión de Goose en el PC siguen pendientes.
+La RTX 4070 y la RTX 3060 aprobaron las fixtures supervisadas CUDA y NF4/LoRA en WSL2. NCCL usó memoria compartida del host. DDP y FSDP verificaron recuperación de checkpoints con cargas sintéticas. [Evidencia física](MULTI_GPU_BENCHMARK.md) · [Preparación para entrenamiento](TRAINING_READINESS.md)
 
 Auditoría independiente Fase 01-B: **PASS WITH CONDITIONS**, **97 pruebas / 91.34 % de cobertura**. [Informe](INDEPENDENT_AUDIT.md) · [Plan GPU](GPU_VALIDATION_PLAN.md) · [Preparación de datos](DATASET_READINESS.md). Unsloth queda **BLOCKED** por conflictos comprobados. El gate de regresión exige metadatos de generación/evaluación comparables; las validaciones físicas y el corpus experto siguen pendientes.
 

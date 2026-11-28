@@ -1,8 +1,10 @@
 # Preparación local y diagnóstico de GPU
 
-Para la Fase 03-A utilizar el [procedimiento Windows/WSL vigente](LOCAL_INSTALLATION_REPORT.md) y `setup_cuda.sh --install-only` para preparar el venv con CUDA oculta. En esta estación, el VHDX y sus cachés residen en la unidad de datos. Selecciona ese venv con `RSEC_CUDA_ENV` o `RSEC_CUDA_PYTHON` al lanzar las pruebas. Se conserva a continuación la referencia de Fase 02-B.
+Para la Fase 03-A utilizar el [procedimiento Windows/WSL vigente](LOCAL_INSTALLATION_REPORT.md) y `setup_cuda.sh --install-only` si se requiere un venv nuevo con CUDA oculta. Para repetir las pruebas de alpha.2, seleccionar el entorno ya instalado con `RSEC_CUDA_ENV` o `RSEC_CUDA_PYTHON`. [Pruebas y modos de ejecución](MULTI_GPU_VALIDATION.md)
 
-Esta guía parte de Windows 11 y WSL2/Linux. El entorno de desarrollo reportó PyTorch 2.8.0+cpu y ningún dispositivo CUDA. La instalación física y validación dependen del equipo del propietario. GPU READINESS se mantiene en VALIDATION PENDING.
+## Referencia histórica · Fase 02-B
+
+El ejecutor de la fase anterior reportó PyTorch 2.8.0+cpu y ningún dispositivo CUDA.
 
 ## Checkout y entorno CPU
 

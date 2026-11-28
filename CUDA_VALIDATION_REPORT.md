@@ -1,5 +1,10 @@
-# CUDA · validación pendiente de hardware
+# CUDA · v0.3.0-alpha.2
 
-El diagnóstico independiente detectó cero dispositivos CUDA en el ejecutor. Quedan sin medir FP16, BF16 nativo, asignación/liberación, consumo y rendimiento de la 4070. En Windows se admiten CLI, revisión e inferencia según el binario instalado. Usar primero WSL2 para validar el stack Linux de entrenamiento.
+**VALIDATED en WSL2.** PyTorch 2.8.0+cu128 enumeró dos dispositivos. Por UUID, cada ejecución individual vio una sola GPU como índice lógico 0. Las operaciones matriciales verificaron valores, dtype y dispositivo para FP16 y BF16 nativo en ambas tarjetas.
 
-La prueba supervisada consulta el sensor por UUID antes de lanzar el proceso. El hijo ve únicamente ese dispositivo; exige tensores CUDA y resultados correctos al multiplicar matrices FP16 y, cuando esté soportado, BF16. El informe de la prueba registra memoria máxima asignada por Torch y memoria libre después de liberar el modelo. Contrastar ambas con memoria de dispositivo reportada por NVIDIA. Sólo admitir una ejecución con informe final, identidad confirmada y supervisor completado. Conservar la salida de error si falla.
+| GPU | PyTorch CUDA | FP16 | BF16 nativo | Compute capability |
+|---|---|---|---|---|
+| RTX 4070 | VALIDATED | VALIDATED | VALIDATED | 8.9 |
+| RTX 3060 | VALIDATED | VALIDATED | VALIDATED | 8.6 |
+
+La prueba supervisada consulta ambas tarjetas durante la validación individual. El proceso de cálculo sólo recibe el UUID elegido. El pico asignado por Torch se informa aparte del uso global observado por NVIDIA. Los resultados de inferencia de Windows dependen del binario nativo. [Hardware y PCIe](HARDWARE_VALIDATION_REPORT.md) · [Comparación](MULTI_GPU_BENCHMARK.md)

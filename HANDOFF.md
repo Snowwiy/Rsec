@@ -1,4 +1,14 @@
-# Handoff · v0.3.0-alpha.1
+# Handoff · v0.3.0-alpha.2
+
+## Estación dual · 2026-11-27
+
+El [PR #7](https://github.com/Snowwiy/Rsec/pull/7) conserva la rama `feat/rsec-physical-validation-v0.3.0`. Se reutilizó la estación instalada. Ambas GPU quedaron verificadas individualmente por UUID. NCCL usó memoria compartida del host. DDP y FSDP validaron recuperación en fixtures técnicas. Las mediciones diferencian CUDA en WSL2, el runtime Windows de llama.cpp y Goose. [Resultados](TEST_RESULTS.md) · [Benchmark](MULTI_GPU_BENCHMARK.md) · [Inferencia](LOCAL_INFERENCE_GUIDE.md)
+
+**TRAINING READINESS BLOCKED.** El corpus permanece con cero aprobaciones humanas. Conservar los informes crudos bajo `.rsec-local/`. Los próximos ensayos de capacidad requieren un base generativo con derechos y manifiesto verificados, y supervisión cuando haya una carga existente. [Gate de entrenamiento](TRAINING_READINESS.md)
+
+---
+
+# Handoff histórico · v0.3.0-alpha.1
 
 ## Reanudación en la estación Windows · 2026-11-27
 

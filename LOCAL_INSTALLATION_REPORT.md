@@ -1,6 +1,12 @@
 # Fase 03-A · instalación local
 
-## Estado de la estación · 2026-11-27
+## Continuidad de v0.3.0-alpha.2 · 2026-11-27
+
+La fase dual reutilizó los entornos aislados de Windows y WSL2 con el mismo PyTorch cu128, NCCL y dependencias ML. Windows y WSL2 enumeraron la RTX 4070 y la RTX 3060. Mantener el VHDX, los modelos y los artefactos privados en la unidad de datos. [Hardware](HARDWARE_VALIDATION_REPORT.md) · [Pruebas](TEST_RESULTS.md)
+
+El runtime nativo Windows de llama.cpp sólo enumeró la 4070. Para la 3060 y el reparto se añadió el binario oficial Linux b11552 CUDA 12.8 al VHDX. El archivo de 164 MiB se verificó contra el SHA-256 de la publicación. Se reutilizaron las bibliotecas CUDA del venv y se instaló libgomp1 en la distro dedicada para resolver el enlace faltante. [Publicación de llama.cpp](https://github.com/ggml-org/llama.cpp/releases/tag/b11552) · [Integración](LOCAL_INFERENCE_GUIDE.md)
+
+## Instalación previa · v0.3.0-alpha.1
 
 **TESTED.** Checkout nuevo en la unidad de datos, origin oficial y rama `feat/rsec-physical-validation-v0.3.0` del [PR #7](https://github.com/Snowwiy/Rsec/pull/7). La unidad tenía 333.1 GiB libres antes de clonar. Windows usa Python 3.12.16 portable y un venv separado en `.rsec-local/windows-venv`. La CLI, dependencias core y herramientas de desarrollo quedaron instaladas.
 

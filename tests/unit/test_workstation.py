@@ -62,6 +62,7 @@ def test_probe_only_generates_for_installed_baseline(monkeypatch):
     "text", ["GPU-other,32,20,2,4,1", "GPU-one,N/A,20,2,4,1", "GPU-one,nan,20,2,4,1"]
 )
 def test_missing_temperature_fails_closed(monkeypatch, text):
+    text += "," + ",".join(["[N/A]"] * (len(thermal.METRICS) - 6))
     monkeypatch.setattr(subprocess, "run", lambda *a, **kw: SimpleNamespace(stdout=text))
     with pytest.raises(ValueError):
         thermal.sample(["GPU-one"])
@@ -80,6 +81,26 @@ def test_overheat_stops_before_launch(tmp_path, monkeypatch):
 def test_duplicate_devices_cannot_launch_ddp(tmp_path):
     with pytest.raises(ValueError, match="distinct"):
         thermal.supervise(["GPU-one"] * 2, tmp_path / "absent")
+    assert not (tmp_path / "absent").exists()
+
+
+def test_check_both_cards_and_stop_on_thermal_throttling(tmp_path, monkeypatch):
+    def sensors(watched):
+        assert watched == ["GPU-worker", "GPU-observed"]
+        return {
+            "GPU-worker": {"temperature.gpu": 55},
+            "GPU-observed": {"temperature.gpu": 73, thermal.THERMAL_FLAGS[0]: "Active"},
+        }
+
+    monkeypatch.setattr(thermal, "sample", sensors)
+    monkeypatch.setattr(subprocess, "Popen", lambda *a, **kw: pytest.fail("Unexpected workload"))
+    with pytest.raises(RuntimeError, match="throttling"):
+        thermal.supervise(["GPU-worker"], tmp_path / "private", watch=["GPU-observed"])
+
+
+def test_single_mode_rejects_two_gpu_worker(tmp_path):
+    with pytest.raises(ValueError, match="GPU count|NCCL"):
+        thermal.supervise(["GPU-one", "GPU-two"], tmp_path / "absent", mode="single")
     assert not (tmp_path / "absent").exists()
 
 
@@ -230,6 +251,47 @@ def test_wsl_paths_with_spaces_confined_to_project(tmp_path):
     )
     assert run.stdout.strip() == str(root / ".rsec-local/cache/huggingface")
     assert (root / ".rsec-local/tmp").is_dir()
+
+
+@pytest.mark.skipif(thermal.os.name != "posix", reason="Bash workstation wrapper")
+def test_llama_wsl_direct_load_uses_installed_cli_flag(tmp_path):
+    from pathlib import Path
+    from uuid import UUID
+
+    fixture_id = f"GPU-{UUID(int=1)}"
+    smi = tmp_path / "nvidia-smi"
+    smi.write_text("#!/usr/bin/env bash\nprintf 'NVIDIA GeForce RTX 3060, 10000\\n'\n")
+    smi.chmod(0o755)
+    server = tmp_path / "mock-server"
+    server.write_text(
+        "#!/usr/bin/env bash\n"
+        'if [[ "$1" == --list-devices ]]; then\n'
+        "  printf '  CUDA0: NVIDIA GeForce RTX 3060 (12288 MiB)\\n'\n"
+        "else\n"
+        '  printf "%s\\n" "$CUDA_VISIBLE_DEVICES" "$@"\n'
+        "fi\n"
+    )
+    server.chmod(0o755)
+    model = tmp_path / "fixture with spaces.gguf"
+    model.touch()
+    script = Path(__file__).parents[2] / "scripts" / "llama_wsl.sh"
+    run = subprocess.run(
+        ["bash", str(script), str(model), fixture_id],
+        env={
+            "PATH": str(tmp_path) + ":" + thermal.os.environ["PATH"],
+            "RSEC_LLAMA_SERVER": str(server),
+            "RSEC_LLAMA_PROFILE": "gaming",
+            "RSEC_LLAMA_MMAP": "0",
+        },
+        capture_output=True,
+        text=True,
+        check=True,
+    )
+    arguments = run.stdout.splitlines()
+    assert arguments[0] == fixture_id
+    assert arguments[arguments.index("--load-mode") + 1] == "none"
+    assert arguments[arguments.index("-m") + 1] == str(model)
+    assert "--no-mmap" not in arguments
 
 
 @pytest.mark.parametrize(

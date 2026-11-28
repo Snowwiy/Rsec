@@ -91,7 +91,11 @@ def add_commands(commands, data, benchmark):
     diagnose.add_argument("--output")
     diagnose.add_argument("--markdown")
     validate = actions.add_parser("validate")
-    validate.add_argument("--mode", choices=["single", "ddp"], default="single")
+    validate.add_argument(
+        "--mode",
+        choices=["single", "nccl", "ddp", "compare", "independent", "fsdp"],
+        default="single",
+    )
     validate.add_argument("--device", type=int, default=0)
     validate.add_argument("--output", required=True)
     timing = actions.add_parser("benchmark")
@@ -186,10 +190,20 @@ def dispatch_gpu(args):
     if args.action == "diagnose":
         return gpu.write_diagnostic(args.output, args.markdown)
     if args.action == "validate":
-        return (
-            gpu.validate_ddp(args.output)
-            if args.mode == "ddp"
-            else gpu.validate_single(args.device, args.output)
+        if args.mode == "single":
+            return gpu.validate_single(args.device, args.output)
+        from rsec import gpu_distributed
+
+        if args.mode == "nccl":
+            return gpu_distributed.validate_nccl(args.output)
+        if args.mode == "ddp":
+            return gpu.validate_ddp(args.output)
+        if args.mode == "fsdp":
+            from rsec.gpu_fsdp import validate_fsdp
+
+            return validate_fsdp(args.output)
+        return gpu_distributed.validate_comparison(
+            args.device, args.output, independent=args.mode == "independent"
         )
     result = gpu.benchmark(args.device, args.steps)
     if args.output:

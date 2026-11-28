@@ -1,5 +1,13 @@
 # Goose · integración local
 
+## RTX 3060 · v0.3.0-alpha.2
+
+**GOOSE GPU INTEGRATION PASS WITH CONDITIONS.** Goose CLI 1.54 en Windows respondió en el perfil aislado con el endpoint OpenAI-compatible de llama.cpp b11552 en WSL2. El proceso recibió sólo el UUID de la RTX 3060. CUDA0 cargó 1,842 MiB de buffers de modelo y registró 31/31 capas. El peso GGUF se reutilizó desde disco mediante el modo de lectura directa y el servidor arrancó con modo offline.
+
+Goose completó un turno de chat sin extensiones. En solicitudes separadas, el mismo endpoint devolvió una respuesta ajustada a JSON Schema y el nombre y argumentos de una llamada de herramienta benigna. La llamada se inspeccionó como datos. La integración del agente con herramientas de programación reales permanece pendiente. El perfil original de Goose permanece separado.
+
+Para operar el perfil, inicia el [servidor WSL2](LOCAL_INFERENCE_GUIDE.md) en loopback y usa el lanzador Windows de Goose con el alias local-baseline y el mismo puerto. Las mediciones de latencia y generación están en el [benchmark](MULTI_GPU_BENCHMARK.md).
+
 ## Estación Windows · 2026-11-27
 
 Goose CLI 1.54.0 y llama.cpp 0.6.0-dev están disponibles fuera de PATH. Se inspeccionaron los puertos habituales en la estación y se reutilizó el servidor instalado. Los detalles de enrutamiento de la configuración del propietario se guardan en un JSON privado mediante el lector selectivo `rsec.local goose-config`.

@@ -2,13 +2,12 @@
 
 import csv
 import io
-import os
 import time
 from pathlib import Path
 
 from rsec.environment import command, doctor
 from rsec.errors import RsecError
-from rsec.utils import atomic_write, write_json
+from rsec.utils import atomic_write, sha256, write_json
 
 FIELDS = {
     "index": "nvidia_index",
@@ -129,8 +128,9 @@ def validate_single(index, output):
                 return self.proj(x)
 
         base = Tiny().to(device)
-        if base.proj.weight.device != device or base.proj.weight.quant_state.quant_type != "nf4":
-            raise RsecError("NF4 weights did not materialize on the selected CUDA device")
+        state = base.proj.weight.quant_state
+        if base.proj.weight.device != device or state.quant_type != "nf4" or not state.nested:
+            raise RsecError("Double-quantized NF4 did not materialize on the selected CUDA device")
         model = get_peft_model(base, LoraConfig(r=4, lora_alpha=8, target_modules=["proj"]))
         params = {n: p for n, p in model.named_parameters() if p.requires_grad}
         if not params or any("lora_" not in n or p.device != device for n, p in params.items()):
@@ -158,25 +158,31 @@ def validate_single(index, output):
         start = time.perf_counter()
         from safetensors.torch import save_file
 
+        adapter = output / "adapter.safetensors"
+        optimizer_file = output / "optimizer.pt"
         save_file(
             {n: p.detach().cpu().contiguous() for n, p in params.items()},
-            str(output / "adapter.safetensors"),
+            str(adapter),
         )
-        torch.save(optimizer.state_dict(), output / "optimizer.pt")
+        torch.save(optimizer.state_dict(), optimizer_file)
+        hashes = {path.name: sha256(path) for path in (adapter, optimizer_file)}
+        write_json(output / "sha256.json", hashes)
         save_seconds = time.perf_counter() - start
         start = time.perf_counter()
+        if any(sha256(path) != hashes[path.name] for path in (adapter, optimizer_file)):
+            raise RsecError("CUDA fixture checkpoint failed SHA-256 verification")
         with torch.no_grad():
             expected = model(sample).detach().clone()
             for p in params.values():
                 p.zero_()
-            restored = load_file(str(output / "adapter.safetensors"))
+            restored = load_file(str(adapter))
             for name, p in params.items():
                 p.copy_(restored[name])
             if not torch.equal(model(sample), expected):
                 raise RsecError("Reloaded adapter did not reproduce inference")
         optimizer = torch.optim.AdamW(params.values(), lr=0.01)
         optimizer.load_state_dict(
-            torch.load(output / "optimizer.pt", map_location=device, weights_only=True)
+            torch.load(optimizer_file, map_location=device, weights_only=True)
         )
         resume_seconds = time.perf_counter() - start
         resumed_loss = step(model, optimizer, sample)
@@ -194,10 +200,13 @@ def validate_single(index, output):
         "device_name": torch.cuda.get_device_name(device),
         "precisions": precisions,
         "nf4": True,
+        "double_quant": True,
+        "checkpoint_integrity": "sha256",
         "first_loss": first_loss,
         "resumed_loss": resumed_loss,
         "checkpoint_step": 2,
         "step_seconds": elapsed,
+        "cold_fixture_vectors_per_second": 4 / elapsed,
         "checkpoint_seconds": save_seconds,
         "restore_seconds": resume_seconds,
         "peak_allocated_bytes": peak,
@@ -209,57 +218,9 @@ def validate_single(index, output):
 
 
 def validate_ddp(output):
-    rank = int(os.environ.get("LOCAL_RANK", "-1"))
-    world = int(os.environ.get("WORLD_SIZE", "0"))
-    if world != 2 or rank not in {0, 1}:
-        raise RsecError(
-            "Launch two explicitly selected GPUs with torchrun --standalone --nproc-per-node=2"
-        )
-    torch, device = require_cuda(rank)
-    if not torch.distributed.is_nccl_available():
-        raise RsecError("NCCL is unavailable in this environment")
-    from datetime import timedelta
+    from rsec.gpu_distributed import validate_ddp as run
 
-    dist = torch.distributed
-    dist.init_process_group("nccl", timeout=timedelta(seconds=45), device_id=device)
-    try:
-        model = torch.nn.parallel.DistributedDataParallel(
-            torch.nn.Linear(32, 32).to(device), device_ids=[rank]
-        )
-        before = model.module.weight.detach().clone()
-        opt = torch.optim.SGD(model.parameters(), lr=0.01)
-        x = torch.ones((8, 32), device=device) * (rank + 1)
-        torch.cuda.reset_peak_memory_stats(device)
-        dist.barrier()
-        start = time.perf_counter()
-        opt.zero_grad()
-        model(x).float().square().mean().backward()
-        opt.step()
-        torch.cuda.synchronize(device)
-        elapsed = time.perf_counter() - start
-        weights = [torch.empty_like(before) for _ in range(world)]
-        dist.all_gather(weights, model.module.weight.detach())
-        if torch.equal(before, model.module.weight) or not torch.equal(weights[0], weights[1]):
-            raise RsecError("DDP updates did not synchronize")
-        measured = torch.tensor(
-            [elapsed, float(torch.cuda.max_memory_allocated(device))],
-            device=device,
-            dtype=torch.float64,
-        )
-        outputs = [torch.empty_like(measured) for _ in range(world)]
-        dist.all_gather(outputs, measured)
-        report = {
-            "mode": "ddp",
-            "status": "CUDA_MEASURED",
-            "world_size": world,
-            "per_rank_step_seconds_and_peak_bytes": [m.tolist() for m in outputs],
-            "scope": "tiny dense DDP synchronization only",
-        }
-        if rank == 0:
-            write_json(output, report)
-        return report
-    finally:
-        dist.destroy_process_group()
+    return run(output)
 
 
 def write_diagnostic(json_path, markdown_path=None):

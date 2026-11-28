@@ -1,4 +1,26 @@
-# Evidencia · Fase 03-A · v0.3.0-alpha.1
+# Evidencia · Fase 03-A · v0.3.0-alpha.2
+
+## Validación dual-GPU · 2026-11-27
+
+| Tipo de prueba | Resultado |
+|---|---|
+| CPU en Windows | 216 aprobadas, 7 saltadas, 15 excluidas. Cuatro casos de enlaces simbólicos se validaron en WSL2 |
+| CPU en WSL2 | 227 aprobadas, 11 ML excluidas. CUDA oculta |
+| Controles de repositorio | Ruff check y formato, validación de repositorio y sintaxis Bash pasaron |
+| Lanzador PowerShell | Arranque desde un checkout vacío, preservación de cambios y rechazo simulado de una GPU ausente en el runtime antes de cargar pesos |
+| Seguridad | Gitleaks 8.24.3 aprobó historial y controles positivo/negativo con reglas vigentes |
+| Empaquetado | Wheel y sdist 0.3.0a2 construidos. `pip check` pasó. La auditoría del lock CPU no reportó hallazgos sobre entradas disponibles en PyPI. Torch CPU quedó fuera de ese índice |
+| Regresiones simuladas | Parada por throttling en la tarjeta observada y vacía de cálculo propio. El lanzador Bash usa el flag de lectura directa admitido por b11552. Se conservan los controles de telemetría perdida, umbrales y UUID duplicado |
+| CUDA física individual | RTX 4070 y RTX 3060 aprobaron comprobaciones FP16/BF16, NF4 doble, LoRA, hashes, recuperación y un paso adicional |
+| Distribuida física | NCCL por SHM, DDP y FSDP 1 aprobaron. FSDP recuperó checkpoint completo y dos archivos por rank y exportó el adaptador |
+| Goose real | Respuesta desde Windows por loopback a llama.cpp en la RTX 3060 en WSL2. El endpoint también aprobó un caso JSON Schema y una llamada de herramienta sin ejecución |
+| Inferencia física | Comparación del GGUF pequeño en ambas tarjetas y del 14B solo en 4070 y en los repartos 2:1 y 1:1. Las primeras pruebas detectaron falta de visibilidad CUDA en Windows para la 3060 y un límite de inicio en WSL2 |
+
+Los detalles de las fixtures y la telemetría se publican en [benchmark](MULTI_GPU_BENCHMARK.md). Las pruebas de integración ML en la rueda CPU congelada se delegan al workflow previamente configurado. El entorno cu128 existente se reutilizó para las cargas físicas.
+
+---
+
+# Evidencia histórica · Fase 03-A · v0.3.0-alpha.1
 
 ## Estación física · 2026-11-27
 

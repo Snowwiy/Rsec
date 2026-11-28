@@ -1,6 +1,10 @@
 # Entrenamiento · Fase 03-A
 
-**NOT READY.** Cero registros aprobados. El smoke técnico de la capa NF4, la reanudación de checkpoint en hardware y las mediciones térmicas de la estación siguen pendientes. No hay adaptador especializado ni métricas comparativas de CyberBench/CodeBench. Completar revisión humana, benchmark independiente, selección del base y validación física antes del piloto.
+## Estado de la estación · v0.3.0-alpha.2
+
+**DATASET READINESS BLOCKED. TRAINING READINESS BLOCKED.** Persisten cero aprobaciones humanas, cero gold independiente y ningún paquete base local generativo completo identificado. Los smokes físicos CUDA, NF4 y LoRA pasaron en ambas tarjetas. NCCL y DDP fueron validados con fixtures. FSDP cumplió el ciclo técnico de una capa cuantizada y requiere una prueba posterior con el Transformer seleccionado. El entrenamiento mixto, el replay y las suites independientes conservan sus gates. [Selección del modelo](MODEL_BASE_SELECTION.md) · [Evidencia dual-GPU](MULTI_GPU_VALIDATION.md)
+
+El primer piloto requiere derechos verificados, ejemplos aprobados y benchmarks independientes antes de especializar. Los artefactos de las fixtures técnicas permanecen fuera de Git.
 
 ---
 

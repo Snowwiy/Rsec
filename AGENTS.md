@@ -1,6 +1,6 @@
 # Rsec development instructions
 
-Build an independent local bilingual assistant for defensive cybersecurity, programming and software engineering, phase 02-B v0.2.1-alpha. Never describe synthetic fixtures or tiny random model tests as trained cybersecurity capability.
+Build an independent local bilingual assistant for defensive cybersecurity, programming and software engineering, phase 03-A v0.3.0-alpha.1. Never describe synthetic fixtures or tiny random model tests as trained cybersecurity capability.
 
 Use src/rsec as the installed package, strict config in configs/, and meaningful tests in tests/unit and tests/integration. Keep CPU acquisition/config tools independent of PyTorch/CUDA. Preserve the existing MIT license and separately review third-party model/data rights.
 

@@ -1,8 +1,10 @@
 # Preparación local y diagnóstico de GPU
 
-Para la Fase 03-A utilizar el [procedimiento Windows/WSL vigente](LOCAL_INSTALLATION_REPORT.md) con cachés del proyecto y supervisión térmica. Se conserva a continuación la referencia de Fase 02-B.
+Para la Fase 03-A utilizar el [procedimiento Windows/WSL vigente](LOCAL_INSTALLATION_REPORT.md) y `setup_cuda.sh --install-only` si se requiere un venv nuevo con CUDA oculta. Para repetir las pruebas de alpha.2, seleccionar el entorno ya instalado con `RSEC_CUDA_ENV` o `RSEC_CUDA_PYTHON`. [Pruebas y modos de ejecución](MULTI_GPU_VALIDATION.md)
 
-Esta guía parte de Windows 11 y WSL2/Linux. El entorno de desarrollo reportó PyTorch 2.8.0+cpu y ningún dispositivo CUDA. La instalación física y validación dependen del equipo del propietario. GPU READINESS se mantiene en VALIDATION PENDING.
+## Referencia histórica · Fase 02-B
+
+El ejecutor de la fase anterior reportó PyTorch 2.8.0+cpu y ningún dispositivo CUDA.
 
 ## Checkout y entorno CPU
 
@@ -44,4 +46,4 @@ CUDA_VISIBLE_DEVICES="$GPU_4070" rsec gpu benchmark --device 0 --steps 20 --outp
 CUDA_VISIBLE_DEVICES="$GPU_3060" rsec gpu benchmark --device 0 --steps 20 --output reports/3060-matmul.json
 ```
 
-En PowerShell con CUDA compatible usa `& .\scripts\validate_gpu.ps1 -GpuUuid 'GPU-UUID_REAL' -OutputDirectory 'reports\single-smoke'` por tarjeta. El script restaura la variable del proceso. Los smoke tests requieren CUDA real y prueban FP16, BF16 nativo cuando está disponible, NF4, LoRA, actualización, persistencia, recuperación de optimizador e inferencia sobre una capa diminuta. No instalan drivers ni cambian configuraciones globales. Compara valores medidos con el reporte de topología y perfila modelos completos únicamente tras estos pasos.
+En PowerShell con un entorno CUDA nativo usa `& .\scripts\validate_gpu.ps1 -PythonExe <python-cuda> -GpuUuid 'GPU-UUID_REAL' -OutputDirectory 'reports\single-smoke'` por tarjeta. El supervisor limita la visibilidad CUDA al proceso de prueba. Los smoke tests requieren CUDA real y prueban FP16, BF16 nativo cuando está disponible, NF4, LoRA, actualización, persistencia, recuperación de optimizador e inferencia sobre una capa diminuta. Compara los resultados con la topología antes de perfilar modelos completos.

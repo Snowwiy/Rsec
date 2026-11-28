@@ -1,10 +1,18 @@
-# Fase 03-A · perfiles para la segunda tarjeta
+# Fase 03-A · validación dual-GPU
 
-**MULTI-GPU VALIDATION PENDING — SECOND GPU NOT INSTALLED.** Estado informado al comenzar. Confirmar la instalación antes de modificarlo. Enumerar las GPU por UUID con el mismo entorno, validar individualmente la 4070 (A) y la 3060 (B), y comparar memoria y latencia. Para procesos independientes (C), asignar un UUID distinto a cada proceso. Para DDP (D), ejecutar `bash scripts/validate_multi_gpu.sh "$GPU_4070" "$GPU_3060" reports/ddp-first`. El supervisor observa las dos temperaturas y exige dos dispositivos distintos; no inicia DDP durante el arranque normal. Para FSDP/QLoRA (E) e inferencia dividida (F) seguir las secciones C y D siguientes después de los smoke tests. Usar supervisión térmica independiente para esas cargas. P2P, enlaces PCIe y mejoras de rendimiento requieren mediciones.
+## Evidencia de la estación · v0.3.0-alpha.2
+
+**NCCL VALIDATED.** Dos procesos y dos dispositivos con identidad por UUID comprobada. All-reduce, broadcast, envío/recepción y barrera pasaron. La selección automática de NCCL 2.27.3 usó SHM para datos y socket para el inicio. CUDA reportó P2P no disponible en ambos sentidos. La ejecución conservó la configuración por defecto de P2P.
+
+**DDP VALIDATED.** Datos sintéticos distintos por rank, mismo batch global que el ensayo individual, actualización sincronizada, checkpoint verificado por SHA-256, restauración en un modelo nuevo y parámetros idénticos tras continuar. Cada rank conserva una réplica.
+
+**FSDP PASS WITH CONDITIONS.** La fixture NF4 de FSDP 1/PEFT se fragmentó en dos partes, ejecutó forward y backward, actualizó LoRA, restauró modelo y optimizador y exportó Safetensors. BF16 se usó para almacenamiento y cómputo. También se recuperó un checkpoint distribuido con dos archivos verificados. Falta validar la ruta de un Transformer completo con su política de wrapping y el trainer del proyecto. [Guía de BitsAndBytes](https://huggingface.co/docs/bitsandbytes/fsdp_qlora) · [Guía de PEFT](https://huggingface.co/docs/peft/accelerate/fsdp)
+
+Ejecutar los modos `nccl`, `ddp`, `fsdp` o `independent` con el mismo entorno mediante `bash scripts/validate_multi_gpu.sh "$GPU_4070" "$GPU_3060" <directorio-nuevo> <modo>`. El supervisor exige dos UUID distintos, un máximo de 180 segundos y detiene la carga si pierde telemetría. [Comparación medida](MULTI_GPU_BENCHMARK.md)
 
 ---
 
-# Validación física con RTX 4070 y RTX 3060
+# Procedimiento histórico de validación
 
 La configuración objetivo contiene dos GPU con 12 GB cada una. Registra UUID, slots, ancho y generación PCIe efectivos, RAM, unidad, driver, versión CUDA de la rueda, NCCL, matriz P2P, potencia y temperatura. Las dos memorias físicas son asignaciones separadas. La instalación y el enlace real siguen pendientes de verificación local.
 

@@ -8,7 +8,8 @@ from rsec.utils import read_json
 def test_knowledge_is_not_implicitly_supervised(tmp_path):
     path = tmp_path / "authorized.md"
     path.write_text(
-        "La seguridad de una aplicación requiere validar los datos y preservar evidencia."
+        "La seguridad de una aplicación requiere validar los datos y preservar evidencia.",
+        encoding="utf-8",
     )
     output = tmp_path / "knowledge.jsonl"
     result = ingest(

@@ -1,6 +1,6 @@
-# Rsec AI · v0.3.0-alpha.1
+# Rsec AI · v0.3.0-alpha.2
 
-Workstation setup, private model inventory, local inference and thermally supervised smoke tests are available in the [installation report](LOCAL_INSTALLATION_REPORT.md). Physical GPU and Goose validation on the owner workstation are pending.
+The RTX 4070 and RTX 3060 passed supervised CUDA and NF4/LoRA fixtures in WSL2. NCCL used host shared memory, and DDP and FSDP exercised checkpoint recovery on small synthetic workloads. See the [physical evidence](MULTI_GPU_BENCHMARK.md) and [training gates](TRAINING_READINESS.md).
 
 Independent local model research for **defensive cybersecurity, programming and software engineering**, owned by Snowwiy.
 [Independent audit](INDEPENDENT_AUDIT.md) · [Español](README.es.md) · [Architecture](docs/ARCHITECTURE.md) · [Test evidence](TEST_RESULTS.md) · [Handoff](HANDOFF.md)
@@ -116,6 +116,8 @@ The following paragraph describes the legacy fixture path; Phase 02 corpus promo
 Rejects retain hashes and reasons only. Secret/PII/poisoning detection and anonymization are conservative heuristics, with false positives and false negatives. Human review remains necessary. See [dataset policy](docs/DATASET_POLICY.md).
 
 ## GPU training and recovery — future gated execution
+
+For local installation and CPU-only preparation, see the [Windows and WSL2 setup](LOCAL_INSTALLATION_REPORT.md). Run the [supervised physical validation](GPU_VALIDATION_PLAN.md) separately.
 
 The following GPU commands are procedures for a later authorized phase after TRAINING_READINESS.md gates pass. Use Linux or WSL2 with a verified NVIDIA driver. The owner's RTX 4070 has 12 GB VRAM and the planned RTX 3060 has a separate 12 GB. Neither DDP nor adding a second card creates a contiguous 24 GB allocation.
 

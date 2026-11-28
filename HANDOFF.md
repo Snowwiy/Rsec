@@ -1,6 +1,22 @@
-# Handoff · v0.3.0-alpha.1
+# Handoff · v0.3.0-alpha.2
 
-PR #2 llegó a la rama de fundamentos. Los PR #4 y #5 llegaron a dev; el PR #3 llevó dev a main. La rama de Fase 03-A parte del merge de #5 en dev (cb3d15a). El PC requiere una sesión de escritorio con la unidad de datos y la RTX 4070 accesibles. Comenzar por [instalación y diagnóstico](LOCAL_INSTALLATION_REPORT.md), después [inventario privado](LOCAL_MODEL_INVENTORY.md), backend y smoke térmico. La suite de revisión conserva 64 candidatos SFT y 32 CyberBench, 96 preauditorías, 12 CodeBench, una fuente SQLite acotada y cero aprobados. Para soporte físico compartir únicamente resultados sanitizados. Las secciones siguientes son historia de fases anteriores.
+## Estación dual · 2026-11-27
+
+El [PR #7](https://github.com/Snowwiy/Rsec/pull/7) conserva la rama `feat/rsec-physical-validation-v0.3.0`. Se reutilizó la estación instalada. Ambas GPU quedaron verificadas individualmente por UUID. NCCL usó memoria compartida del host. DDP y FSDP validaron recuperación en fixtures técnicas. Las mediciones diferencian CUDA en WSL2, el runtime Windows de llama.cpp y Goose. [Resultados](TEST_RESULTS.md) · [Benchmark](MULTI_GPU_BENCHMARK.md) · [Inferencia](LOCAL_INFERENCE_GUIDE.md)
+
+**TRAINING READINESS BLOCKED.** El corpus permanece con cero aprobaciones humanas. Conservar los informes crudos bajo `.rsec-local/`. Los próximos ensayos de capacidad requieren un base generativo con derechos y manifiesto verificados, y supervisión cuando haya una carga existente. [Gate de entrenamiento](TRAINING_READINESS.md)
+
+---
+
+# Handoff histórico · v0.3.0-alpha.1
+
+## Reanudación en la estación Windows · 2026-11-27
+
+El [PR #7](https://github.com/Snowwiy/Rsec/pull/7) continúa en `feat/rsec-physical-validation-v0.3.0`, con base dev `63d14f7`. Se clonó el checkout oficial en la unidad de datos y se instalaron los entornos separados de Windows y Ubuntu 24.04 WSL2. Consulta [instalación](LOCAL_INSTALLATION_REPORT.md), [pruebas](TEST_RESULTS.md) e [integración con Goose](GOOSE_INTEGRATION.md).
+
+**GPU VALIDATION PENDING.** La RTX 4070 es la única GPU detectada. Tras la confirmación del operador de que terminó de jugar e instaló la RTX 3060, volver a enumerar por UUID y validar la 4070 primero. Validar la 3060 individualmente antes de NCCL/DDP. Aplicar aviso a 80 °C y parada a 85 °C o ante inestabilidad. Conservar la evidencia cruda fuera de Git.
+
+**TRAINING READINESS NOT READY.** El piloto de revisión contiene 64 candidatos y cero aprobaciones. Se mantienen los gates de derechos, revisión humana y evaluación independiente. Las secciones siguientes corresponden al historial.
 
 ---
 

@@ -1,6 +1,6 @@
-# Rsec AI · v0.3.0-alpha.1
+# Rsec AI · v0.3.0-alpha.2
 
-La [guía de instalación](LOCAL_INSTALLATION_REPORT.md) reúne los lanzadores, el inventario privado, la inferencia local y las pruebas con supervisión térmica. La validación física y la sesión de Goose en el PC siguen pendientes.
+La RTX 4070 y la RTX 3060 aprobaron las fixtures supervisadas CUDA y NF4/LoRA en WSL2. NCCL usó memoria compartida del host. DDP y FSDP verificaron recuperación de checkpoints con cargas sintéticas. [Evidencia física](MULTI_GPU_BENCHMARK.md) · [Preparación para entrenamiento](TRAINING_READINESS.md)
 
 Auditoría independiente Fase 01-B: **PASS WITH CONDITIONS**, **97 pruebas / 91.34 % de cobertura**. [Informe](INDEPENDENT_AUDIT.md) · [Plan GPU](GPU_VALIDATION_PLAN.md) · [Preparación de datos](DATASET_READINESS.md). Unsloth queda **BLOCKED** por conflictos comprobados. El gate de regresión exige metadatos de generación/evaluación comparables; las validaciones físicas y el corpus experto siguen pendientes.
 
@@ -78,6 +78,8 @@ rsec train --smoke
 El modo smoke crea un modelo diminuto aleatorio y un tokenizer de prueba local, ejecuta optimización real y conserva checkpoints. Sus pérdidas no representan capacidad de ciberseguridad. Las versiones transitivas del entorno Linux/Python 3.12 comprobado están fijadas en el lock CPU.
 
 ## Entrenamiento con GPU: procedimiento futuro sujeto a gates
+
+Para instalar el entorno y preparar la estación en CPU, consulta la [guía de Windows y WSL2](LOCAL_INSTALLATION_REPORT.md). Sigue por separado el [plan de validación física supervisada](GPU_VALIDATION_PLAN.md).
 
 Estos comandos corresponden a una fase posterior tras cumplir TRAINING_READINESS.md. El modelo preliminar es `Qwen/Qwen2.5-Coder-7B-Instruct`, con revisión SHA fijada y licencia Apache-2.0. La licencia MIT existente del código se conserva. Instala primero una rueda CUDA de PyTorch 2.8.0 compatible con tu controlador; después instala `requirements-train.txt`.
 

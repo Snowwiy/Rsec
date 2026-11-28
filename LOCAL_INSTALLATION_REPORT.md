@@ -1,15 +1,35 @@
 # Fase 03-A · instalación local
 
-**Estación del propietario: pendiente de acceso.** La sesión permitió trabajar en el checkout Linux y compilar el servidor CPU desde el código de llama.cpp ya presente. El diagnóstico observó Python 3.12.14, Torch 2.8.0+cpu, cero dispositivos CUDA y ausencia de nvidia-smi. La unidad Windows, WSL del propietario y sus aplicaciones no estaban montadas. No se instalaron dependencias en el PC.
+## Continuidad de v0.3.0-alpha.2 · 2026-11-27
 
-## Primera sesión en Windows
+La fase dual reutilizó los entornos aislados de Windows y WSL2 con el mismo PyTorch cu128, NCCL y dependencias ML. Windows y WSL2 enumeraron la RTX 4070 y la RTX 3060. Mantener el VHDX, los modelos y los artefactos privados en la unidad de datos. [Hardware](HARDWARE_VALIDATION_REPORT.md) · [Pruebas](TEST_RESULTS.md)
 
-1. Ejecutar una copia revisada de `scripts/checkout_local.ps1` en la máquina autorizada. Si falta el directorio lo clona en la ubicación acordada. En un checkout existente valida raíz y origen, hace fetch, conserva modificaciones y sólo admite avance rápido. Una carpeta ocupada o una divergencia requiere inspección.
-2. Desde la raíz, `& .\scripts\workstation.ps1 diagnose` recopila herramientas en PATH, RAM, disco, puertos, WSL y NVIDIA en un directorio privado nuevo. Una aplicación de escritorio ausente de PATH necesita inspección adicional. Verificar el driver y las distribuciones antes de elegir CUDA.
-3. `& .\scripts\workstation.ps1 setup` crea/reutiliza un entorno Windows de Python 3.12 e instala únicamente core y desarrollo. `inventory` examina la biblioteca hermana o la indicada mediante `-Library`. `review` prepara el piloto si falta e inicia la vista local. La revisión con identidad real sigue [la guía de firmas](REVIEWER_SECURITY.md).
-4. En una distro WSL2 ya habilitada, desde el checkout, ejecutar `bash scripts/setup_cuda.sh` sólo tras confirmar que el driver admite cu128. Verificar dispositivo y NCCL con `bash scripts/workstation_wsl.sh -m rsec.cli gpu diagnose --output reports/wsl-initial.json`. Una distro, reinicio o cambio de driver requiere intervención separada del propietario.
-5. Ejecutar `bash scripts/validate_gpu.sh "$GPU_4070" reports/4070-first` con el UUID real. Revisar el informe de la capa NF4 y la serie térmica antes de otras cargas. Con dos tarjetas seguir [el procedimiento distribuido](MULTI_GPU_VALIDATION.md).
+El runtime nativo Windows de llama.cpp sólo enumeró la 4070. Para la 3060 y el reparto se añadió el binario oficial Linux b11552 CUDA 12.8 al VHDX. El archivo de 164 MiB se verificó contra el SHA-256 de la publicación. Se reutilizaron las bibliotecas CUDA del venv y se instaló libgomp1 en la distro dedicada para resolver el enlace faltante. [Publicación de llama.cpp](https://github.com/ggml-org/llama.cpp/releases/tag/b11552) · [Integración](LOCAL_INFERENCE_GUIDE.md)
 
-Los lanzadores usan procesos de primer plano. Ctrl+C detiene el proceso iniciado en esa consola. Un puerto ocupado cancela el nuevo servidor. Los resultados específicos de cada ejecución y las cachés se guardan debajo de `.rsec-local/`; las ubicaciones de experimentos, checkpoints, modelos registrados y exportaciones siguen siendo las del proyecto. Los cambios de entorno duran sólo la invocación. Windows y Linux tienen entornos virtuales distintos.
+## Instalación previa · v0.3.0-alpha.1
 
-WSL usa por defecto el checkout en el volumen de datos para evitar llenar el disco del sistema. Si el rendimiento de metadatos en DrvFS limita el entorno, elegir `RSEC_CUDA_ENV` en ext4 únicamente tras verificar dónde reside físicamente el VHDX y su espacio disponible. Para los lanzadores fijar `RSEC_CUDA_PYTHON` al intérprete correspondiente. Mantener pesos compartidos en su ubicación. El montaje debe permitir archivos temporales, enlaces y la creación del venv. El stack CUDA queda pendiente hasta que pasen pip check y el smoke físico.
+**TESTED.** Checkout nuevo en la unidad de datos, origin oficial y rama `feat/rsec-physical-validation-v0.3.0` del [PR #7](https://github.com/Snowwiy/Rsec/pull/7). La unidad tenía 333.1 GiB libres antes de clonar. Windows usa Python 3.12.16 portable y un venv separado en `.rsec-local/windows-venv`. La CLI, dependencias core y herramientas de desarrollo quedaron instaladas.
+
+**TESTED.** Ubuntu 24.04 LTS se registró como WSL2 en un VHDX de la unidad de datos, con usuario Linux sin privilegios. Usa Python 3.12.3 con un venv en ext4 y PyTorch 2.8.0+cu128, Transformers 5.24.1, PEFT 0.22.0, TRL 1.19.0, BitsAndBytes 0.50.2, Accelerate 1.16.0, Safetensors 0.8.0 y Datasets 5.0.1. `pip check` pasó en ambos entornos. El runtime NCCL 2.27.3 forma parte de la instalación WSL2. Unsloth sigue opcional.
+
+**GPU VALIDATION PENDING.** Windows detectó la RTX 4070 y WSL expuso `/dev/dxg`. Durante la instalación se mantuvo CUDA oculta en el entorno ML. La validación física queda sujeta a la confirmación del operador.
+
+**TESTED.** La vista de revisión respondió por HTTP en loopback. El baseline local de llama.cpp respondió en CPU y se comprobó el chat desde Goose mediante su perfil aislado. Consulta [resultados](TEST_RESULTS.md).
+
+## Reproducción y uso
+
+1. Ejecutar `scripts/checkout_local.ps1 -Destination <checkout> -Branch feat/rsec-physical-validation-v0.3.0`. Admite un destino ausente o vacío. En un checkout verifica raíz y origin, actualiza la referencia de la rama y conserva las modificaciones locales.
+2. Desde la raíz, `scripts/setup_windows.ps1 -PythonExe <python312>` crea el venv a partir de un Python 3.12 existente o portable. `scripts/workstation.ps1 inventory -Library <biblioteca>` guarda un inventario privado. `scripts/workstation.ps1 review` prepara el piloto de revisión y abre un servidor de loopback en primer plano.
+3. Para instalar Ubuntu 24.04 LTS en la unidad de datos, usar `wsl.exe --install Ubuntu-24.04 --web-download --no-launch --location <directorio-vhdx> --name <distro>`. En esta estación se creó el usuario `rsec` dentro de la distro y se designó como predeterminado. Consultar [los comandos oficiales de WSL](https://learn.microsoft.com/windows/wsl/basic-commands).
+4. Desde el checkout montado en WSL2, usar un `RSEC_CUDA_ENV` en ext4. Los lanzadores comparten esa ruta o aceptan `RSEC_CUDA_PYTHON` para seleccionar un intérprete explícito.
+
+   ```bash
+   export RSEC_CUDA_ENV="$HOME/.local/share/rsec/cuda-venv"
+   export PIP_CACHE_DIR="$HOME/.cache/rsec/pip"
+   export TMPDIR="$HOME/.cache/rsec/tmp"
+   bash scripts/setup_cuda.sh --install-only
+   ```
+
+5. Seguir [el plan físico](GPU_VALIDATION_PLAN.md) y [la secuencia distribuida](MULTI_GPU_VALIDATION.md). El launcher Windows de CUDA requiere un venv CUDA propio o el intérprete indicado en `-PythonExe`.
+
+Los servidores de revisión e inferencia escuchan en loopback y se ejecutan en primer plano. Un puerto ocupado cancela el lanzamiento. Guardar inventarios, rutas de ejecutables, UUID, logs y configuraciones locales en `.rsec-local/`. Consultar [la guía de firmas](REVIEWER_SECURITY.md) para promover revisiones reales.

@@ -1,8 +1,12 @@
-param([string]$Destination = 'G:\Rsec')
+param(
+  [Parameter(Mandatory)][string]$Destination,
+  [ValidateSet('dev','feat/rsec-physical-validation-v0.3.0')][string]$Branch = 'dev'
+)
 $ErrorActionPreference = 'Stop'
-$branch = 'feat/rsec-local-infrastructure-v0.3.0'
 $url = 'https://github.com/Snowwiy/Rsec.git'
-if (!(Test-Path -LiteralPath $Destination)) {
+if (!(Test-Path -LiteralPath $Destination) -or
+    ((Test-Path -LiteralPath $Destination -PathType Container) -and
+     !(Get-ChildItem -LiteralPath $Destination -Force | Select-Object -First 1))) {
   & git clone --branch $branch -- $url $Destination
   if ($LASTEXITCODE -ne 0) { throw 'Clone failed; inspect destination before retry' }
 } else {
@@ -10,7 +14,7 @@ if (!(Test-Path -LiteralPath $Destination)) {
   if ($LASTEXITCODE -ne 0 -or (Resolve-Path -LiteralPath $root).Path -ne (Resolve-Path -LiteralPath $Destination).Path) { throw 'Existing directory is not the repository root' }
   $origin = & git -C $Destination remote get-url origin
   if ($LASTEXITCODE -ne 0 -or $origin -notin @($url,'https://github.com/Snowwiy/Rsec','git@github.com:Snowwiy/Rsec.git')) { throw 'Unexpected origin' }
-  & git -C $Destination fetch origin
+  & git -C $Destination fetch origin "refs/heads/${Branch}:refs/remotes/origin/${Branch}"
   if ($LASTEXITCODE -ne 0) { throw 'Fetch failed' }
   & git -C $Destination status --short --branch
   $changes = & git -C $Destination status --porcelain

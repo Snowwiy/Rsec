@@ -1,6 +1,6 @@
 # Rsec model card — infrastructure stage
 
-Version: v0.2.1-alpha. Owner: Snowwiy. Languages intended: Spanish/English. Intended uses include defensive security, authorized analysis, programming and software engineering on local hardware.
+Infrastructure version: v0.3.0-alpha.1. Owner: Snowwiy. Languages intended: Spanish/English. Intended uses include defensive security, authorized analysis, programming and software engineering on local hardware.
 
 **Rsec is at the infrastructure stage.** CPU smoke tests use random tiny weights solely to validate training infrastructure. No benchmark performance or superiority claim is made. Rsec-7B/14B/32B/Coder/SOC/DFIR are future naming possibilities.
 

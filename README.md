@@ -1,5 +1,7 @@
 # Rsec AI · v0.3.0-alpha.2
 
+Phase 03-B selects **Thinking Machines Lab Inkling 2 Mini** as the Rsec-Core candidate. Granite 3B remains the technical fallback. The dedicated Inkling backend runs in an isolated WSL2 environment and preserves the Phase 03-A stack. The dataset still has zero human approvals, so specialized training remains blocked. [Model selection](MODEL_BASE_SELECTION.md) · [Compatibility and physical evidence](INKLING_COMPATIBILITY.md)
+
 The RTX 4070 and RTX 3060 passed supervised CUDA and NF4/LoRA fixtures in WSL2. NCCL used host shared memory, and DDP and FSDP exercised checkpoint recovery on small synthetic workloads. See the [physical evidence](MULTI_GPU_BENCHMARK.md) and [training gates](TRAINING_READINESS.md).
 
 Independent local model research for **defensive cybersecurity, programming and software engineering**, owned by Snowwiy.
@@ -7,7 +9,7 @@ Independent local model research for **defensive cybersecurity, programming and 
 
 Rsec specializes open-weight models through adapter training. This repository provides the foundation for acquisition, curation, SFT/QLoRA, independent evaluation, artifact export and local inference. It does **not** distribute a trained cybersecurity model or demonstrate superiority over a base model.
 
-Phase 01-B independent audit: **PASS WITH CONDITIONS** for foundation review, **97 tests / 91.34% statement coverage**. GPU training and source-reviewed gold data remain gates; Unsloth is blocked by confirmed dependency conflicts. See [GPU validation](GPU_VALIDATION_PLAN.md) and [dataset readiness](DATASET_READINESS.md).
+The historical Phase 01-B audit reported **PASS WITH CONDITIONS** for foundation review, with **97 tests and 91.34% statement coverage**. Its generic training stack hit Unsloth dependency conflicts. Follow the Phase 03-B compatibility evidence for the isolated backend and the data gates for specialization. [GPU validation](GPU_VALIDATION_PLAN.md) · [Dataset readiness](DATASET_READINESS.md)
 
 ## Phase 02-B · current status
 

@@ -1,3 +1,13 @@
+# Inkling 2 Mini · Fase 03-B
+
+El perfil alternativo usa el alias `inkling-2-mini` en la API OpenAI-compatible de un `llama-server` local. Arranca desde la revisión GGUF fijada y el build de llama.cpp indicado en [compatibilidad](INKLING_COMPATIBILITY.md), con `RSEC_LLAMA_PROFILE=inference-dual`, dos UUID explícitos y endpoint loopback. El modelo de 16,61 GB requiere ambas tarjetas para la ruta de offload descrita. El perfil gaming anterior conserva el modelo pequeño en la RTX 3060.
+
+Selecciona `GOOSE_PATH_ROOT` nuevo, `GOOSE_PROVIDER=openai`, `GOOSE_MODEL=inkling-2-mini` y `OPENAI_HOST` con el loopback y puerto del servidor. Usa un valor local para la clave si el cliente exige uno. Las pruebas usan un repositorio temporal, un perfil separado y herramientas de fixture con una edición de aritmética predefinida. Se requiere observar una prueba roja, la corrección y una prueba verde, además de una respuesta estructurada. Los textos del modelo se tratan como datos. La configuración normal de Goose queda disponible en su perfil.
+
+La primera corrida física confirmó la sesión de Goose 1.54 con el proveedor OpenAI-compatible y las dos GPU mediante llama.cpp en WSL2. Con un tope de 256 tokens de salida, Goose terminó por longitud antes de llamar una herramienta. La sesión de texto y el flujo de desarrollo tienen resultados independientes.
+
+---
+
 # Goose · integración local
 
 ## RTX 3060 · v0.3.0-alpha.2

@@ -11,8 +11,17 @@ experimental:
   size: 30B-32B MoE
 note: Unselected candidates require license/revision/hardware review; null means intentionally
   unselected, not a fictitious identifier.
-selected:
-  id: Qwen/Qwen2.5-Coder-7B-Instruct
+fallback:
+  id: ibm-granite/granite-3b-code-instruct-128k
   license: Apache-2.0
-  revision: c03e6d358207e414f1eca0bb1891e29f1db0e242
-  status: GPU VALIDATION PENDING
+  status: TECHNICAL FALLBACK ONLY
+selected:
+  id: thinkingmachines/Inkling-2-Mini
+  license: Apache-2.0
+  revision: c9d028302cd0f035fdf8e7e91f089a4ce94d2195
+  training_checkpoint: unsloth/Inkling-2-Mini-unsloth-bnb-4bit
+  training_revision: 22035f8bf3fd71a588d78591f8b3ec45c0994524
+  inference_checkpoint: unsloth/Inkling-2-Mini-GGUF
+  inference_revision: 8078d149286eec7193795413b9e0643da6d11fa1
+  status: PHYSICAL INFERENCE TESTED
+  training_status: GPU VALIDATION PENDING

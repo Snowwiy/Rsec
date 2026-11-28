@@ -1,3 +1,11 @@
+# Entrenamiento · Fase 03-B
+
+**DATASET READINESS BLOCKED. TRAINING READINESS BLOCKED.** Inkling 2 Mini es el candidato de Rsec-Core. El corpus conserva 64 borradores SFT y cero aprobaciones humanas. Hay cero casos gold independientes aprobados. No se ha iniciado entrenamiento especializado.
+
+Antes del piloto, congela la evaluación del Inkling base en CodeBench, CyberBench, visión y uso de herramientas. Aplica la misma procedencia, separación de familias, revisión de derechos y aprobación al release mixto y a las fuentes de replay. Compara el adaptador y sus exportaciones con la base en condiciones equivalentes, incluyendo regresiones multimodales tras ajuste textual. El modelo de respaldo Granite 3B requiere su propia línea base. [Selección](MODEL_BASE_SELECTION.md) · [Validación técnica de Inkling](QLORA_VALIDATION_REPORT.md)
+
+---
+
 # Entrenamiento · Fase 03-A
 
 ## Estado de la estación · v0.3.0-alpha.2

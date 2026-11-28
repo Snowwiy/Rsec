@@ -11,6 +11,18 @@ profile=${RSEC_LLAMA_PROFILE:-agent}
 context=${RSEC_LLAMA_CONTEXT:-2048}
 threads=${RSEC_LLAMA_THREADS:-2}
 port=${RSEC_LLAMA_PORT:-8081}
+alias_name=${RSEC_LLAMA_ALIAS:-local-baseline}
+projector=${RSEC_LLAMA_MMPROJ:-}
+cache=${RSEC_LLAMA_KV_CACHE:-}
+reasoning=${RSEC_LLAMA_REASONING_BUDGET:-0}
+[[ "$alias_name" =~ ^[a-zA-Z0-9][a-zA-Z0-9._-]{0,63}$ ]] || die 'Invalid model alias'
+[[ -z "$cache" || "$cache" == f16 || "$cache" == q8_0 ]] || die 'Use f16 or q8_0 KV cache'
+[[ "$reasoning" =~ ^(0|[1-9][0-9]{0,2})$ ]] || die 'Reasoning budget must be between 0 and 999'
+projector_bytes=0
+if [[ -n "$projector" ]]; then
+  [[ -f "$projector" && "${projector,,}" == *.gguf ]] || die 'Select a local GGUF projector'
+  projector_bytes=$(stat -c %s -- "$projector")
+fi
 [[ "$context" =~ ^[1-9][0-9]{0,4}$ && "$threads" =~ ^[1-9]$ && "$port" =~ ^[1-9][0-9]{0,4}$ ]] ||
   die 'Use decimal context, thread count and port'
 (( context >= 128 && context <= 32768 && threads <= 8 && port <= 65535 )) ||
@@ -33,7 +45,7 @@ done
 bytes=$(stat -c %s -- "$model")
 if [[ "$profile" == gaming ]]; then
   [[ "${names[0]}" == 'NVIDIA GeForce RTX 3060' ]] || die 'Gaming profile reserves the RTX 4070'
-  (( context <= 2048 && threads <= 2 && bytes <= 4 * 1024**3 )) || die 'Gaming profile requires a small model, context and thread budget'
+  (( context <= 2048 && threads <= 2 && bytes + projector_bytes <= 4 * 1024**3 )) || die 'Gaming profile requires a small model, context and thread budget'
 fi
 device=(--device CUDA0 --split-mode none --main-gpu 0)
 if [[ "$profile" == inference-dual ]]; then
@@ -41,7 +53,7 @@ if [[ "$profile" == inference-dual ]]; then
   [[ "$split" =~ ^([1-9][0-9]{0,2}),([1-9][0-9]{0,2})$ ]] || die 'Specify two positive split weights from 1 to 999'
   a=${BASH_REMATCH[1]}
   b=${BASH_REMATCH[2]}
-  (( free_mib[0] * 1024**2 >= bytes * a / (a+b) + 1024**3 &&
+  (( free_mib[0] * 1024**2 >= bytes * a / (a+b) + projector_bytes + 1024**3 &&
      free_mib[1] * 1024**2 >= bytes * b / (a+b) + 1024**3 )) || die 'Insufficient free VRAM for weights and buffers'
   mode=${RSEC_LLAMA_SPLIT_MODE:-layer}
   main=${RSEC_LLAMA_MAIN_GPU:-0}
@@ -50,7 +62,7 @@ if [[ "$profile" == inference-dual ]]; then
   device=(--device CUDA0,CUDA1 --split-mode "$mode" --tensor-split "$split")
   if [[ "$mode" == row ]]; then device+=(--main-gpu "$main"); fi
 else
-  (( free_mib[0] * 1024**2 >= bytes + 768 * 1024**2 )) || die 'Insufficient free VRAM for weights and buffers'
+  (( free_mib[0] * 1024**2 >= bytes + projector_bytes + 768 * 1024**2 )) || die 'Insufficient free VRAM for weights and buffers'
 fi
 export CUDA_VISIBLE_DEVICES="$(IFS=,; echo "$*")"
 inventory=$("$RSEC_LLAMA_SERVER" --list-devices 2>&1)
@@ -59,6 +71,9 @@ mapfile -t available < <(sed -nE 's/^[[:space:]]*CUDA[0-9]+:[[:space:]]*(.+) \(.
 extra=()
 if [[ "${RSEC_LLAMA_VERBOSE:-0}" == 1 ]]; then extra+=(--verbose); fi
 if [[ "${RSEC_LLAMA_MMAP:-1}" == 0 ]]; then extra+=(--load-mode none); fi
-exec "$RSEC_LLAMA_SERVER" -m "$model" --alias local-baseline --host 127.0.0.1 --port "$port" \
+if [[ -n "$projector" ]]; then extra+=(--mmproj "$projector"); fi
+if [[ -n "$cache" ]]; then extra+=(--cache-type-k "$cache" --cache-type-v "$cache"); fi
+if [[ "$cache" == q8_0 ]]; then extra+=(--flash-attn on); fi
+exec "$RSEC_LLAMA_SERVER" -m "$model" --alias "$alias_name" --host 127.0.0.1 --port "$port" \
   -c "$context" -np 1 -t "$threads" -tb "$threads" --threads-http 2 -ngl 99 --offline --no-ui --fit off \
-  --reasoning-budget 0 "${device[@]}" "${extra[@]}"
+  --reasoning-budget "$reasoning" "${device[@]}" "${extra[@]}"

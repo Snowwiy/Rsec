@@ -274,6 +274,8 @@ def test_llama_wsl_direct_load_uses_installed_cli_flag(tmp_path):
     server.chmod(0o755)
     model = tmp_path / "fixture with spaces.gguf"
     model.touch()
+    projector = tmp_path / "projector with spaces.gguf"
+    projector.touch()
     script = Path(__file__).parents[2] / "scripts" / "llama_wsl.sh"
     run = subprocess.run(
         ["bash", str(script), str(model), fixture_id],
@@ -282,6 +284,10 @@ def test_llama_wsl_direct_load_uses_installed_cli_flag(tmp_path):
             "RSEC_LLAMA_SERVER": str(server),
             "RSEC_LLAMA_PROFILE": "gaming",
             "RSEC_LLAMA_MMAP": "0",
+            "RSEC_LLAMA_ALIAS": "inkling-test",
+            "RSEC_LLAMA_MMPROJ": str(projector),
+            "RSEC_LLAMA_KV_CACHE": "q8_0",
+            "RSEC_LLAMA_REASONING_BUDGET": "128",
         },
         capture_output=True,
         text=True,
@@ -291,6 +297,10 @@ def test_llama_wsl_direct_load_uses_installed_cli_flag(tmp_path):
     assert arguments[0] == fixture_id
     assert arguments[arguments.index("--load-mode") + 1] == "none"
     assert arguments[arguments.index("-m") + 1] == str(model)
+    assert arguments[arguments.index("--mmproj") + 1] == str(projector)
+    assert arguments[arguments.index("--alias") + 1] == "inkling-test"
+    assert arguments[arguments.index("--cache-type-v") + 1] == "q8_0"
+    assert arguments[arguments.index("--reasoning-budget") + 1] == "128"
     assert "--no-mmap" not in arguments
 
 

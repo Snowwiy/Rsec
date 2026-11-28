@@ -1,3 +1,11 @@
+# Handoff · Fase 03-B · 2026-11-28
+
+La rama de adopción deriva de `e67a961` en el [PR #7](https://github.com/Snowwiy/Rsec/pull/7). El candidato principal es Inkling 2 Mini y Granite 3B queda como respaldo. La ruta nueva de inferencia usa un llama.cpp aislado. La ruta de ajuste técnico tiene su propio entorno Unsloth y descargas fijadas en el [plan de adquisición](MODEL_ACQUISITION_PLAN.md).
+
+Consulta los pasos y el estado físico en [compatibilidad](INKLING_COMPATIBILITY.md), [dual-GPU](MULTI_GPU_VALIDATION.md), [QLoRA](QLORA_VALIDATION_REPORT.md) y [Goose](GOOSE_INTEGRATION.md). Los registros crudos, identificadores de hardware, configuración personal y artefactos se mantienen en almacenamiento privado. El [gate de datos](TRAINING_READINESS.md) sigue bloqueando la especialización.
+
+---
+
 # Handoff · v0.3.0-alpha.2
 
 ## Estación dual · 2026-11-27
